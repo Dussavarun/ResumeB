@@ -1,3 +1,5 @@
+// this is used to save and retrieve tha data from the user db
+
 import { NextResponse } from "next/server";
 import { connectDB } from "../../../../lib/mongodb";
 import User from "../../../../models/User";
@@ -94,5 +96,31 @@ if (data.accomplishments) {
   } catch (error) {
     console.error("❌ Error saving resume:", error.message, error.stack);
     return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+
+
+export async function GET(req, { params }) {
+  try {
+    await connectDB();
+    const { email } = params;
+
+    const user = await User.findOne({ email })
+      .populate("personalInfo")
+      .populate("education")
+      .populate("experience")
+      .populate("projects")
+      .populate("certifications")
+      .populate("accomplishments");
+
+    if (!user) {
+      return Response.json({ message: "User not found" }, { status: 404 });
+    }
+
+    return Response.json(user, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return Response.json({ message: "Error fetching user data" }, { status: 500 });
   }
 }

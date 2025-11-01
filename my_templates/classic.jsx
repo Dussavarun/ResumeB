@@ -1,406 +1,362 @@
+// "use client";
+// import React from "react";
+// import { useSelector } from "react-redux";
+
+// const ClassicTemplate = () => {
+//   const personalInfo = useSelector((state) => state.user?.personalInfo || {});
+//   const education = useSelector((state) => state.education?.education);
+//   const experiences = useSelector((state) => state.experience?.experiences);
+//   const projects = useSelector((state) => state.project?.projects);
+//   const skills = useSelector((state) => state.techskills);
+//   const accomplishments = useSelector((state) => state.accomplishments?.accomplishments);
+//   const certifications = useSelector((state) => state.certifications?.certifications);
+
+//   return (
+//     <div className="bg-white p-10 font-serif h-full overflow-auto text-sm leading-relaxed border border-gray-300">
+//       {/* Header */}
+//       <div className="border-b-2 border-gray-700 pb-3 mb-4 text-center">
+//         <h1 className="text-3xl font-bold tracking-wide text-gray-900 mb-1">
+//           {personalInfo.name || "Your Name"}
+//         </h1>
+//         <div className="text-xs text-gray-700">
+//           {[personalInfo.email, personalInfo.phone, personalInfo.location]
+//             .filter(Boolean)
+//             .join(" | ")}
+//         </div>
+//         {personalInfo.links && (
+//           <div className="flex justify-center gap-3 text-xs mt-1 text-blue-700">
+//             {personalInfo.links.portfolio && (
+//               <a href={personalInfo.links.portfolio} className="hover:underline">
+//                 Portfolio
+//               </a>
+//             )}
+//             {personalInfo.links.github && (
+//               <a href={personalInfo.links.github} className="hover:underline">
+//                 GitHub
+//               </a>
+//             )}
+//             {personalInfo.links.linkedin && (
+//               <a href={personalInfo.links.linkedin} className="hover:underline">
+//                 LinkedIn
+//               </a>
+//             )}
+//             {personalInfo.links.leetcode && (
+//               <a href={personalInfo.links.leetcode} className="hover:underline">
+//                 LeetCode
+//               </a>
+//             )}
+//             {personalInfo.links.codeforces && (
+//               <a href={personalInfo.links.codeforces} className="hover:underline">
+//                 Codeforces
+//               </a>
+//             )}
+//           </div>
+//         )}
+//       </div>
+
+//       {/* Education */}
+//       {education?.length > 0 && (
+//         <section className="mb-4">
+//           <h3 className="text-lg font-semibold border-b border-gray-700 uppercase mb-2">
+//             Education
+//           </h3>
+//           {education.map((edu, idx) => (
+//             <div key={idx} className="mb-2">
+//               <div className="flex justify-between items-start">
+//                 <div>
+//                   <h4 className="font-bold">{edu.institution}</h4>
+//                   <p>{edu.degree}</p>
+//                   {edu.gpa && <p className="text-xs">GPA: {edu.gpa}</p>}
+//                 </div>
+//                 <div className="text-right text-xs text-gray-600">
+//                   {edu.duration && <p>{edu.duration}</p>}
+//                   {edu.location && <p>{edu.location}</p>}
+//                 </div>
+//               </div>
+//             </div>
+//           ))}
+//         </section>
+//       )}
+
+//       {/* Experience */}
+//       {experiences?.length > 0 && (
+//         <section className="mb-4">
+//           <h3 className="text-lg font-semibold border-b border-gray-700 uppercase mb-2">
+//             Experience
+//           </h3>
+//           {experiences.map((exp, idx) => (
+//             <div key={idx} className="mb-3">
+//               <div className="flex justify-between">
+//                 <div>
+//                   <h4 className="font-bold">{exp.role}</h4>
+//                   <p className="text-gray-700 italic">
+//                     {exp.company}
+//                     {exp.location && `, ${exp.location}`}
+//                   </p>
+//                 </div>
+//                 {exp.duration && (
+//                   <p className="text-xs text-gray-600">{exp.duration}</p>
+//                 )}
+//               </div>
+//               {exp.responsibilities?.length > 0 && (
+//                 <ul className="list-disc list-inside text-xs text-gray-700 mt-1 space-y-0.5">
+//                   {exp.responsibilities.map((resp, i) => (
+//                     <li key={i}>{resp}</li>
+//                   ))}
+//                 </ul>
+//               )}
+//             </div>
+//           ))}
+//         </section>
+//       )}
+
+//       {/* Projects */}
+//       {projects?.length > 0 && (
+//         <section className="mb-4">
+//           <h3 className="text-lg font-semibold border-b border-gray-700 uppercase mb-2">
+//             Projects
+//           </h3>
+//           {projects.map((project, idx) => (
+//             <div key={idx} className="mb-2">
+//               <div className="flex justify-between">
+//                 <h4 className="font-bold">{project.title}</h4>
+//                 {project.link && (
+//                   <a
+//                     href={project.link}
+//                     className="text-blue-700 text-xs hover:underline"
+//                   >
+//                     Link
+//                   </a>
+//                 )}
+//               </div>
+//               {project.description && (
+//                 <p className="text-xs text-gray-700">{project.description}</p>
+//               )}
+//               {project.impact && (
+//                 <p className="text-xs italic text-gray-600">{project.impact}</p>
+//               )}
+//             </div>
+//           ))}
+//         </section>
+//       )}
+
+//       {/* Technical Skills */}
+//       {(skills.programmingLanguages?.length > 0 ||
+//         skills.frameworks?.length > 0 ||
+//         skills.databases?.length > 0 ||
+//         skills.developerTools?.length > 0 ||
+//         skills.cloudAndDevOps?.length > 0) && (
+//         <section className="mb-4">
+//           <h3 className="text-lg font-semibold border-b border-gray-700 uppercase mb-2">
+//             Technical Skills
+//           </h3>
+//           <div className="text-xs space-y-1">
+//             {skills.programmingLanguages?.length > 0 && (
+//               <p>
+//                 <span className="font-semibold">Languages:</span>{" "}
+//                 {skills.programmingLanguages.join(", ")}
+//               </p>
+//             )}
+//             {skills.frameworks?.length > 0 && (
+//               <p>
+//                 <span className="font-semibold">Frameworks:</span>{" "}
+//                 {skills.frameworks.join(", ")}
+//               </p>
+//             )}
+//             {skills.databases?.length > 0 && (
+//               <p>
+//                 <span className="font-semibold">Databases:</span>{" "}
+//                 {skills.databases.join(", ")}
+//               </p>
+//             )}
+//             {skills.developerTools?.length > 0 && (
+//               <p>
+//                 <span className="font-semibold">Tools:</span>{" "}
+//                 {skills.developerTools.join(", ")}
+//               </p>
+//             )}
+//             {skills.cloudAndDevOps?.length > 0 && (
+//               <p>
+//                 <span className="font-semibold">Cloud & DevOps:</span>{" "}
+//                 {skills.cloudAndDevOps.join(", ")}
+//               </p>
+//             )}
+//           </div>
+//         </section>
+//       )}
+
+//       {/* Certifications */}
+//       {certifications?.length > 0 && (
+//         <section className="mb-4">
+//           <h3 className="text-lg font-semibold border-b border-gray-700 uppercase mb-2">
+//             Certifications
+//           </h3>
+//           {certifications.map((cert, idx) => (
+//             <div key={idx} className="flex justify-between text-xs mb-1">
+//               <div>
+//                 <p className="font-semibold">{cert.title}</p>
+//                 {cert.provider && <p>{cert.provider}</p>}
+//               </div>
+//               <div className="text-right">
+//                 {cert.date && <p>{cert.date}</p>}
+//                 {cert.credentialUrl && (
+//                   <a
+//                     href={cert.credentialUrl}
+//                     className="text-blue-700 hover:underline"
+//                   >
+//                     Credential
+//                   </a>
+//                 )}
+//               </div>
+//             </div>
+//           ))}
+//         </section>
+//       )}
+
+//       {/* Accomplishments */}
+//       {accomplishments?.length > 0 && (
+//         <section>
+//           <h3 className="text-lg font-semibold border-b border-gray-700 uppercase mb-2">
+//             Accomplishments
+//           </h3>
+//           <ul className="list-disc list-inside text-xs text-gray-700 space-y-1">
+//             {accomplishments.map((acc, idx) => (
+//               <li key={idx}>{acc.title || acc}</li>
+//             ))}
+//           </ul>
+//         </section>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default ClassicTemplate;
+
 "use client";
 import React from "react";
 import { useSelector } from "react-redux";
 
 const ClassicTemplate = () => {
-  const basics = useSelector((state) => state.user?.basics || {});
-  const profiles = useSelector(
-    (state) => state.user?.profiles || { visible: false, items: [] }
+  const personalInfo = useSelector((state) => state.user?.personalInfo || {});
+  const education = useSelector((state) => state.education?.education || []);
+  const experiences = useSelector((state) => state.experience?.experiences || []);
+  const projects = useSelector((state) => state.project?.projects || []);
+  const skills = useSelector((state) => state.techskills || {});
+  const accomplishments = useSelector(
+    (state) => state.accomplishments?.accomplishments || []
   );
-  const skills = useSelector(
-    (state) => state.skills || { visible: false, items: [] }
+  const certifications = useSelector(
+    (state) => state.certifications?.certifications || []
   );
-  const experience = useSelector(
-    (state) => state.experience || { visible: false, items: [] }
-  );
-  const projects = useSelector(
-    (state) => state.projects || { visible: false, items: [] }
-  );
-  const education = useSelector(
-    (state) => state.education || { visible: false, items: [] }
-  );
+
+  const safeText = (val) => {
+    if (!val) return "";
+    if (typeof val === "object") return JSON.stringify(val);
+    return val;
+  };
 
   return (
-    <div className="max-w-4xl mx-auto bg-white p-8 shadow-lg font-serif">
-      <Header basics={basics} profiles={profiles} />
-      <div className="grid grid-cols-3 gap-8 mt-6">
-        <div className="col-span-2 space-y-6">
-          {experience.visible && <Experience section={experience} />}
-          {education.visible && <Education section={education} />}
-          {projects.visible && <Projects section={projects} />}
-        </div>
-        <div className="col-span-1 space-y-6">
-          {skills.visible && <Skills section={skills} />}
-          {profiles.visible && profiles.items.length > 0 && (
-            <Profiles section={profiles} />
-          )}
+    <div className="bg-white p-10 font-serif h-full overflow-auto text-sm leading-relaxed border border-gray-300">
+      {/* Header */}
+      <div className="border-b-2 border-gray-700 pb-3 mb-4 text-center">
+        <h1 className="text-3xl font-bold tracking-wide text-gray-900 mb-1">
+          {safeText(personalInfo.name) || "Your Name"}
+        </h1>
+        <div className="text-xs text-gray-700">
+          {[personalInfo.email, personalInfo.phone, personalInfo.location]
+            .filter(Boolean)
+            .join(" | ")}
         </div>
       </div>
-    </div>
-  );
-};
 
-const Header = ({ basics = {}, profiles = { items: [] } }) => {
-  const {
-    name = "Your Name",
-    headline = "Professional Title",
-    location = "",
-    phone = "",
-    email = "",
-    url = { href: "", label: "" },
-  } = basics;
-
-  return (
-    <div className="text-center border-b-2 border-gray-800 pb-6">
-      <h1 className="text-4xl font-bold text-gray-900 mb-2">{name}</h1>
-      {headline && <h2 className="text-xl text-gray-700 mb-4">{headline}</h2>}
-
-      <div className="flex flex-wrap justify-center items-center gap-4 text-sm text-gray-600">
-        {location && (
-          <div className="flex items-center gap-1">
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-            </svg>
-            <span>{location}</span>
-          </div>
-        )}
-        {phone && (
-          <div className="flex items-center gap-1">
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-            </svg>
-            <a href={`tel:${phone}`} className="hover:text-blue-600 transition-colors">
-              {phone}
-            </a>
-          </div>
-        )}
-        {email && (
-          <div className="flex items-center gap-1">
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-            </svg>
-            <a href={`mailto:${email}`} className="hover:text-blue-600 transition-colors">
-              {email}
-            </a>
-          </div>
-        )}
-        {url?.href && (
-          <div className="flex items-center gap-1">
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z" clipRule="evenodd" />
-            </svg>
-            <a
-              href={url.href}
-              className="hover:text-blue-600 transition-colors"
-              target="_blank"
-              rel="noreferrer"
-            >
-              {url.label || url.href}
-            </a>
-          </div>
-        )}
-      </div>
-
-      {profiles.visible && profiles.items.length > 0 && (
-        <div className="flex justify-center gap-6 mt-4">
-          {profiles.items.map((p) => (
-            <a
-              key={p.id || p.username}
-              href={p.url?.href || "#"}
-              className="text-blue-600 hover:text-blue-800 transition-colors underline"
-              target="_blank"
-              rel="noreferrer"
-            >
-              {p.network || p.username || p.label}
-            </a>
+      {/* Education */}
+      {education.length > 0 && (
+        <section className="mb-4">
+          <h3 className="text-lg font-semibold border-b border-gray-700 uppercase mb-2">
+            Education
+          </h3>
+          {education.map((edu, idx) => (
+            <div key={idx} className="mb-2">
+              <h4 className="font-bold">{safeText(edu.institution)}</h4>
+              <p>{safeText(edu.degree)}</p>
+              {edu.gpa && <p className="text-xs">GPA: {safeText(edu.gpa)}</p>}
+            </div>
           ))}
-        </div>
+        </section>
       )}
-    </div>
-  );
-};
 
-const Skills = ({ section = { items: [] } }) => {
-  if (!section.items || section.items.length === 0) return null;
+      {/* Experience */}
+      {experiences.length > 0 && (
+        <section className="mb-4">
+          <h3 className="text-lg font-semibold border-b border-gray-700 uppercase mb-2">
+            Experience
+          </h3>
+          {experiences.map((exp, idx) => (
+            <div key={idx} className="mb-3">
+              <h4 className="font-bold">{safeText(exp.role)}</h4>
+              <p className="italic">{safeText(exp.company)}</p>
+              {Array.isArray(exp.responsibilities) &&
+                exp.responsibilities.map((resp, i) => (
+                  <p key={i} className="text-xs text-gray-700">
+                    • {safeText(resp)}
+                  </p>
+                ))}
+            </div>
+          ))}
+        </section>
+      )}
 
-  return (
-    <div>
-      <h2 className="text-lg font-bold text-gray-900 border-b-2 border-gray-300 pb-1 mb-4">
-        {section.name || "Skills"}
-      </h2>
-      <div className="space-y-3">
-        {section.items
-          .filter((s) => s.visible !== false)
-          .map((s) => (
-            <div key={s.id} className="space-y-1">
-              <div className="font-semibold text-gray-800">{s.name}</div>
-              {s.description && (
-                <div className="text-sm text-gray-600">{s.description}</div>
+      {/* Projects */}
+      {projects.length > 0 && (
+        <section className="mb-4">
+          <h3 className="text-lg font-semibold border-b border-gray-700 uppercase mb-2">
+            Projects
+          </h3>
+          {projects.map((project, idx) => (
+            <div key={idx} className="mb-2">
+              <h4 className="font-bold">{safeText(project.title)}</h4>
+              {project.description && (
+                <p className="text-xs">{safeText(project.description)}</p>
               )}
-              {s.level > 0 && (
-                <div className="flex items-center gap-1">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className={`w-3 h-3 rounded-full ${
-                        i < s.level ? "bg-blue-600" : "bg-gray-300"
-                      }`}
-                    />
-                  ))}
-                </div>
-              )}
-              {s.keywords && s.keywords.length > 0 && (
-                <div className="flex flex-wrap gap-1">
-                  {s.keywords.map((keyword, i) => (
-                    <span
-                      key={i}
-                      className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded"
-                    >
-                      {keyword}
-                    </span>
-                  ))}
-                </div>
+              {project.impact && (
+                <p className="text-xs italic text-gray-600">
+                  {safeText(project.impact)}
+                </p>
               )}
             </div>
           ))}
-      </div>
-    </div>
-  );
-};
+        </section>
+      )}
 
-const Experience = ({ section = { items: [] } }) => {
-  if (!section.items || section.items.length === 0) return null;
-
-  return (
-    <div>
-      <h2 className="text-lg font-bold text-gray-900 border-b-2 border-gray-300 pb-1 mb-4">
-        {section.name || "Experience"}
-      </h2>
-      <div className="space-y-4">
-        {section.items
-          .filter((it) => it.visible !== false)
-          .map((exp) => (
-            <div key={exp.id} className="border-l-2 border-blue-200 pl-4">
-              <div className="flex justify-between items-start mb-2">
-                <div>
-                  <h3 className="font-bold text-gray-900">
-                    {exp.organization || exp.company || exp.title}
-                  </h3>
-                  {exp.position && (
-                    <div className="text-gray-700 italic">{exp.position}</div>
-                  )}
-                </div>
-                <div className="text-right text-sm">
-                  <div className="font-semibold text-gray-800">
-                    {exp.date && (exp.date.start || exp.date.end)
-                      ? `${exp.date.start || ""}${
-                          exp.date.end ? " - " + exp.date.end : ""
-                        }`
-                      : exp.startDate
-                      ? `${exp.startDate}${
-                          exp.endDate ? " - " + exp.endDate : ""
-                        }`
-                      : ""}
-                  </div>
-                  {exp.location && (
-                    <div className="text-gray-600">{exp.location}</div>
-                  )}
-                </div>
-              </div>
-              {exp.summary && (
-                <div className="text-gray-700 mb-2">{exp.summary}</div>
-              )}
-              {exp.keywords && exp.keywords.length > 0 && (
-                <div className="flex flex-wrap gap-1">
-                  {exp.keywords.map((keyword, i) => (
-                    <span
-                      key={i}
-                      className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded"
-                    >
-                      {keyword}
-                    </span>
-                  ))}
-                </div>
-              )}
-              {exp.url?.href && (
-                <div className="mt-2">
-                  <a
-                    href={exp.url.href}
-                    className="text-blue-600 hover:text-blue-800 text-sm underline"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {exp.url.label || exp.url.href}
-                  </a>
-                </div>
-              )}
+      {/* Certifications */}
+      {certifications.length > 0 && (
+        <section className="mb-4">
+          <h3 className="text-lg font-semibold border-b border-gray-700 uppercase mb-2">
+            Certifications
+          </h3>
+          {certifications.map((cert, idx) => (
+            <div key={idx} className="text-xs mb-1">
+              <p className="font-semibold">{safeText(cert.title)}</p>
+              {cert.provider && <p>{safeText(cert.provider)}</p>}
+              {cert.date && <p>{safeText(cert.date)}</p>}
             </div>
           ))}
-      </div>
-    </div>
-  );
-};
+        </section>
+      )}
 
-const Projects = ({ section = { items: [] } }) => {
-  if (!section.items || section.items.length === 0) return null;
-
-  return (
-    <div>
-      <h2 className="text-lg font-bold text-gray-900 border-b-2 border-gray-300 pb-1 mb-4">
-        {section.name || "Projects"}
-      </h2>
-      <div className="space-y-4">
-        {section.items
-          .filter((p) => p.visible !== false)
-          .map((project) => (
-            <div key={project.id} className="border-l-2 border-green-200 pl-4">
-              <div className="flex justify-between items-start mb-2">
-                <div>
-                  <h3 className="font-bold text-gray-900">
-                    {project.name || project.title}
-                  </h3>
-                  {project.description && (
-                    <div className="text-gray-700">{project.description}</div>
-                  )}
-                </div>
-                <div className="text-right text-sm">
-                  {project.date && (project.date.start || project.date.end) && (
-                    <div className="font-semibold text-gray-800">
-                      {project.date.start || ""}
-                      {project.date.end ? " - " + project.date.end : ""}
-                    </div>
-                  )}
-                </div>
-              </div>
-              {project.keywords && project.keywords.length > 0 && (
-                <div className="flex flex-wrap gap-1">
-                  {project.keywords.map((keyword, i) => (
-                    <span
-                      key={i}
-                      className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded"
-                    >
-                      {keyword}
-                    </span>
-                  ))}
-                </div>
-              )}
-              {project.url?.href && (
-                <div className="mt-2">
-                  <a
-                    href={project.url.href}
-                    className="text-blue-600 hover:text-blue-800 text-sm underline"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {project.url.label || project.url.href}
-                  </a>
-                </div>
-              )}
-            </div>
-          ))}
-      </div>
-    </div>
-  );
-};
-
-const Education = ({ section = { items: [] } }) => {
-  if (!section.items || section.items.length === 0) return null;
-
-  return (
-    <div>
-      <h2 className="text-lg font-bold text-gray-900 border-b-2 border-gray-300 pb-1 mb-4">
-        {section.name || "Education"}
-      </h2>
-      <div className="space-y-4">
-        {section.items
-          .filter((e) => e.visible !== false)
-          .map((edu) => (
-            <div key={edu.id} className="border-l-2 border-purple-200 pl-4">
-              <div className="flex justify-between items-start mb-2">
-                <div>
-                  <h3 className="font-bold text-gray-900">
-                    {edu.institution || edu.school}
-                  </h3>
-                  <div className="text-gray-700 italic">
-                    {edu.studyType || edu.degree}
-                  </div>
-                  {edu.area && (
-                    <div className="text-gray-600">{edu.area}</div>
-                  )}
-                </div>
-                <div className="text-right text-sm">
-                  <div className="font-semibold text-gray-800">
-                    {edu.date && (edu.date.start || edu.date.end)
-                      ? `${edu.date.start || ""}${
-                          edu.date.end ? " - " + edu.date.end : ""
-                        }`
-                      : edu.startYear
-                      ? `${edu.startYear}${
-                          edu.endYear ? " - " + edu.endYear : ""
-                        }`
-                      : ""}
-                  </div>
-                  {edu.location && (
-                    <div className="text-gray-600">{edu.location}</div>
-                  )}
-                </div>
-              </div>
-              {edu.summary && (
-                <div className="text-gray-700 mb-2">{edu.summary}</div>
-              )}
-              {edu.score && (
-                <div className="text-sm text-gray-600">
-                  <span className="font-semibold">GPA/Score:</span> {edu.score}
-                </div>
-              )}
-              {edu.courses && edu.courses.length > 0 && (
-                <div className="mt-2">
-                  <div className="font-semibold text-gray-800 text-sm">
-                    Relevant Courses:
-                  </div>
-                  <div className="flex flex-wrap gap-1 mt-1">
-                    {edu.courses.map((c, i) => (
-                      <span
-                        key={i}
-                        className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded"
-                      >
-                        {c}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
-      </div>
-    </div>
-  );
-};
-
-const Profiles = ({ section = { items: [] } }) => {
-  if (!section.items || section.items.length === 0) return null;
-
-  return (
-    <div>
-      <h2 className="text-lg font-bold text-gray-900 border-b-2 border-gray-300 pb-1 mb-4">
-        {section.name || "Profiles"}
-      </h2>
-      <div className="space-y-2">
-        {section.items.map((p) => (
-          <div key={p.id || p.username} className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-            <a
-              href={p.url?.href || "#"}
-              className="text-blue-600 hover:text-blue-800 transition-colors text-sm"
-              target="_blank"
-              rel="noreferrer"
-            >
-              {p.network || p.username || p.label}
-            </a>
-          </div>
-        ))}
-      </div>
+      {/* Accomplishments */}
+      {accomplishments.length > 0 && (
+        <section>
+          <h3 className="text-lg font-semibold border-b border-gray-700 uppercase mb-2">
+            Accomplishments
+          </h3>
+          <ul className="list-disc list-inside text-xs text-gray-700 space-y-1">
+            {accomplishments.map((acc, idx) => (
+              <li key={idx}>{safeText(acc.title || acc)}</li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 };
