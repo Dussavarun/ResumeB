@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 // import RouteChangeLoader from "./components/RouteChangeLoader";
 import { ReduxProvider } from "@/components/ReduxProviderWrapper";
+import RouteLoader from "@/components/GlobalLoader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({
       >
         <ClerkProvider>
           {/* <RouteChangeLoader/> */}
+          <RouteLoader/>
           <ReduxProvider>{children}</ReduxProvider>
         </ClerkProvider>
       </body>

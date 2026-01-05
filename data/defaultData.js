@@ -35,13 +35,13 @@ export const defaultResumeData = {
       "duration": "Apr 2016 – Apr 2018"
     }
   ],
-  "technicalSkills": {
-    "programmingLanguages": ["JavaScript", "TypeScript", "Python", "Java", "C++"],
-    "databases": ["PostgreSQL", "MongoDB", "Redis", "SQLite"],
-    "frameworks": ["React", "Node.js", "Express.js", "Django", "Spring Boot"],
-    "developerTools": ["Git", "Docker", "Webpack", "VS Code", "Jenkins"],
-    "cloudAndDevOps": ["AWS", "Vercel", "GitHub Actions"]
-  },
+  "techSkills": {
+  "programmingLanguages": ["JavaScript", "TypeScript", "Python", "Java", "C++"],
+  "databases": ["PostgreSQL", "MongoDB", "Redis", "SQLite"],
+  "frameworks": ["React", "Node.js", "Express.js", "Django", "Spring Boot"],
+  "developerTools": ["Git", "Docker", "Webpack", "VS Code", "Jenkins"],
+  "cloudAndDevOps": ["AWS", "Vercel", "GitHub Actions"]
+},
   "experience": [
     {
       "company": "SCALE AI (Outlier)",
@@ -98,41 +98,32 @@ export const defaultResumeData = {
       "link": "https://github.com/johndoe/chatsphere"
     }
   ],
-  "honorsAndAwards": [
-    {
-      "title": "2023 Knights Rank - Top 1.5% on LeetCode",
-      "organization": "LeetCode",
-      "year": 2023
-    },
-    {
-      "title": "School Gold Medalist",
-      "organization": "Central High School",
-      "year": 2018
-    },
-    {
-      "title": "Amazon Machine Learning Summer School",
-      "organization": "Amazon India",
-      "year": 2024,
-      "description": "Selected among top 5% of registered participants."
-    },
-    {
-      "title": "Codeforces Specialist",
-      "organization": "Codeforces",
-      "year": 2023,
-      "description": "Achieved Specialist rank among top 10% globally."
-    }
-  ],
+  "accomplishments": [
+  {
+    "title": "2023 Knights Rank - Top 1.5% on LeetCode"
+  },
+  {
+    "title": "School Gold Medalist (2018)"
+  },
+  // {
+  //   "title": "Amazon ML Summer School – Top 5%"
+  // },
+  // {
+  //   "title": "Codeforces Specialist (Top 10%)"
+  // }
+],
   "certifications": [
-    {
-      "name": "AWS Certified Developer – Associate",
-      "issuer": "Amazon Web Services",
-      "year": 2024
-    },
-    {
-      "name": "Meta Front-End Developer",
-      "issuer": "Coursera",
-      "year": 2023
-    }
-  ],
-  "interests": ["AI Research", "Open Source", "Competitive Programming", "UI Design"]
+  {
+    "title": "AWS Certified Developer – Associate",
+    "provider": "Amazon Web Services",
+    "date": "2024",
+    "credentialUrl": ""
+  },
+  {
+    "title": "Meta Front-End Developer",
+    "provider": "Coursera",
+    "date": "2023",
+    "credentialUrl": ""
+  }
+]
 }

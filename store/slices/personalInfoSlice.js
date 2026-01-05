@@ -31,9 +31,20 @@ const userSlice = createSlice({
         state.personalInfo[field] = value;
       }
     },
+    // ADD THIS ACTION
+    setPersonalInfo: (state, action) => {
+      state.personalInfo = {
+        ...state.personalInfo,
+        ...action.payload,
+        links: {
+          ...state.personalInfo.links,
+          ...(action.payload.links || {}),
+        },
+      };
+    },
     resetProfile: () => initialState,
   },
 });
 
-export const { setProfileField, resetProfile } = userSlice.actions;
+export const { setProfileField, setPersonalInfo, resetProfile } = userSlice.actions;
 export default userSlice.reducer;

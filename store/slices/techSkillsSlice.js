@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-   programmingLanguages: ["JavaScript", "TypeScript", "Python", "Java", "C++"],
+    programmingLanguages: ["JavaScript", "TypeScript", "Python", "Java", "C++"],
     databases: ["PostgreSQL", "MongoDB", "Redis", "SQLite"],
     frameworks: ["React", "Node.js", "Express.js", "Django", "Spring Boot"],
     developerTools: ["Git", "Docker", "Webpack", "VS Code", "Jenkins"],
@@ -20,10 +20,16 @@ const techSkillsSlice = createSlice({
       const { category, skill } = action.payload;
       state[category] = state[category].filter((s) => s !== skill);
     },
+    setSkills: (state, action) => {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
     setTechSkills: (_, action) => action.payload,
     resetTechSkills: () => initialState,
   },
 });
 
-export const { addSkill, removeSkill, setTechSkills, resetTechSkills } = techSkillsSlice.actions;
+export const { addSkill, removeSkill, setSkills, setTechSkills, resetTechSkills } = techSkillsSlice.actions;
 export default techSkillsSlice.reducer;

@@ -21,10 +21,23 @@ const certificationSlice = createSlice({
     },
     updateCertification: (state, action) => {
       const { index, data } = action.payload;
-      if (state.certifications[index]) state.certifications[index] = { ...state.certifications[index], ...data };
+      if (state.certifications[index]) 
+        state.certifications[index] = { ...state.certifications[index], ...data };
     },
+    // ADD THIS:
+    setCertifications: (state, action) => {
+      state.certifications = action.payload;
+    },
+    resetCertifications: () => initialState,
   },
 });
 
-export const { addCertification, removeCertification, updateCertification } = certificationSlice.actions;
+export const { 
+  addCertification, 
+  removeCertification, 
+  updateCertification,
+  setCertifications,
+  resetCertifications 
+} = certificationSlice.actions;
+
 export default certificationSlice.reducer;
