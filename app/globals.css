@@ -10,6 +10,13 @@
   --foreground: #171717;
 }
 
+.input {
+  @apply w-full px-4 py-3 
+  bg-white text-black placeholder-gray-500
+  border-2 border-black rounded-xl
+  focus:outline-none focus:ring-2 focus:ring-black;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

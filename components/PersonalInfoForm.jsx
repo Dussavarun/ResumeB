@@ -14,21 +14,26 @@ export default function ProfileForm() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-gray-200 flex justify-center items-start p-8">
-      <div className="w-full max-w-lg bg-neutral-900 p-8 rounded-2xl shadow-lg border border-neutral-800 space-y-5">
-        <h2 className="text-3xl font-semibold text-center mb-2 text-white border-b border-neutral-700 pb-3">
+    <div className="min-h-screen bg-white flex justify-center items-start p-8">
+      <div
+        className="w-full max-w-4xl bg-white p-10 rounded-3xl 
+border-[3px] border-black 
+shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]
+space-y-8"
+      >
+        <h2 className="text-4xl font-extrabold text-black text-center border-b-2 border-black pb-4">
           Profile Details
         </h2>
 
         {/* Basic Info */}
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <input
             type="text"
             name="name"
             value={profile.name || ""}
             onChange={handleChange}
             placeholder="Full Name"
-            className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input"
           />
 
           <input
@@ -37,7 +42,7 @@ export default function ProfileForm() {
             value={profile.email || ""}
             onChange={handleChange}
             placeholder="Email Address"
-            className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input"
           />
 
           <input
@@ -46,7 +51,7 @@ export default function ProfileForm() {
             value={profile.phone || ""}
             onChange={handleChange}
             placeholder="Phone Number"
-            className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input"
           />
 
           <input
@@ -55,32 +60,39 @@ export default function ProfileForm() {
             value={profile.location || ""}
             onChange={handleChange}
             placeholder="Location"
-            className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input"
           />
         </div>
 
-        {/* About Section */}
-        <textarea
-          name="about"
-          value={profile.about || ""}
-          onChange={handleChange}
-          placeholder="About You"
-          className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 h-28 resize-none"
-        />
+        {/* About */}
+        <div>
+          <label className="block text-black font-semibold mb-2">
+            About You
+          </label>
+          <textarea
+            name="about"
+            value={profile.about || ""}
+            onChange={handleChange}
+            placeholder="Write something about yourself..."
+           className="w-full px-4 py-3 bg-white text-black placeholder-gray-400 border-2 border-black rounded-xl focus:outline-none focus:ring-2 focus:ring-black
+h-32 resize-none"
 
-        {/* Links Section */}
-        <h3 className="text-xl font-semibold text-white mt-6 border-b border-neutral-700 pb-2">
+          />
+        </div>
+
+        {/* Links */}
+        <h3 className="text-2xl font-bold text-black border-b-2 border-black pb-2">
           Links
         </h3>
 
-        <div className="space-y-4 mt-3">
+        <div className="grid grid-cols-1 gap-4">
           <input
             type="text"
             name="linkedin"
             value={profile.links.linkedin || ""}
             onChange={handleChange}
-            placeholder="LinkedIn Profile URL"
-            className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="LinkedIn URL"
+            className="input"
           />
 
           <input
@@ -88,8 +100,8 @@ export default function ProfileForm() {
             name="github"
             value={profile.links.github || ""}
             onChange={handleChange}
-            placeholder="GitHub Profile URL"
-            className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="GitHub URL"
+            className="input"
           />
 
           <input
@@ -97,8 +109,8 @@ export default function ProfileForm() {
             name="portfolio"
             value={profile.links.portfolio || ""}
             onChange={handleChange}
-            placeholder="Portfolio Link"
-            className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Portfolio Website"
+            className="input"
           />
 
           <input
@@ -107,7 +119,7 @@ export default function ProfileForm() {
             value={profile.links.leetcode || ""}
             onChange={handleChange}
             placeholder="LeetCode Profile"
-            className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input"
           />
 
           <input
@@ -116,7 +128,7 @@ export default function ProfileForm() {
             value={profile.links.codeforces || ""}
             onChange={handleChange}
             placeholder="Codeforces Profile"
-            className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input"
           />
         </div>
       </div>

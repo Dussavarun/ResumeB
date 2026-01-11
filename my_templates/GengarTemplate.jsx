@@ -1,669 +1,538 @@
 // "use client";
 // import React from "react";
 // import { useSelector } from "react-redux";
-// import { Mail, Phone, MapPin, Link as LinkIcon, Globe, User } from "lucide-react";
+// import { Mail, Phone, MapPin, Link2, Globe, User } from "lucide-react";
 
+// /* ===================== SIDEBAR ===================== */
 // const Sidebar = () => {
-//   const personalInfo = useSelector((state) => state.user?.personalInfo || {});
-//   const skills = useSelector((state) => state.techskills);
+//   const personalInfo = useSelector((s) => s.user?.personalInfo || {});
+//   const rawSkills = useSelector((s) => s.techskills || {});
+
+//   const {
+//     programmingLanguages = [],
+//     frameworks = [],
+//     databases = [],
+//     developerTools = [],
+//     cloudAndDevOps = [],
+//   } = rawSkills;
+
+//   const hasSkills =
+//     programmingLanguages.length ||
+//     frameworks.length ||
+//     databases.length ||
+//     developerTools.length ||
+//     cloudAndDevOps.length;
 
 //   return (
-//     <div className="bg-blue-600 text-white p-6 space-y-6">
-//       {/* Profile Photo */}
-//       <div className="flex justify-center">
-//         <div className="w-32 h-32 rounded-full bg-white flex items-center justify-center">
-//           {/* TODO: Add profile photo URL to personalInfo */}
-//           <User className="w-16 h-16 text-blue-600" />
+//     <div className="h-full bg-blue-900 text-white px-6 py-8 space-y-6">
+//       {/* Profile */}
+//       <div className="flex flex-col items-center text-center">
+//         <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center mb-3">
+//           <User className="w-12 h-12 text-blue-900" />
 //         </div>
-//       </div>
-
-//       {/* Name and Title */}
-//       <div className="text-center">
-//         <h1 className="text-2xl font-bold mb-1">
+//         <h1 className="text-xl font-bold">
 //           {personalInfo.name || "Your Name"}
 //         </h1>
-//         <p className="text-sm text-blue-100">
+//         <p className="text-sm text-blue-200">
 //           {personalInfo.title || "Your Title"}
 //         </p>
 //       </div>
 
-//       {/* Contact Info */}
+//       {/* Contact */}
 //       <div className="space-y-2 text-sm">
 //         {personalInfo.location && (
-//           <div className="flex items-start gap-2">
-//             <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
-//             <span>{personalInfo.location}</span>
+//           <div className="flex gap-2">
+//             <MapPin className="w-4 h-4" />
+//             {personalInfo.location}
 //           </div>
 //         )}
 //         {personalInfo.phone && (
-//           <div className="flex items-start gap-2">
-//             <Phone className="w-4 h-4 mt-0.5 shrink-0" />
-//             <span>{personalInfo.phone}</span>
+//           <div className="flex gap-2">
+//             <Phone className="w-4 h-4" />
+//             {personalInfo.phone}
 //           </div>
 //         )}
 //         {personalInfo.email && (
-//           <div className="flex items-start gap-2">
-//             <Mail className="w-4 h-4 mt-0.5 shrink-0" />
-//             <span className="break-all">{personalInfo.email}</span>
+//           <div className="flex gap-2 break-all">
+//             <Mail className="w-4 h-4" />
+//             {personalInfo.email}
 //           </div>
 //         )}
 //         {personalInfo.links?.portfolio && (
-//           <div className="flex items-start gap-2">
-//             <Globe className="w-4 h-4 mt-0.5 shrink-0" />
-//             <a href={personalInfo.links.portfolio} className="hover:underline break-all">
-//               {personalInfo.links.portfolio.replace(/^https?:\/\//, "")}
-//             </a>
+//           <div className="flex gap-2 break-all">
+//             <Globe className="w-4 h-4" />
+//             {personalInfo.links.portfolio.replace(/^https?:\/\//, "")}
 //           </div>
 //         )}
 //         {personalInfo.links?.linkedin && (
-//           <div className="flex items-start gap-2">
-//             <LinkIcon className="w-4 h-4 mt-0.5 shrink-0" />
-//             <a href={personalInfo.links.linkedin} className="hover:underline">
-//               LinkedIn
-//             </a>
-//           </div>
-//         )}
-//         {personalInfo.links?.github && (
-//           <div className="flex items-start gap-2">
-//             <LinkIcon className="w-4 h-4 mt-0.5 shrink-0" />
-//             <a href={personalInfo.links.github} className="hover:underline">
-//               GitHub
-//             </a>
-//           </div>
-//         )}
-//         {personalInfo.links?.leetcode && (
-//           <div className="flex items-start gap-2">
-//             <LinkIcon className="w-4 h-4 mt-0.5 shrink-0" />
-//             <a href={personalInfo.links.leetcode} className="hover:underline">
-//               LeetCode
-//             </a>
-//           </div>
-//         )}
-//         {personalInfo.links?.codeforces && (
-//           <div className="flex items-start gap-2">
-//             <LinkIcon className="w-4 h-4 mt-0.5 shrink-0" />
-//             <a href={personalInfo.links.codeforces} className="hover:underline">
-//               Codeforces
-//             </a>
+//           <div className="flex gap-2">
+//             <Link2 className="w-4 h-4" />
+//             LinkedIn
 //           </div>
 //         )}
 //       </div>
 
 //       {/* Skills */}
-//       <div>
-//         <h3 className="text-lg font-bold mb-3 border-b border-blue-400 pb-2">
-//           Skills
-//         </h3>
-        
-//         {/* TODO: Add Design Tools section to Redux state */}
-//         {/* TODO: Add Prototyping section to Redux state */}
-//         {/* TODO: Add Frontend section to Redux state */}
-//         {/* TODO: Add Languages section to Redux state (spoken languages, not programming) */}
-        
-//         {skills?.programmingLanguages?.length > 0 && (
-//           <div className="mb-4">
-//             <h4 className="font-semibold text-sm mb-2">Languages</h4>
-//             <p className="text-sm text-blue-100">
-//               {skills.programmingLanguages.join(", ")}
-//             </p>
-//           </div>
-//         )}
-        
-//         {skills?.frameworks?.length > 0 && (
-//           <div className="mb-4">
-//             <h4 className="font-semibold text-sm mb-2">Frameworks</h4>
-//             <p className="text-sm text-blue-100">
-//               {skills.frameworks.join(", ")}
-//             </p>
-//           </div>
-//         )}
-        
-//         {skills?.developerTools?.length > 0 && (
-//           <div className="mb-4">
-//             <h4 className="font-semibold text-sm mb-2">Developer Tools</h4>
-//             <p className="text-sm text-blue-100">
-//               {skills.developerTools.join(", ")}
-//             </p>
-//           </div>
-//         )}
-        
-//         {skills?.databases?.length > 0 && (
-//           <div className="mb-4">
-//             <h4 className="font-semibold text-sm mb-2">Databases</h4>
-//             <p className="text-sm text-blue-100">
-//               {skills.databases.join(", ")}
-//             </p>
-//           </div>
-//         )}
-        
-//         {skills?.cloudAndDevOps?.length > 0 && (
-//           <div className="mb-4">
-//             <h4 className="font-semibold text-sm mb-2">Cloud & DevOps</h4>
-//             <p className="text-sm text-blue-100">
-//               {skills.cloudAndDevOps.join(", ")}
-//             </p>
-//           </div>
-//         )}
-//       </div>
+//       {hasSkills && (
+//         <div>
+//           <h3 className="text-sm font-bold border-b border-blue-400 pb-1 mb-3">
+//             SKILLS
+//           </h3>
 
-//       {/* TODO: Add Interests section to Redux state */}
+//           {programmingLanguages.length > 0 && (
+//             <p className="text-sm text-blue-200">
+//               <b className="text-white">Languages:</b> {programmingLanguages.join(", ")}
+//             </p>
+//           )}
+//           {frameworks.length > 0 && (
+//             <p className="text-sm text-blue-200 mt-2">
+//               <b  className="text-white">Frameworks:</b> {frameworks.join(", ")}
+//             </p>
+//           )}
+//           {databases.length > 0 && (
+//             <p className="text-sm text-blue-200 mt-2">
+//               <b  className="text-white">Databases:</b> {databases.join(", ")}
+//             </p>
+//           )}
+//           {developerTools.length > 0 && (
+//             <p className="text-sm text-blue-200 mt-2">
+//               <b  className="text-white">Tools:</b> {developerTools.join(", ")}
+//             </p>
+//           )}
+//           {cloudAndDevOps.length > 0 && (
+//             <p className="text-sm text-blue-200 mt-2">
+//               <b  className="text-white">Cloud & DevOps:</b> {cloudAndDevOps.join(", ")}
+//             </p>
+//           )}
+//         </div>
+//       )}
 //     </div>
 //   );
 // };
 
+// /* ===================== MAIN CONTENT ===================== */
 // const MainContent = () => {
-//   const personalInfo = useSelector((state) => state.user?.personalInfo || {});
-//   const experiences = useSelector((state) => state.experience?.experiences || []);
-//   const education = useSelector((state) => state.education?.education || []);
-//   const projects = useSelector((state) => state.project?.projects || []);
-//   const certifications = useSelector((state) => state.certifications?.certifications || []);
-//   const accomplishments = useSelector((state) => state.accomplishments?.accomplishments || []);
+//   const personalInfo = useSelector((s) => s.user?.personalInfo || {});
+//   const personalSummary = useSelector(
+//     (s) => s.personalSummary?.summary || ""
+//   );
+
+//   const experiences = useSelector((s) => s.experience?.experiences || []);
+//   const education = useSelector((s) => s.education?.education || []);
+//   const projects = useSelector((s) => s.project?.projects || []);
+//   const certifications = useSelector(
+//     (s) => s.certifications?.certifications || []
+//   );
+//   const accomplishments = useSelector(
+//     (s) => s.accomplishments?.accomplishments || []
+//   );
 
 //   return (
-//     <div className="p-8 space-y-6">
-//       {/* About/Summary */}
-//       {personalInfo.summary && (
-//         <section>
-//           <p className="text-sm text-gray-700 leading-relaxed">
-//             {personalInfo.summary}
-//           </p>
-//         </section>
+//     <div className="px-8 py-8 space-y-6 text-gray-800">
+//       {/* Summary */}
+//       {personalSummary && (
+//         <p className="text-sm leading-relaxed whitespace-pre-line">
+//           {personalSummary}
+//         </p>
 //       )}
-//       {/* TODO: Add summary/about field to personalInfo Redux state */}
 
-//       {/* Work Experience */}
+//       {/* Experience */}
 //       {experiences.length > 0 && (
-//         <section>
-//           <h2 className="text-lg font-bold text-blue-600 mb-4 border-b-2 border-blue-600 pb-1">
-//             Work Experience
-//           </h2>
-//           <div className="space-y-4">
-//             {experiences.map((item, index) => (
-//               <div key={index}>
-//                 <div className="flex justify-between items-start mb-2">
-//                   <div>
-//                     <h3 className="font-bold text-gray-900">{item.company}</h3>
-//                     <p className="text-sm text-gray-700 italic">{item.role}</p>
-//                   </div>
-//                   <div className="text-right text-sm text-gray-600">
-//                     <div>{item.duration}</div>
-//                     <div>{item.location}</div>
-//                   </div>
+//         <Section title="EXPERIENCE">
+//           {experiences.map((exp, i) => (
+//             <div key={i} className="mb-4">
+//               <div className="flex justify-between">
+//                 <div>
+//                   <h3 className="font-bold text-sm">{exp.role}</h3>
+//                   <p className="text-sm text-blue-800">
+//                     {exp.company}
+//                     {exp.location && ` • ${exp.location}`}
+//                   </p>
 //                 </div>
-//                 {item.responsibilities && item.responsibilities.length > 0 && (
-//                   <ul className="text-sm text-gray-700 space-y-1">
-//                     {item.responsibilities.map((resp, i) => (
-//                       <li key={i} className="leading-relaxed">
-//                         {resp}
-//                       </li>
-//                     ))}
-//                   </ul>
-//                 )}
+//                 <div className="text-sm">{exp.duration}</div>
 //               </div>
-//             ))}
-//           </div>
-//         </section>
+
+//               {exp.responsibilities?.length > 0 && (
+//                 <ul className="list-disc ml-5 mt-2 text-sm space-y-1">
+//                   {exp.responsibilities.map((r, idx) => (
+//                     <li key={idx}>{r}</li>
+//                   ))}
+//                 </ul>
+//               )}
+//             </div>
+//           ))}
+//         </Section>
 //       )}
 
-//       {/* Education */}
-//       {education.length > 0 && (
-//         <section>
-//           <h2 className="text-lg font-bold text-blue-600 mb-4 border-b-2 border-blue-600 pb-1">
-//             Education
-//           </h2>
-//           <div className="space-y-4">
-//             {education.map((item, index) => (
-//               <div key={index}>
-//                 <div className="flex justify-between items-start">
-//                   <div>
-//                     <h3 className="font-bold text-gray-900">{item.institution}</h3>
-//                     <p className="text-sm text-gray-700">{item.degree}</p>
-//                     {item.gpa && (
-//                       <p className="text-sm text-gray-600">{item.gpa} GPA</p>
-//                     )}
-//                   </div>
-//                   <div className="text-right text-sm text-gray-600">
-//                     <div>{item.duration}</div>
-//                     {item.location && <div>{item.location}</div>}
-//                   </div>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         </section>
-//       )}
-
-//       {/* Featured Projects */}
+//       {/* Projects */}
 //       {projects.length > 0 && (
-//         <section>
-//           <h2 className="text-lg font-bold text-blue-600 mb-4 border-b-2 border-blue-600 pb-1">
-//             Featured Projects
-//           </h2>
-//           <div className="space-y-4">
-//             {projects.map((item, index) => (
-//               <div key={index}>
-//                 <div className="flex justify-between items-start mb-2">
-//                   <h3 className="font-bold text-gray-900">{item.title}</h3>
-//                   {/* TODO: Add date field to projects Redux state */}
-//                   <div className="text-sm text-gray-600">{item.date || ""}</div>
-//                 </div>
-//                 {item.description && (
-//                   <p className="text-sm text-gray-700 mb-1">{item.description}</p>
-//                 )}
-//                 {item.impact && (
-//                   <p className="text-sm text-gray-700 mb-1">{item.impact}</p>
-//                 )}
-//                 {/* TODO: Add technologies field to projects Redux state */}
-//                 {item.link && (
+//         <Section title="PROJECTS">
+//           {projects.map((p, i) => (
+//             <div key={i} className="mb-3">
+//               <div className="flex items-center gap-2">
+//                 <h3 className="font-bold text-sm">{p.title}</h3>
+//                 {p.link && (
 //                   <a
-//                     href={item.link}
-//                     className="text-sm text-blue-600 hover:underline"
+//                     href={p.link}
+//                     className="text-blue-800 text-xs underline"
 //                   >
-//                     View Project
+//                     Link
 //                   </a>
 //                 )}
 //               </div>
-//             ))}
-//           </div>
-//         </section>
+//               {p.description && (
+//                 <p className="text-sm">{p.description}</p>
+//               )}
+//               {p.impact && (
+//                 <p className="text-sm italic text-gray-600">
+//                   {p.impact}
+//                 </p>
+//               )}
+//             </div>
+//           ))}
+//         </Section>
 //       )}
 
 //       {/* Certifications */}
 //       {certifications.length > 0 && (
-//         <section>
-//           <h2 className="text-lg font-bold text-blue-600 mb-4 border-b-2 border-blue-600 pb-1">
-//             Certifications
-//           </h2>
-//           <div className="space-y-3">
-//             {certifications.map((item, index) => (
-//               <div key={index} className="flex justify-between items-start">
-//                 <div>
-//                   <h3 className="font-bold text-sm text-gray-900">{item.title}</h3>
-//                   <p className="text-sm text-gray-700">{item.provider}</p>
-//                 </div>
-//                 <div className="text-right">
-//                   <div className="text-sm text-gray-600">{item.date}</div>
-//                   {item.credentialUrl && (
-//                     <a
-//                       href={item.credentialUrl}
-//                       className="text-sm text-blue-600 hover:underline"
-//                     >
-//                       Credential
-//                     </a>
-//                   )}
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         </section>
+//         <Section title="CERTIFICATIONS">
+//           {certifications.map((c, i) => (
+//             <div key={i} className="text-sm mb-2">
+//               <b>{c.title}</b> — {c.provider} ({c.date})
+//             </div>
+//           ))}
+//         </Section>
 //       )}
 
 //       {/* Accomplishments */}
 //       {accomplishments.length > 0 && (
-//         <section>
-//           <h2 className="text-lg font-bold text-blue-600 mb-4 border-b-2 border-blue-600 pb-1">
-//             Accomplishments
-//           </h2>
-//           <ul className="text-sm text-gray-700 space-y-1">
-//             {accomplishments.map((item, index) => (
-//               <li key={index} className="leading-relaxed">
-//                 {item.title || item}
-//               </li>
+//         <Section title="ACCOMPLISHMENTS">
+//           <ul className="list-disc ml-5 text-sm space-y-1">
+//             {accomplishments.map((a, i) => (
+//               <li key={i}>{a.title || a}</li>
 //             ))}
 //           </ul>
-//         </section>
+//         </Section>
+//       )}
+
+//       {/* Education */}
+//       {education.length > 0 && (
+//         <Section title="EDUCATION">
+//           {education.map((edu, i) => (
+//             <div key={i} className="mb-3 flex justify-between">
+//               <div>
+//                 <h3 className="font-bold text-sm">{edu.institution}</h3>
+//                 <p className="text-sm">{edu.degree}</p>
+//                 {edu.gpa && (
+//                   <p className="text-sm text-gray-600">
+//                     GPA: {edu.gpa}
+//                   </p>
+//                 )}
+//               </div>
+//               <div className="text-sm text-right">
+//                 {edu.duration && <div>{edu.duration}</div>}
+//                 {edu.location && <div>{edu.location}</div>}
+//               </div>
+//             </div>
+//           ))}
+//         </Section>
 //       )}
 //     </div>
 //   );
 // };
 
+// /* ===================== TEMPLATE ===================== */
 // export default function GengarTemplate() {
 //   return (
-//     <div className="flex min-h-screen bg-white">
-//       {/* Left Sidebar - 1/3 width */}
-//       <div className="w-1/3">
+//     <div className="flex w-full min-h-screen bg-white">
+//       <div className="w-[30%]">
 //         <Sidebar />
 //       </div>
-      
-//       {/* Right Main Content - 2/3 width */}
-//       <div className="w-2/3">
+//       <div className="w-[70%]">
 //         <MainContent />
 //       </div>
 //     </div>
 //   );
 // }
 
+// /* ===================== SECTION ===================== */
+// const Section = ({ title, children }) => (
+//   <section>
+//     <h2 className="text-sm font-bold text-blue-800 border-b-2 border-blue-800 mb-3">
+//       {title}
+//     </h2>
+//     {children}
+//   </section>
+// );
 "use client";
 import React from "react";
 import { useSelector } from "react-redux";
 import { Mail, Phone, MapPin, Link2, Globe, User } from "lucide-react";
 
+/* ===================== SIDEBAR ===================== */
 const Sidebar = () => {
-  const personalInfo = useSelector((state) => state.user?.personalInfo || {});
-  const skills = useSelector((state) => state.techskills);
+  const personalInfo = useSelector((s) => s.user?.personalInfo || {});
+  const rawSkills = useSelector((s) => s.techskills || {});
+  const certifications = useSelector(
+    (s) => s.certifications?.certifications || []
+  );
+  const education = useSelector((s) => s.education?.education || []);
+
+  const {
+    programmingLanguages = [],
+    frameworks = [],
+    databases = [],
+    developerTools = [],
+    cloudAndDevOps = [],
+  } = rawSkills;
+
+  const hasSkills =
+    programmingLanguages.length ||
+    frameworks.length ||
+    databases.length ||
+    developerTools.length ||
+    cloudAndDevOps.length;
 
   return (
-    <div className="bg-blue-600 text-white p-4 space-y-4">
-      {/* Profile Photo */}
-      <div className="flex justify-center">
-        <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center">
-          {/* TODO: Add profile photo URL to personalInfo */}
-          <User className="w-12 h-12 text-blue-600" />
+    <div className="h-full bg-blue-900 text-white px-6 py-8 space-y-6">
+      {/* Profile */}
+      <div className="flex flex-col items-center text-center">
+        <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center mb-3">
+          <User className="w-12 h-12 text-blue-900" />
         </div>
-      </div>
-
-      {/* Name and Title */}
-      <div className="text-center">
-        <h1 className="text-xl font-bold mb-0.5">
+        <h1 className="text-xl font-bold">
           {personalInfo.name || "Your Name"}
         </h1>
-        <p className="text-xs text-blue-100">
+        <p className="text-sm text-blue-200">
           {personalInfo.title || "Your Title"}
         </p>
       </div>
 
-      {/* Contact Info */}
-      <div className="space-y-1.5 text-xs">
+      {/* Contact */}
+      <div className="space-y-2 text-sm">
         {personalInfo.location && (
-          <div className="flex items-start gap-2">
-            <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
-            <span>{personalInfo.location}</span>
+          <div className="flex gap-2">
+            <MapPin className="w-4 h-4" />
+            {personalInfo.location}
           </div>
         )}
         {personalInfo.phone && (
-          <div className="flex items-start gap-2">
-            <Phone className="w-4 h-4 mt-0.5 shrink-0" />
-            <span>{personalInfo.phone}</span>
+          <div className="flex gap-2">
+            <Phone className="w-4 h-4" />
+            {personalInfo.phone}
           </div>
         )}
         {personalInfo.email && (
-          <div className="flex items-start gap-2">
-            <Mail className="w-4 h-4 mt-0.5 shrink-0" />
-            <span className="break-all">{personalInfo.email}</span>
+          <div className="flex gap-2 break-all">
+            <Mail className="w-4 h-4" />
+            {personalInfo.email}
           </div>
         )}
         {personalInfo.links?.portfolio && (
-          <div className="flex items-start gap-2">
-            <Globe className="w-4 h-4 mt-0.5 shrink-0" />
-            <a href={personalInfo.links.portfolio} className="hover:underline break-all">
-              {personalInfo.links.portfolio.replace(/^https?:\/\//, "")}
-            </a>
+          <div className="flex gap-2 break-all">
+            <Globe className="w-4 h-4" />
+            {personalInfo.links.portfolio.replace(/^https?:\/\//, "")}
           </div>
         )}
         {personalInfo.links?.linkedin && (
-          <div className="flex items-start gap-2">
-            <Link2 className="w-4 h-4 mt-0.5 shrink-0" />
-            <a href={personalInfo.links.linkedin} className="hover:underline">
-              LinkedIn
-            </a>
-          </div>
-        )}
-        {personalInfo.links?.github && (
-          <div className="flex items-start gap-2">
-            <Link2 className="w-4 h-4 mt-0.5 shrink-0" />
-            <a href={personalInfo.links.github} className="hover:underline">
-              GitHub
-            </a>
-          </div>
-        )}
-        {personalInfo.links?.leetcode && (
-          <div className="flex items-start gap-2">
-            <Link2 className="w-4 h-4 mt-0.5 shrink-0" />
-            <a href={personalInfo.links.leetcode} className="hover:underline">
-              LeetCode
-            </a>
-          </div>
-        )}
-        {personalInfo.links?.codeforces && (
-          <div className="flex items-start gap-2">
-            <Link2 className="w-4 h-4 mt-0.5 shrink-0" />
-            <a href={personalInfo.links.codeforces} className="hover:underline">
-              Codeforces
-            </a>
+          <div className="flex gap-2">
+            <Link2 className="w-4 h-4" />
+            LinkedIn
           </div>
         )}
       </div>
 
       {/* Skills */}
-      <div>
-        <h3 className="text-sm font-bold mb-2 border-b border-blue-400 pb-1">
-          Skills
-        </h3>
-        
-        {/* TODO: Add Design Tools section to Redux state */}
-        {/* TODO: Add Prototyping section to Redux state */}
-        {/* TODO: Add Frontend section to Redux state */}
-        {/* TODO: Add Languages section to Redux state (spoken languages, not programming) */}
-        
-        {skills?.programmingLanguages?.length > 0 && (
-          <div className="mb-2">
-            <h4 className="font-semibold text-xs mb-1">Languages</h4>
-            <p className="text-xs text-blue-100 leading-tight">
-              {skills.programmingLanguages.join(", ")}
+      {hasSkills && (
+        <div>
+          <h3 className="text-sm font-bold border-b border-blue-400 pb-1 mb-3">
+            SKILLS
+          </h3>
+
+          {programmingLanguages.length > 0 && (
+            <p className="text-sm text-blue-200">
+              <b className="text-white">Languages:</b>{" "}
+              {programmingLanguages.join(", ")}
             </p>
-          </div>
-        )}
-        
-        {skills?.frameworks?.length > 0 && (
-          <div className="mb-2">
-            <h4 className="font-semibold text-xs mb-1">Frameworks</h4>
-            <p className="text-xs text-blue-100 leading-tight">
-              {skills.frameworks.join(", ")}
+          )}
+          {frameworks.length > 0 && (
+            <p className="text-sm text-blue-200 mt-2">
+              <b className="text-white">Frameworks:</b>{" "}
+              {frameworks.join(", ")}
             </p>
-          </div>
-        )}
-        
-        {skills?.developerTools?.length > 0 && (
-          <div className="mb-2">
-            <h4 className="font-semibold text-xs mb-1">Developer Tools</h4>
-            <p className="text-xs text-blue-100 leading-tight">
-              {skills.developerTools.join(", ")}
+          )}
+          {databases.length > 0 && (
+            <p className="text-sm text-blue-200 mt-2">
+              <b className="text-white">Databases:</b>{" "}
+              {databases.join(", ")}
             </p>
-          </div>
-        )}
-        
-        {skills?.databases?.length > 0 && (
-          <div className="mb-2">
-            <h4 className="font-semibold text-xs mb-1">Databases</h4>
-            <p className="text-xs text-blue-100 leading-tight">
-              {skills.databases.join(", ")}
+          )}
+          {developerTools.length > 0 && (
+            <p className="text-sm text-blue-200 mt-2">
+              <b className="text-white">Tools:</b>{" "}
+              {developerTools.join(", ")}
             </p>
-          </div>
-        )}
-        
-        {skills?.cloudAndDevOps?.length > 0 && (
-          <div className="mb-2">
-            <h4 className="font-semibold text-xs mb-1">Cloud & DevOps</h4>
-            <p className="text-xs text-blue-100 leading-tight">
-              {skills.cloudAndDevOps.join(", ")}
+          )}
+          {cloudAndDevOps.length > 0 && (
+            <p className="text-sm text-blue-200 mt-2">
+              <b className="text-white">Cloud & DevOps:</b>{" "}
+              {cloudAndDevOps.join(", ")}
             </p>
-          </div>
-        )}
-      </div>
-
-      {/* TODO: Add Interests section to Redux state */}
-    </div>
-  );
-};
-
-const MainContent = () => {
-  const personalInfo = useSelector((state) => state.user?.personalInfo || {});
-  const experiences = useSelector((state) => state.experience?.experiences || []);
-  const education = useSelector((state) => state.education?.education || []);
-  const projects = useSelector((state) => state.project?.projects || []);
-  const certifications = useSelector((state) => state.certifications?.certifications || []);
-  const accomplishments = useSelector((state) => state.accomplishments?.accomplishments || []);
-
-  return (
-    <div className="p-6 space-y-2.5">
-      {/* About/Summary */}
-      {personalInfo.summary && (
-        <section>
-          <p className="text-xs text-gray-700 leading-snug">
-            {personalInfo.summary}
-          </p>
-        </section>
-      )}
-      {/* TODO: Add summary/about field to personalInfo Redux state */}
-
-      {/* Work Experience */}
-      {experiences.length > 0 && (
-        <section>
-          <h2 className="text-sm font-bold text-blue-600 mb-2 border-b-2 border-blue-600 pb-0.5">
-            Work Experience
-          </h2>
-          <div className="space-y-3">
-            {experiences.map((item, index) => (
-              <div key={index}>
-                <div className="flex justify-between items-start mb-1">
-                  <div>
-                    <h3 className="font-bold text-sm text-gray-900">{item.company}</h3>
-                    <p className="text-xs text-gray-700 italic">{item.role}</p>
-                  </div>
-                  <div className="text-right text-xs text-gray-600">
-                    <div>{item.duration}</div>
-                    <div>{item.location}</div>
-                  </div>
-                </div>
-                {item.responsibilities && item.responsibilities.length > 0 && (
-                  <ul className="text-xs text-gray-700 space-y-0.5">
-                    {item.responsibilities.map((resp, i) => (
-                      <li key={i} className="leading-snug">
-                        {resp}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Education */}
-      {education.length > 0 && (
-        <section>
-          <h2 className="text-sm font-bold text-blue-600 mb-2 border-b-2 border-blue-600 pb-0.5">
-            Education
-          </h2>
-          <div className="space-y-2">
-            {education.map((item, index) => (
-              <div key={index}>
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-bold text-sm text-gray-900">{item.institution}</h3>
-                    <p className="text-xs text-gray-700">{item.degree}</p>
-                    {item.gpa && (
-                      <p className="text-xs text-gray-600">{item.gpa} GPA</p>
-                    )}
-                  </div>
-                  <div className="text-right text-xs text-gray-600">
-                    <div>{item.duration}</div>
-                    {item.location && <div>{item.location}</div>}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Featured Projects */}
-      {projects.length > 0 && (
-        <section>
-          <h2 className="text-sm font-bold text-blue-600 mb-2 border-b-2 border-blue-600 pb-0.5">
-            Featured Projects
-          </h2>
-          <div className="space-y-2">
-            {projects.map((item, index) => (
-              <div key={index}>
-                <div className="flex justify-between items-start mb-1">
-                  <h3 className="font-bold text-sm text-gray-900">{item.title}</h3>
-                  {/* TODO: Add date field to projects Redux state */}
-                  <div className="text-xs text-gray-600">{item.date || ""}</div>
-                </div>
-                {item.description && (
-                  <p className="text-xs text-gray-700 mb-0.5 leading-snug">{item.description}</p>
-                )}
-                {item.impact && (
-                  <p className="text-xs text-gray-700 mb-0.5 leading-snug">{item.impact}</p>
-                )}
-                {/* TODO: Add technologies field to projects Redux state */}
-                {item.link && (
-                  <a
-                    href={item.link}
-                    className="text-xs text-blue-600 hover:underline"
-                  >
-                    View Project
-                  </a>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
+          )}
+        </div>
       )}
 
       {/* Certifications */}
       {certifications.length > 0 && (
-        <section>
-          <h2 className="text-sm font-bold text-blue-600 mb-2 border-b-2 border-blue-600 pb-0.5">
-            Certifications
-          </h2>
-          <div className="space-y-2">
-            {certifications.map((item, index) => (
-              <div key={index} className="flex justify-between items-start">
-                <div>
-                  <h3 className="font-bold text-xs text-gray-900">{item.title}</h3>
-                  <p className="text-xs text-gray-700">{item.provider}</p>
-                </div>
-                <div className="text-right">
-                  <div className="text-xs text-gray-600">{item.date}</div>
-                  {item.credentialUrl && (
-                    <a
-                      href={item.credentialUrl}
-                      className="text-xs text-blue-600 hover:underline"
-                    >
-                      Credential
-                    </a>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+        <div>
+          <h3 className="text-sm font-bold border-b border-blue-400 pb-1 mb-3">
+            CERTIFICATIONS
+          </h3>
+
+          {certifications.map((c, i) => (
+            <p key={i} className="text-sm text-blue-200 mb-2">
+              <b className="text-white">{c.title}</b>
+              <br />
+              {c.provider} ({c.date})
+            </p>
+          ))}
+        </div>
       )}
 
-      {/* Accomplishments */}
-      {accomplishments.length > 0 && (
-        <section>
-          <h2 className="text-sm font-bold text-blue-600 mb-2 border-b-2 border-blue-600 pb-0.5">
-            Accomplishments
-          </h2>
-          <ul className="text-xs text-gray-700 space-y-0.5">
-            {accomplishments.map((item, index) => (
-              <li key={index} className="leading-snug">
-                {item.title || item}
-              </li>
-            ))}
-          </ul>
-        </section>
+      {/* Education (Moved Here) */}
+      {education.length > 0 && (
+        <div>
+          <h3 className="text-sm font-bold border-b border-blue-400 pb-1 mb-3">
+            EDUCATION
+          </h3>
+
+          {education.map((edu, i) => (
+            <p key={i} className="text-sm text-blue-200 mb-2">
+              <b className="text-white">{edu.institution}</b>
+              <br />
+              {edu.degree}
+              {edu.gpa && ` • GPA: ${edu.gpa}`}
+            </p>
+          ))}
+        </div>
       )}
     </div>
   );
 };
 
-export default function TwoColumnResumeTemplate() {
+/* ===================== MAIN CONTENT ===================== */
+const MainContent = () => {
+  const personalSummary = useSelector(
+    (s) => s.personalSummary?.summary || ""
+  );
+  const experiences = useSelector((s) => s.experience?.experiences || []);
+  const projects = useSelector((s) => s.project?.projects || []);
+  const accomplishments = useSelector(
+    (s) => s.accomplishments?.accomplishments || []
+  );
+
   return (
-    <div className="flex min-h-screen bg-white">
-      {/* Left Sidebar - 1/3 width */}
-      <div className="w-1/3">
+    <div className="px-8 py-8 space-y-6 text-gray-800">
+      {/* Professional Summary */}
+      {personalSummary && (
+        <Section title="PROFESSIONAL SUMMARY">
+          <p className="text-sm leading-relaxed whitespace-pre-line">
+            {personalSummary}
+          </p>
+        </Section>
+      )}
+
+      {/* Experience */}
+      {experiences.length > 0 && (
+        <Section title="EXPERIENCE">
+          {experiences.map((exp, i) => (
+            <div key={i} className="mb-4">
+              <div className="flex justify-between">
+                <div>
+                  <h3 className="font-bold text-sm">{exp.role}</h3>
+                  <p className="text-sm text-blue-800">
+                    {exp.company}
+                    {exp.location && ` • ${exp.location}`}
+                  </p>
+                </div>
+                <div className="text-sm">{exp.duration}</div>
+              </div>
+
+              {exp.responsibilities?.length > 0 && (
+                <ul className="list-disc ml-5 mt-2 text-sm space-y-1">
+                  {exp.responsibilities.map((r, idx) => (
+                    <li key={idx}>{r}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))}
+        </Section>
+      )}
+
+      {/* Projects */}
+      {projects.length > 0 && (
+        <Section title="PROJECTS">
+          {projects.map((p, i) => (
+            <div key={i} className="mb-3">
+              <div className="flex items-center gap-2">
+                <h3 className="font-bold text-sm">{p.title}</h3>
+                {p.link && (
+                  <a
+                    href={p.link}
+                    className="text-blue-800 text-xs underline"
+                  >
+                    Link
+                  </a>
+                )}
+              </div>
+              {p.description && (
+                <p className="text-sm">{p.description}</p>
+              )}
+              {p.impact && (
+                <p className="text-sm italic text-gray-600">
+                  {p.impact}
+                </p>
+              )}
+            </div>
+          ))}
+        </Section>
+      )}
+
+      {/* Accomplishments */}
+      {accomplishments.length > 0 && (
+        <Section title="ACCOMPLISHMENTS">
+          <ul className="list-disc ml-5 text-sm space-y-1">
+            {accomplishments.map((a, i) => (
+              <li key={i}>{a.title || a}</li>
+            ))}
+          </ul>
+        </Section>
+      )}
+    </div>
+  );
+};
+
+/* ===================== TEMPLATE ===================== */
+export default function GengarTemplate() {
+  return (
+    <div className="flex w-full min-h-screen bg-white">
+      <div className="w-[30%]">
         <Sidebar />
       </div>
-      
-      {/* Right Main Content - 2/3 width */}
-      <div className="w-2/3">
+      <div className="w-[70%]">
         <MainContent />
       </div>
     </div>
   );
 }
+
+/* ===================== SECTION ===================== */
+const Section = ({ title, children }) => (
+  <section>
+    <h2 className="text-sm font-bold text-blue-800 border-b-2 border-blue-800 mb-3">
+      {title}
+    </h2>
+    {children}
+  </section>
+);

@@ -225,6 +225,229 @@
 //   );
 // }
 
+// "use client";
+
+// import React, { useState, useEffect } from "react";
+// import { useSelector, useDispatch } from "react-redux";
+// import { useSearchParams, useRouter } from "next/navigation";
+// import { Save, ArrowLeft } from "lucide-react";
+// import { useUser } from "@clerk/nextjs";
+// import axios from "axios";
+
+// /* ================= FORMS ================= */
+// import ProfileForm from "../../components/PersonalInfoForm";
+// import EducationForm from "../../components/EducationForm";
+// import ExperienceForm from "../../components/ExperienceForm";
+// import ProjectForm from "../../components/ProjectForm";
+// import TechnicalSkillForm from "../../components/TechnicalSkillForm";
+// import AccomplishmentCertificationForm from "@/components/AcompCertForm";
+// import PersonalSummaryForm from "../../components/PersonalSummaryForm";
+
+// /* ================= TEMPLATES ================= */
+// import ModernTemplate from "../../my_templates/ModernTemplate";
+// import ClassicTemplate from "../../my_templates/classic";
+// import PikachuTemplate from "../../my_templates/Pickachu";
+// import GengarTemplate from "../../my_templates/GengarTemplate";
+// import DownloadResumeButton from "@/components/DownloadResumeButton";
+
+// /* ===================== utils & defaults ============================ */
+// import { defaultResumeData } from "../../data/defaultData";
+// import { hydrateResume } from "../../utils/hydrateResume";
+
+// export default function ResumePreviewPage() {
+//   const dispatch = useDispatch();
+//   const searchParams = useSearchParams();
+//   const router = useRouter();
+//   const { user, isLoaded } = useUser();
+
+//   const [loading, setLoading] = useState(true);
+//   const [activeSection, setActiveSection] = useState("profile");
+
+//   const templateFromUrl = searchParams.get("template") || "modern";
+//   const templateName = searchParams.get("name") || "Modern";
+
+//   /* ================= REDUX STATE ================= */
+//   const personalInfo = useSelector((s) => s.user.personalInfo);
+//   const education = useSelector((s) => s.education.education);
+//   const experiences = useSelector((s) => s.experience.experiences);
+//   const projects = useSelector((s) => s.project.projects);
+//   const skills = useSelector((s) => s.techskills);
+//   const personalSummary = useSelector((s) => s.personalSummary.summary);
+//   const certifications = useSelector(
+//     (s) => s.certifications.certifications || []
+//   );
+//   const accomplishments = useSelector(
+//     (s) => s.accomplishments.accomplishments || []
+//   );
+
+//   /* ================= TEMPLATE MAP ================= */
+//   const templates = {
+//     modern: ModernTemplate,
+//     classic: ClassicTemplate,
+//     gengar: GengarTemplate,
+//     pikachu: PikachuTemplate,
+//   };
+
+//   const ActiveTemplate = templates[templateFromUrl] || templates.modern;
+
+//   /* ================= LOAD FROM DB ================= */
+//   useEffect(() => {
+//     if (!isLoaded) return;
+//     if (!user) {
+//       setLoading(false);
+//       return;
+//     }
+
+//     const email = user.primaryEmailAddress?.emailAddress;
+//     if (!email) {
+//       setLoading(false);
+//       return;
+//     }
+
+//     loadResumeDataFromDB(email);
+//   }, [isLoaded, user]);
+
+//   const loadResumeDataFromDB = async (email) => {
+//     try {
+//       const res = await axios.get(`/api/resume/${email}`);
+//       const { hasResume, ...resumeData } = res.data;
+
+//       if (hasResume) {
+//         hydrateResume(dispatch, {
+//           ...defaultResumeData,
+//           ...resumeData,
+//         });
+//       } else {
+//         hydrateResume(dispatch, defaultResumeData);
+//       }
+//     } catch (err) {
+//       console.error("❌ Error loading resume:", err);
+//       hydrateResume(dispatch, defaultResumeData);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   /* ================= SAVE TO DB ================= */
+//   const saveResume = async () => {
+//     if (!user) return alert("Please log in first.");
+
+//     const email = user.primaryEmailAddress?.emailAddress;
+//     if (!email) return alert("User email not found.");
+
+//     const payload = {
+//       personalInfo,
+//       education,
+//       personalSummary,
+//       experience: experiences,
+//       projects,
+//       techSkills: skills,
+//       certifications,
+//       accomplishments,
+//       template: templateFromUrl,
+//     };
+
+//     try {
+//       await axios.post(`/api/resume/${email}`, payload);
+//       alert("✅ Resume saved successfully");
+//     } catch (err) {
+//       console.error("❌ Error saving resume:", err);
+//     }
+//   };
+
+//   const handleBack = () => router.push("/template-select");
+
+//   if (loading) {
+//     return (
+//       <div className="flex items-center justify-center h-screen">
+//         <p>Loading your resume...</p>
+//       </div>
+//     );
+//   }
+
+//   /* ================= RENDER ================= */
+//   return (
+//     <div className="h-screen flex flex-col bg-gray-50">
+//       {/* HEADER */}
+//       <header className="bg-white border-b px-6 py-4 flex justify-between items-center">
+//         <div className="flex items-center gap-4">
+//           <button onClick={handleBack} className="flex gap-2 items-center">
+//             <ArrowLeft size={18} />
+//             Back
+//           </button>
+//           <h1 className="text-xl font-semibold">Resume Builder</h1>
+//           <span className="text-sm bg-gray-100 px-3 py-1 rounded-full">
+//             Template: {templateName}
+//           </span>
+//         </div>
+
+//         <div className="flex items-center gap-3">
+//           <button
+//             onClick={saveResume}
+//             className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg"
+//           >
+//             <Save size={16} />
+//             Save
+//           </button>
+
+//           <DownloadResumeButton />
+//         </div>
+//       </header>
+
+//       {/* BODY */}
+//       <div className="flex flex-1 overflow-hidden">
+//         {/* LEFT — FORMS */}
+//         <div className="w-1/2 border-r overflow-auto p-6 bg-white">
+//           <div className="flex gap-2 mb-6 border-b overflow-x-auto">
+//             {[
+//               "profile",
+//               "summary",
+//               "skills",
+//               "experience",
+//               "projects",
+//               "certifications",
+//               "education",
+//             ].map((s) => (
+//               <button
+//                 key={s}
+//                 onClick={() => setActiveSection(s)}
+//                 className={`px-4 py-2 ${
+//                   activeSection === s
+//                     ? "border-b-2 border-blue-600 text-blue-600"
+//                     : "text-gray-600"
+//                 }`}
+//               >
+//                 {s[0].toUpperCase() + s.slice(1)}
+//               </button>
+//             ))}
+//           </div>
+
+//           {activeSection === "profile" && <ProfileForm />}
+//           {activeSection === "summary" && <PersonalSummaryForm />}
+//           {activeSection === "skills" && <TechnicalSkillForm />}
+//           {activeSection === "experience" && <ExperienceForm />}
+//           {activeSection === "projects" && <ProjectForm />}
+//           {activeSection === "certifications" && (
+//             <AccomplishmentCertificationForm />
+//           )}
+//           {activeSection === "education" && <EducationForm />}
+//         </div>
+
+//         {/* RIGHT — LIVE PREVIEW */}
+//         <div className="w-1/2 bg-gray-100 overflow-auto p-8" id="resume">
+//           <div className="flex justify-center">
+//             <div
+//               className="bg-white shadow-xl"
+//               style={{ width: "8.5in", minHeight: "11in" }}
+//             >
+//               <ActiveTemplate />
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -250,7 +473,7 @@ import PikachuTemplate from "../../my_templates/Pickachu";
 import GengarTemplate from "../../my_templates/GengarTemplate";
 import DownloadResumeButton from "@/components/DownloadResumeButton";
 
-/* ===================== utils & defaults ============================ */
+/* ===================== utils ============================ */
 import { defaultResumeData } from "../../data/defaultData";
 import { hydrateResume } from "../../utils/hydrateResume";
 
@@ -266,7 +489,7 @@ export default function ResumePreviewPage() {
   const templateFromUrl = searchParams.get("template") || "modern";
   const templateName = searchParams.get("name") || "Modern";
 
-  /* ================= REDUX STATE ================= */
+  /* ================= REDUX ================= */
   const personalInfo = useSelector((s) => s.user.personalInfo);
   const education = useSelector((s) => s.education.education);
   const experiences = useSelector((s) => s.experience.experiences);
@@ -280,7 +503,6 @@ export default function ResumePreviewPage() {
     (s) => s.accomplishments.accomplishments || []
   );
 
-  /* ================= TEMPLATE MAP ================= */
   const templates = {
     modern: ModernTemplate,
     classic: ClassicTemplate,
@@ -290,10 +512,10 @@ export default function ResumePreviewPage() {
 
   const ActiveTemplate = templates[templateFromUrl] || templates.modern;
 
-  /* ================= LOAD FROM DB ================= */
+  // const ActiveTemplate = templates.gengar;
+  /* ================= LOAD ================= */
   useEffect(() => {
-    if (!isLoaded) return;
-    if (!user) {
+    if (!isLoaded || !user) {
       setLoading(false);
       return;
     }
@@ -312,28 +534,22 @@ export default function ResumePreviewPage() {
       const res = await axios.get(`/api/resume/${email}`);
       const { hasResume, ...resumeData } = res.data;
 
-      if (hasResume) {
-        hydrateResume(dispatch, {
-          ...defaultResumeData,
-          ...resumeData,
-        });
-      } else {
-        hydrateResume(dispatch, defaultResumeData);
-      }
-    } catch (err) {
-      console.error("❌ Error loading resume:", err);
+      hydrateResume(
+        dispatch,
+        hasResume ? { ...defaultResumeData, ...resumeData } : defaultResumeData
+      );
+    } catch {
       hydrateResume(dispatch, defaultResumeData);
     } finally {
       setLoading(false);
     }
   };
 
-  /* ================= SAVE TO DB ================= */
+  /* ================= SAVE ================= */
   const saveResume = async () => {
     if (!user) return alert("Please log in first.");
-
     const email = user.primaryEmailAddress?.emailAddress;
-    if (!email) return alert("User email not found.");
+    if (!email) return;
 
     const payload = {
       personalInfo,
@@ -347,36 +563,36 @@ export default function ResumePreviewPage() {
       template: templateFromUrl,
     };
 
-    try {
-      await axios.post(`/api/resume/${email}`, payload);
-      alert("✅ Resume saved successfully");
-    } catch (err) {
-      console.error("❌ Error saving resume:", err);
-    }
+    await axios.post(`/api/resume/${email}`, payload);
+    alert("Resume saved");
   };
-
-  const handleBack = () => router.push("/template-select");
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <p>Loading your resume...</p>
+      <div className="flex items-center justify-center h-screen bg-white">
+        <p className="text-black">Loading your resume…</p>
       </div>
     );
   }
 
-  /* ================= RENDER ================= */
   return (
-    <div className="h-screen flex flex-col bg-gray-50">
+    <div className="h-screen flex flex-col bg-white">
       {/* HEADER */}
-      <header className="bg-white border-b px-6 py-4 flex justify-between items-center">
+      <header className="bg-white border-b-2 border-black px-6 py-4 flex justify-between items-center">
         <div className="flex items-center gap-4">
-          <button onClick={handleBack} className="flex gap-2 items-center">
+          <button
+            onClick={() => router.push("/template-select")}
+            className="flex gap-2 items-center text-black font-semibold"
+          >
             <ArrowLeft size={18} />
             Back
           </button>
-          <h1 className="text-xl font-semibold">Resume Builder</h1>
-          <span className="text-sm bg-gray-100 px-3 py-1 rounded-full">
+
+          <h1 className="text-xl font-bold text-black">
+            Resume Builder
+          </h1>
+
+          <span className="text-sm border-2 border-black px-3 py-1 rounded-full">
             Template: {templateName}
           </span>
         </div>
@@ -384,7 +600,10 @@ export default function ResumePreviewPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={saveResume}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg"
+            className="flex items-center gap-2 px-5 py-2
+            !bg-[#00684A] text-black font-semibold
+            border-2 border-black rounded-xl
+            hover:!bg-[#005C42]"
           >
             <Save size={16} />
             Save
@@ -397,8 +616,8 @@ export default function ResumePreviewPage() {
       {/* BODY */}
       <div className="flex flex-1 overflow-hidden">
         {/* LEFT — FORMS */}
-        <div className="w-1/2 border-r overflow-auto p-6 bg-white">
-          <div className="flex gap-2 mb-6 border-b overflow-x-auto">
+        <div className="w-1/2 border-r-2 border-black overflow-auto p-6 bg-white">
+          <div className="flex gap-2 mb-6 border-b-2 border-black overflow-x-auto">
             {[
               "profile",
               "summary",
@@ -411,10 +630,10 @@ export default function ResumePreviewPage() {
               <button
                 key={s}
                 onClick={() => setActiveSection(s)}
-                className={`px-4 py-2 ${
+                className={`px-4 py-2 font-semibold ${
                   activeSection === s
-                    ? "border-b-2 border-blue-600 text-blue-600"
-                    : "text-gray-600"
+                    ? "border-b-2 border-black text-black"
+                    : "text-gray-500"
                 }`}
               >
                 {s[0].toUpperCase() + s.slice(1)}
@@ -433,12 +652,13 @@ export default function ResumePreviewPage() {
           {activeSection === "education" && <EducationForm />}
         </div>
 
-        {/* RIGHT — LIVE PREVIEW */}
-        <div className="w-1/2 bg-gray-100 overflow-auto p-8" id="resume">
+        {/* RIGHT — PREVIEW */}
+        <div className="w-1/2 bg-gray-100 overflow-auto p-8">
           <div className="flex justify-center">
             <div
-              className="bg-white shadow-xl"
+              className="bg-white border-2 border-black shadow-xl"
               style={{ width: "8.5in", minHeight: "11in" }}
+              id="resume"
             >
               <ActiveTemplate />
             </div>
