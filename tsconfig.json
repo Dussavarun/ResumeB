@@ -37,7 +37,7 @@
     "app/page.jsx",
     "app/layout.tsx",
     ".next/dev/types/**/*.ts"
-  ],
+, "next.config.js"  ],
   "exclude": [
     "node_modules"
   ]
