@@ -242,7 +242,6 @@
 //     </div>
 //   );
 // }
-
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -264,7 +263,6 @@ import PersonalSummaryForm from "../../components/PersonalSummaryForm";
 /* ================= TEMPLATES ================= */
 import ModernTemplate from "../../my_templates/ModernTemplate";
 import ClassicTemplate from "../../my_templates/ClassicTemplate";
-import PikachuTemplate from "../../my_templates/Pickachu";
 import GengarTemplate from "../../my_templates/GengarTemplate";
 import DownloadResumeButton from "@/components/DownloadResumeButton";
 
@@ -303,7 +301,6 @@ export default function ResumePreviewPage() {
     modern: ModernTemplate,
     classic: ClassicTemplate,
     gengar: GengarTemplate,
-    pikachu: PikachuTemplate,
   };
 
   const ActiveTemplate = templates[templateFromUrl] || templates.modern;
