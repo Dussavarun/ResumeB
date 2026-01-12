@@ -1,25 +1,3 @@
-// import { createSlice } from "@reduxjs/toolkit";
-
-// const initialState = {
-//   summary: "",
-// };
-
-// const personalSummarySlice = createSlice({
-//   name: "personalSummary",
-//   initialState,
-//   reducers: {
-//     setSummary: (state, action) => {
-//       state.summary = action.payload;
-//     },
-//     resetSummary: () => initialState,
-//   },
-// });
-
-// export const { setSummary, resetSummary } =
-//   personalSummarySlice.actions;
-
-// export default personalSummarySlice.reducer;
-
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -32,13 +10,15 @@ const personalSummarySlice = createSlice({
   initialState,
   reducers: {
     setSummary: (state, action) => {
-      state.summary = action.payload;
+      const value = action.payload;
+      if (typeof value === "string" && value.trim().length > 0) {
+        state.summary = value;
+      }
     },
     resetSummary: () => initialState,
   },
 });
 
-export const { setSummary, resetSummary } =
-  personalSummarySlice.actions;
+export const { setSummary, resetSummary } = personalSummarySlice.actions;
 
 export default personalSummarySlice.reducer;

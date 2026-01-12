@@ -7,49 +7,46 @@ import {
   StyleSheet,
 } from "@react-pdf/renderer";
 
-/* ================= COLORS ================= */
-const COLORS = {
-  primary: "#111827",
-  accent: "#2563eb",
-  muted: "#4b5563",
-};
-
 /* ================= STYLES ================= */
 const styles = StyleSheet.create({
   page: {
-    padding: 36,
+    paddingHorizontal: 36,
+    paddingBottom: 36,
+    paddingTop: 20,
     fontFamily: "Times-Roman",
-    color: COLORS.primary,
     fontSize: 11,
+    color: "#000",
   },
 
   /* HEADER */
   header: {
-    marginBottom: 10,
+    textAlign: "center",
+    marginBottom: 6,
   },
 
   name: {
     fontSize: 22,
     fontWeight: "bold",
     marginBottom: 4,
+    textTransform: "uppercase",
   },
 
   contact: {
     fontSize: 10,
-    color: COLORS.muted,
-    marginBottom: 3,
+    marginBottom: 4,
   },
 
-  linksRow: {
+  links: {
     flexDirection: "row",
+    justifyContent: "center",
     flexWrap: "wrap",
   },
 
   link: {
     fontSize: 10,
-    color: COLORS.accent,
+    color: "#2563eb",
+    marginHorizontal: 6,
     textDecoration: "underline",
-    marginRight: 10,
   },
 
   /* SECTION */
@@ -58,23 +55,22 @@ const styles = StyleSheet.create({
   },
 
   sectionTitle: {
-    fontSize: 13.5, // slightly smaller
-    fontWeight: "semibold", // 🔥 lighter
+    fontSize: 12,
+    fontWeight: "bold",
     textTransform: "uppercase",
-    letterSpacing: 0.5, // cleaner, ATS-safe
-    marginBottom: 3,
+    marginBottom: 2,
   },
 
   divider: {
-    height: 1,
-    backgroundColor: COLORS.accent,
+    height: 0.8,
+    backgroundColor: "#000",
     marginBottom: 6,
   },
 
   /* TEXT */
   body: {
     fontSize: 11,
-    lineHeight: 1.2, // 🔥 tighter
+    lineHeight: 1.2,
   },
 
   bold: {
@@ -83,12 +79,6 @@ const styles = StyleSheet.create({
 
   muted: {
     fontSize: 10,
-    color: COLORS.muted,
-    lineHeight: 1.15,
-  },
-
-  item: {
-    marginBottom: 6, // 🔥 tighter
   },
 
   row: {
@@ -96,10 +86,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
 
+  item: {
+    marginBottom: 6,
+  },
+
   bullet: {
     marginLeft: 10,
     fontSize: 11,
-    lineHeight: 1.15, // 🔥 tighter bullets
+    lineHeight: 1.2,
   },
 });
 
@@ -124,10 +118,10 @@ export default function ModernPDF({
           <Text style={styles.contact}>
             {[personalInfo?.email, personalInfo?.phone, personalInfo?.location]
               .filter(Boolean)
-              .join("  •  ")}
+              .join(" • ")}
           </Text>
 
-          <View style={styles.linksRow}>
+          <View style={styles.links}>
             {personalInfo?.links?.portfolio && (
               <Link src={personalInfo.links.portfolio} style={styles.link}>
                 Portfolio
@@ -155,13 +149,9 @@ export default function ModernPDF({
             )}
           </View>
         </View>
-        <View
-          style={{
-            height: 1,
-            backgroundColor: COLORS.accent,
-            marginBottom: 10,
-          }}
-        />
+
+        <View style={{ height: 1, backgroundColor: "#000", marginVertical: 6 }} />
+
 
         {/* ================= SUMMARY ================= */}
         {personalSummary && (
@@ -191,7 +181,7 @@ export default function ModernPDF({
             {experience.map((exp, i) => (
               <View key={i} style={styles.item}>
                 <View style={styles.row}>
-                  <Text style={[styles.bold, { fontSize: 12 }]}>
+                  <Text style={styles.bold}>
                     {exp.role} — {exp.company}
                   </Text>
                   <Text style={styles.muted}>{exp.duration}</Text>
@@ -215,41 +205,28 @@ export default function ModernPDF({
         {projects?.length > 0 && (
           <Section title="Projects">
             {projects.map((p, i) => (
-              <View key={i} style={{ marginBottom: 5 }}>
-                {/* Title */}
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontWeight: "bold",
-                    lineHeight: 1.15,
-                  }}
-                >
+              <View key={i} style={styles.item}>
+                <Text style={styles.bold}>
                   {p.title}
                   {p.link && (
-                    <>
+                    <Link src={p.link} style={styles.link}>
                       {" "}
-                      <Link src={p.link} style={styles.link}>
-                        (Link)
-                      </Link>
-                    </>
+                      (Link)
+                    </Link>
                   )}
                 </Text>
 
-                {/* Description */}
-                <Text style={{ fontSize: 11, lineHeight: 1.2 }}>
-                  {p.description}
-                </Text>
+                {(Array.isArray(p.description)
+                  ? p.description
+                  : p.description?.split("\n")
+                )?.map((d, j) => (
+                  <Text key={j} style={styles.bullet}>
+                    • {d}
+                  </Text>
+                ))}
 
-                {/* Impact */}
                 {p.impact && (
-                  <Text
-                    style={{
-                      fontSize: 10,
-                      fontStyle: "italic",
-                      color: COLORS.muted,
-                      lineHeight: 1.15,
-                    }}
-                  >
+                  <Text style={[styles.muted, { fontStyle: "italic" }]}>
                     {p.impact}
                   </Text>
                 )}
@@ -275,7 +252,7 @@ export default function ModernPDF({
         {accomplishments?.length > 0 && (
           <Section title="Accomplishments">
             {accomplishments.map((a, i) => (
-              <Text key={i} style={styles.body}>
+              <Text key={i} style={styles.bullet}>
                 • {a.title || a}
               </Text>
             ))}
@@ -288,16 +265,11 @@ export default function ModernPDF({
             {education.map((e, i) => (
               <View key={i} style={styles.item}>
                 <View style={styles.row}>
-                  <Text style={[styles.bold, { fontSize: 12 }]}>
-                    {e.institution}
-                  </Text>
+                  <Text style={styles.bold}>{e.institution}</Text>
                   <Text style={styles.muted}>{e.duration}</Text>
                 </View>
                 <Text style={styles.body}>{e.degree}</Text>
-                <Text style={styles.muted}>
-                  {e.location}
-                  {e.gpa && ` • GPA: ${e.gpa}`}
-                </Text>
+                {e.gpa && <Text style={styles.muted}>GPA: {e.gpa}</Text>}
               </View>
             ))}
           </Section>

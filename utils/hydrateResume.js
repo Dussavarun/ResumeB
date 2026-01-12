@@ -9,7 +9,7 @@ import { setAccomplishments } from "../store/slices/acomplishmentSlice";
 
 export const hydrateResume = (dispatch, data) => {
   dispatch(setPersonalInfo(data.personalInfo));
-  dispatch(setSummary(data.personalSummary || ""));
+  dispatch(setSummary(data.personalSummary?.summary || ""));
   dispatch(setEducation({ education: data.education }));
   dispatch(setExperiences(data.experience));
   dispatch(setProjects(data.projects));

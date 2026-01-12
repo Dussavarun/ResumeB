@@ -1,67 +1,10 @@
-// "use client";
-// import { useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { addExperience, removeExperience } from "../store/slices/experienceSlice";
-
-// export default function ExperienceForm() {
-//   const dispatch = useDispatch();
-//   const experiences = useSelector((state) => state.experience.experiences);
-
-
-//   const [form, setForm] = useState({
-//     company: "",
-//     role: "",
-//     startDate: "",
-//     endDate: "",
-//     location: "",
-//     responsibilities: "",
-//   });
-
-//   const handleAdd = () => {
-//     if (!form.company.trim() || !form.role.trim()) return;
-//     const updated = {
-//       ...form,
-//       responsibilities: form.responsibilities.split(",").map((r) => r.trim()),
-//     };
-//     dispatch(addExperience(updated));
-//     setForm({ company: "", role: "", startDate: "", endDate: "", location: "", responsibilities: "" });
-//   };
-
-//   return (
-//     <div className="p-6 bg-white shadow-md rounded-xl space-y-4">
-//       <h2 className="text-xl font-semibold">Experience</h2>
-
-//       <input placeholder="Company" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className="border p-2 rounded w-full" />
-//       <input placeholder="Role / Position" value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} className="border p-2 rounded w-full" />
-//       <input placeholder="Location" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} className="border p-2 rounded w-full" />
-//       <textarea placeholder="Responsibilities (comma-separated)" value={form.responsibilities} onChange={(e) => setForm({ ...form, responsibilities: e.target.value })} className="border p-2 rounded w-full" />
-
-//       <div className="flex gap-2">
-//         <input type="month" value={form.startDate} onChange={(e) => setForm({ ...form, startDate: e.target.value })} className="border p-2 rounded w-1/2" />
-//         <input type="month" value={form.endDate} onChange={(e) => setForm({ ...form, endDate: e.target.value })} className="border p-2 rounded w-1/2" />
-//       </div>
-
-//       <button onClick={handleAdd} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Add Experience</button>
-
-//       <ul className="mt-4 space-y-2">
-//         {experiences.map((exp, i) => (
-//           <li key={i} className="bg-gray-100 p-3 rounded flex justify-between items-center">
-//             <div>
-//               <p className="font-semibold">{exp.company}</p>
-//               <p className="text-sm">{exp.role} ({exp.startDate} - {exp.endDate})</p>
-//               <p className="text-sm text-gray-600">{exp.location}</p>
-//             </div>
-//             <button onClick={() => dispatch(removeExperience(i))} className="text-red-500 hover:text-red-700">✕</button>
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// }
 "use client";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addExperience, removeExperience } from "../store/slices/experienceSlice";
+import {
+  addExperience,
+  removeExperience,
+} from "../store/slices/experienceSlice";
 
 export default function ExperienceForm() {
   const dispatch = useDispatch();
@@ -73,25 +16,37 @@ export default function ExperienceForm() {
     startDate: "",
     endDate: "",
     location: "",
-    responsibilities: "",
+    responsibilities: [],
   });
+
+  const [point, setPoint] = useState("");
+
+  const addPoint = () => {
+    if (!point.trim()) return;
+    setForm({
+      ...form,
+      responsibilities: [...form.responsibilities, point.trim()],
+    });
+    setPoint("");
+  };
+
+  const removePoint = (idx) => {
+    setForm({
+      ...form,
+      responsibilities: form.responsibilities.filter((_, i) => i !== idx),
+    });
+  };
 
   const handleAdd = () => {
     if (!form.company.trim() || !form.role.trim()) return;
-    const updated = {
-      ...form,
-      responsibilities: form.responsibilities
-        .split(",")
-        .map((r) => r.trim()),
-    };
-    dispatch(addExperience(updated));
+    dispatch(addExperience(form));
     setForm({
       company: "",
       role: "",
       startDate: "",
       endDate: "",
       location: "",
-      responsibilities: "",
+      responsibilities: [],
     });
   };
 
@@ -131,31 +86,65 @@ export default function ExperienceForm() {
           />
 
           <div className="grid grid-cols-2 gap-4">
-  <input
-    type="month"
-    value={form.startDate}
-    onChange={(e) => setForm({ ...form, startDate: e.target.value })}
-    className="input"
-  />
+            <input
+              type="month"
+              value={form.startDate}
+              onChange={(e) =>
+                setForm({ ...form, startDate: e.target.value })
+              }
+              className="input"
+            />
 
-  <input
-    type="month"
-    value={form.endDate}
-    onChange={(e) => setForm({ ...form, endDate: e.target.value })}
-    className="input"
-  />
-</div>
-
+            <input
+              type="month"
+              value={form.endDate}
+              onChange={(e) =>
+                setForm({ ...form, endDate: e.target.value })
+              }
+              className="input"
+            />
+          </div>
         </div>
 
-        <textarea
-          placeholder="Responsibilities (comma-separated)"
-          value={form.responsibilities}
-          onChange={(e) =>
-            setForm({ ...form, responsibilities: e.target.value })
-          }
-          className="input h-32 resize-none"
-        />
+        {/* RESPONSIBILITIES AS POINTS */}
+        <div className="space-y-3">
+          <div className="flex gap-3">
+            <input
+              placeholder="Add responsibility point"
+              value={point}
+              onChange={(e) => setPoint(e.target.value)}
+              className="input flex-1"
+            />
+            <button
+              onClick={addPoint}
+              className="px-4 py-2 bg-black text-white font-semibold
+              border-2 border-black rounded-xl
+              hover:bg-white hover:text-black transition-colors"
+            >
+              Add
+            </button>
+          </div>
+
+          {form.responsibilities.length > 0 && (
+            <ul className="space-y-2">
+              {form.responsibilities.map((r, i) => (
+                <li
+                  key={i}
+                  className="flex justify-between items-start gap-4
+                  bg-white border-2 border-black rounded-xl p-3"
+                >
+                  <span className="text-sm text-black">• {r}</span>
+                  <button
+                    onClick={() => removePoint(i)}
+                    className="font-bold text-black hover:text-red-600"
+                  >
+                    ✕
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
         <button
           onClick={handleAdd}
@@ -166,7 +155,7 @@ export default function ExperienceForm() {
           Add Experience
         </button>
 
-        {/* Experience List */}
+        {/* EXPERIENCE LIST */}
         {experiences.length > 0 && (
           <ul className="space-y-4">
             {experiences.map((exp, i) => (

@@ -1,282 +1,205 @@
-// "use client";
-
-// import { useState } from "react";
-// import Image from "next/image";
-// import { useRouter } from "next/navigation";
-// import { motion } from "framer-motion";
-// import { ChevronLeft, ChevronRight, Sun, Moon } from "lucide-react";
-
-// export default function TemplateSelection() {
-//   const [darkMode, setDarkMode] = useState(true);
-//   const [current, setCurrent] = useState(0);
-//   const router = useRouter();
-
-//   const templates = [
-//     { id: "modern", src: "/images/onyx.jpg", name: "Onyx" },
-//     { id: "classic", src: "/images/classic.png", name: "Classic" },
-//     { id: "gengar", src: "/images/gengar.jpg", name: "Gengar" },
-//     { id: "pikachu", src: "/images/pikachu.jpg", name: "Pikachu" },
-//   ];
-
-//   const handleNavigate = (template) => {
-//     router.push(`/previewpage?template=${template.id}&name=${template.name}`);
-//   };
-
-//   const prevSlide = () => {
-//     setCurrent((prev) => (prev === 0 ? templates.length - 1 : prev - 1));
-//   };
-
-//   const nextSlide = () => {
-//     setCurrent((prev) => (prev === templates.length - 1 ? 0 : prev + 1));
-//   };
-
-//   return (
-//     <div
-//       className={`min-h-screen flex flex-col items-center justify-center transition-colors duration-500 relative overflow-hidden ${
-//         darkMode
-//           ? "bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white"
-//           : "bg-gradient-to-br from-gray-100 via-white to-gray-200 text-gray-900"
-//       }`}
-//     >
-//       {/* Background Glow */}
-//       <div
-//         className={`absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full blur-[150px] opacity-30 ${
-//           darkMode ? "bg-blue-500/40" : "bg-yellow-300/40"
-//         }`}
-//       ></div>
-//       <div
-//         className={`absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full blur-[150px] opacity-30 ${
-//           darkMode ? "bg-pink-500/30" : "bg-blue-400/30"
-//         }`}
-//       ></div>
-
-//       {/* Header */}
-//       <div className="z-10 flex items-center justify-between w-full px-10 mb-12">
-//         <h1 className="text-4xl font-extrabold tracking-tight">
-//           Choose Your <span className="text-blue-500">Resume Template</span>
-//         </h1>
-//         <button
-//           onClick={() => setDarkMode(!darkMode)}
-//           className="p-3 rounded-full border border-gray-500 hover:scale-110 transition bg-transparent"
-//         >
-//           {darkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
-//         </button>
-//       </div>
-
-//       {/* Carousel */}
-//       <div className="relative w-full max-w-3xl flex items-center justify-center">
-//         <button
-//           onClick={prevSlide}
-//           className="absolute left-0 p-3 bg-black/30 hover:bg-black/50 rounded-full transition z-20"
-//         >
-//           <ChevronLeft className="w-6 h-6 text-white" />
-//         </button>
-
-//         <motion.div
-//           key={templates[current].id}
-//           initial={{ opacity: 0, x: 100 }}
-//           animate={{ opacity: 1, x: 0 }}
-//           exit={{ opacity: 0, x: -100 }}
-//           transition={{ duration: 0.6, type: "spring" }}
-//           className="flex flex-col items-center text-center cursor-pointer select-none"
-//           onClick={() => handleNavigate(templates[current])}
-//         >
-//           <div className="relative w-[400px] h-[500px] overflow-hidden rounded-2xl shadow-2xl border border-gray-700 hover:scale-105 transition">
-//             <Image
-//               src={templates[current].src}
-//               alt={templates[current].name}
-//               fill
-//               className="object-cover"
-//             />
-//             <div className="absolute inset-0 bg-black/40 flex items-end justify-center p-6 text-2xl font-semibold text-white tracking-wide backdrop-blur-sm">
-//               {templates[current].name}
-//             </div>
-//           </div>
-//         </motion.div>
-
-//         <button
-//           onClick={nextSlide}
-//           className="absolute right-0 p-3 bg-black/30 hover:bg-black/50 rounded-full transition z-20"
-//         >
-//           <ChevronRight className="w-6 h-6 text-white" />
-//         </button>
-//       </div>
-
-//       {/* Template Indicators */}
-//       <div className="flex mt-10 gap-3">
-//         {templates.map((_, index) => (
-//           <div
-//             key={index}
-//             onClick={() => setCurrent(index)}
-//             className={`w-3 h-3 rounded-full cursor-pointer transition ${
-//               index === current
-//                 ? "bg-blue-500 scale-125"
-//                 : "bg-gray-500 hover:bg-gray-400"
-//             }`}
-//           ></div>
-//         ))}
-//       </div>
-
-//       {/* Footer */}
-//       <p className="absolute bottom-5 text-sm text-gray-400">
-//         Click the template to preview
-//       </p>
-//     </div>
-//   );
-// }
 "use client";
 
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Sun, Moon, FileText } from "lucide-react";
+import { FileText, Sun, Moon, ArrowRight, Sparkles } from "lucide-react";
 
 export default function TemplateSelection() {
   const [darkMode, setDarkMode] = useState(true);
-  const [current, setCurrent] = useState(0);
   const router = useRouter();
 
-  /* ONLY TWO TEMPLATES */
   const templates = [
-    { id: "modern", src: "/images/onyx.jpg", name: "Modern" },
-    { id: "gengar", src: "/images/gengar.jpg", name: "Gengar" },
+    {
+      id: "modern",
+      src: "/images/modern.png",
+      name: "Modern",
+      description: "Clean and professional",
+    },
+    {
+      id: "classic",
+      src: "/images/classic.png",
+      name: "Classic",
+      description: "Traditional elegance",
+    },
+    {
+      id: "executive",
+      src: "/images/executive.png",
+      name: "Executive",
+      description: "Senior professional",
+    },
+    {
+      id: "minimal",
+      src: "/images/minimal.png",
+      name: "Minimal",
+      description: "Simple and effective",
+    },
+    {
+      id: "gengar",
+      src: "/images/gengar.png",
+      name: "Gengar",
+      description: "Bold and creative",
+    },
   ];
 
   const handleNavigate = (template) => {
     router.push(`/previewpage?template=${template.id}&name=${template.name}`);
   };
 
-  const prevSlide = () => {
-    setCurrent((prev) => (prev === 0 ? templates.length - 1 : prev - 1));
-  };
-
-  const nextSlide = () => {
-    setCurrent((prev) => (prev === templates.length - 1 ? 0 : prev + 1));
-  };
-
-  const currentTemplate = templates[current];
-
   return (
     <div
-      className={`min-h-screen flex flex-col items-center justify-center transition-colors duration-300 relative ${
-        darkMode ? "bg-black text-white" : "bg-white text-black"
+      className={`min-h-screen transition-colors duration-500 ${
+        darkMode ? "bg-black" : "bg-gray-50"
       }`}
     >
-      {/* HEADER */}
-      <div className="flex items-center justify-between w-full px-10 mb-12">
-        <h1 className="text-4xl font-bold tracking-tight">
-          Choose Your Resume Template
-        </h1>
-
-        <button
-          onClick={() => setDarkMode(!darkMode)}
-          className={`p-3 rounded-full border transition ${
-            darkMode
-              ? "border-white hover:bg-white hover:text-black"
-              : "border-black hover:bg-black hover:text-white"
-          }`}
-        >
-          {darkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
-        </button>
-      </div>
-
-      {/* CAROUSEL */}
-      <div className="relative w-full max-w-3xl flex items-center justify-center">
-        <button
-          onClick={prevSlide}
-          className={`absolute left-0 p-3 rounded-full border transition ${
-            darkMode
-              ? "border-white hover:bg-white hover:text-black"
-              : "border-black hover:bg-black hover:text-white"
-          }`}
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
-
-        <motion.div
-          key={currentTemplate.id}
-          initial={{ opacity: 0, x: 80 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.4 }}
-          className="cursor-pointer"
-          onClick={() => handleNavigate(currentTemplate)}
-        >
-          {/* PREVIEW CARD */}
-          <div
-            className={`relative w-[380px] h-[480px] rounded-xl border flex items-center justify-center overflow-hidden ${
-              darkMode ? "border-white" : "border-black"
-            }`}
-          >
-            {/* IMAGE (if exists) */}
-            {currentTemplate.src ? (
-              <Image
-                src={currentTemplate.src}
-                alt={currentTemplate.name}
-                fill
-                className="object-cover"
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
-              />
-            ) : null}
-
-            {/* FALLBACK */}
-            <div
-              className={`absolute inset-0 flex flex-col items-center justify-center gap-4 ${
-                darkMode ? "bg-black" : "bg-white"
-              }`}
-            >
-              <FileText className="w-16 h-16 opacity-40" />
-              <span className="text-xl font-semibold tracking-wide">
-                {currentTemplate.name}
-              </span>
-              <span className="text-sm opacity-60">
-                Resume Preview
-              </span>
-            </div>
-          </div>
-        </motion.div>
-
-        <button
-          onClick={nextSlide}
-          className={`absolute right-0 p-3 rounded-full border transition ${
-            darkMode
-              ? "border-white hover:bg-white hover:text-black"
-              : "border-black hover:bg-black hover:text-white"
-          }`}
-        >
-          <ChevronRight className="w-6 h-6" />
-        </button>
-      </div>
-
-      {/* INDICATORS */}
-      <div className="flex mt-8 gap-3">
-        {templates.map((_, index) => (
-          <div
-            key={index}
-            onClick={() => setCurrent(index)}
-            className={`w-3 h-3 rounded-full cursor-pointer transition ${
-              index === current
-                ? darkMode
-                  ? "bg-white"
-                  : "bg-black"
-                : darkMode
-                ? "bg-gray-600"
-                : "bg-gray-400"
-            }`}
-          />
-        ))}
-      </div>
-
-      {/* FOOTER */}
-      <p
-        className={`absolute bottom-6 text-sm ${
-          darkMode ? "text-gray-400" : "text-gray-600"
+      {/* ================= HEADER ================= */}
+      <header
+        className={`sticky top-0 z-50 border-b-2 backdrop-blur-lg ${
+          darkMode
+            ? "bg-black/80 border-gray-800"
+            : "bg-white/80 border-gray-200"
         }`}
       >
-        Click a template to preview
-      </p>
+        <div className="max-w-[1600px] mx-auto px-6 py-6 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-lg bg-green-500 flex items-center justify-center">
+              <Sparkles className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1
+                className={`text-2xl font-bold ${
+                  darkMode ? "text-white" : "text-black"
+                }`}
+              >
+                ResumeB
+              </h1>
+              <p
+                className={`text-sm ${
+                  darkMode ? "text-gray-500" : "text-gray-600"
+                }`}
+              >
+                Choose your perfect template
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            className={`p-3 rounded-lg border-2 transition ${
+              darkMode
+                ? "border-green-500 text-green-500 hover:bg-green-500 hover:text-black"
+                : "border-black text-black hover:bg-black hover:text-white"
+            }`}
+          >
+            {darkMode ? <Sun /> : <Moon />}
+          </button>
+        </div>
+      </header>
+
+      {/* ================= CONTENT ================= */}
+      <main className="px-6 py-14">
+        <div className="max-w-[1600px] mx-auto">
+          <h2
+            className={`text-5xl font-bold mb-14 ${
+              darkMode ? "text-white" : "text-black"
+            }`}
+          >
+            Professional Templates
+          </h2>
+
+          {/* ================= PINTEREST GRID ================= */}
+          <div className="columns-1 sm:columns-2 lg:columns-3 gap-8 space-y-8">
+            {templates.map((template, index) => (
+              <TemplateCard
+                key={template.id}
+                template={template}
+                index={index}
+                darkMode={darkMode}
+                onClick={handleNavigate}
+              />
+            ))}
+          </div>
+        </div>
+      </main>
     </div>
+  );
+}
+
+/* ================= TEMPLATE CARD ================= */
+
+function TemplateCard({ template, index, darkMode, onClick }) {
+  const [imgError, setImgError] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.08 }}
+      className="break-inside-avoid cursor-pointer"
+      onClick={() => onClick(template)}
+    >
+      <div
+        className={`
+          group rounded-2xl overflow-hidden border-2
+          transition-all duration-300
+          hover:-translate-y-2
+          ${
+            darkMode
+              ? "bg-gray-900 border-gray-800 hover:border-green-500"
+              : "bg-white border-gray-200 hover:border-green-500"
+          }
+          shadow-[0_10px_30px_rgba(0,0,0,0.18)]
+          hover:shadow-[0_20px_45px_rgba(0,0,0,0.28)]
+        `}
+      >
+        {/* IMAGE */}
+        <div className="relative aspect-[3/4] w-full overflow-hidden bg-white">
+          {!imgError && (
+            <Image
+              src={template.src}
+              alt={template.name}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              onError={() => setImgError(true)}
+            />
+          )}
+
+          {imgError && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-200">
+              <FileText className="w-16 h-16 text-gray-400" />
+              <span className="mt-2 font-bold text-gray-500">
+                {template.name}
+              </span>
+            </div>
+          )}
+
+          {/* OVERLAY */}
+          <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
+            <div className="p-6 text-white font-semibold flex items-center gap-2">
+              Preview Template <ArrowRight className="w-5 h-5" />
+            </div>
+          </div>
+        </div>
+
+        {/* INFO */}
+        <div className="p-6">
+          <h3
+            className={`text-xl font-bold ${
+              darkMode ? "text-white" : "text-black"
+            }`}
+          >
+            {template.name}
+          </h3>
+          <p
+            className={`text-sm mt-2 ${
+              darkMode ? "text-gray-500" : "text-gray-600"
+            }`}
+          >
+            {template.description}
+          </p>
+        </div>
+      </div>
+    </motion.div>
   );
 }

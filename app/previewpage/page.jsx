@@ -3,7 +3,7 @@
 // import React, { useState, useEffect } from "react";
 // import { useSelector, useDispatch } from "react-redux";
 // import { useSearchParams, useRouter } from "next/navigation";
-// import { Save, ArrowLeft } from "lucide-react";
+// import { Save, ArrowLeft, FileText, Download } from "lucide-react";
 // import { useUser } from "@clerk/nextjs";
 // import axios from "axios";
 
@@ -15,14 +15,16 @@
 // import TechnicalSkillForm from "../../components/TechnicalSkillForm";
 // import AccomplishmentCertificationForm from "@/components/AcompCertForm";
 // import PersonalSummaryForm from "../../components/PersonalSummaryForm";
+
 // /* ================= TEMPLATES ================= */
 // import ModernTemplate from "../../my_templates/ModernTemplate";
-// import ClassicTemplate from "../../my_templates/classic";
+// // new template 
+// import ClassicTemplate from "../../my_templates/ClassicTemplate";
 // import PikachuTemplate from "../../my_templates/Pickachu";
 // import GengarTemplate from "../../my_templates/GengarTemplate";
 // import DownloadResumeButton from "@/components/DownloadResumeButton";
 
-// /* =====================utils and defaults ============================ */
+// /* ===================== utils ============================ */
 // import { defaultResumeData } from "../../data/defaultData";
 // import { hydrateResume } from "../../utils/hydrateResume";
 
@@ -38,7 +40,7 @@
 //   const templateFromUrl = searchParams.get("template") || "modern";
 //   const templateName = searchParams.get("name") || "Modern";
 
-//   /* ================= REDUX STATE ================= */
+//   /* ================= REDUX ================= */
 //   const personalInfo = useSelector((s) => s.user.personalInfo);
 //   const education = useSelector((s) => s.education.education);
 //   const experiences = useSelector((s) => s.experience.experiences);
@@ -52,235 +54,6 @@
 //     (s) => s.accomplishments.accomplishments || []
 //   );
 
-//   /* ================= TEMPLATE MAP ================= */
-//   const templates = {
-//     modern: ModernTemplate,
-//     classic: ClassicTemplate,
-//     gengar: GengarTemplate,
-//     pikachu: PikachuTemplate,
-//   };
-
-//   const ActiveTemplate = templates[templateFromUrl] || templates.modern;
-//   // const ActiveTemplate = templates.modern;
-
-//   /* ================= LOAD FROM DB ================= */
-//   useEffect(() => {
-//     if (!isLoaded) return;
-//     if (!user) {
-//       setLoading(false);
-//       return;
-//     }
-
-//     const email = user.primaryEmailAddress?.emailAddress;
-//     if (!email) {
-//       setLoading(false);
-//       return;
-//     }
-
-//     loadResumeDataFromDB(email);
-//   }, [isLoaded, user]);
-  
-// const loadResumeDataFromDB = async (email) => {
-//   try {
-//     const res = await axios.get(`/api/resume/${email}`);
-//     const { hasResume, ...resumeData } = res.data;
-//     console.log(`this is the true or false ${hasResume}`);
-
-//     if (hasResume) {
-//       hydrateResume(dispatch, {
-//         ...defaultResumeData,
-//         ...resumeData,
-//       });
-//     } else {
-//       hydrateResume(dispatch, defaultResumeData);
-//     }
-//   } catch (err) {
-//     console.error("❌ Error loading resume:", err);
-//     hydrateResume(dispatch, defaultResumeData);
-//   } finally {
-//     setLoading(false);
-//   }
-// };
-
-
-//   /* ================= SAVE TO DB ================= */
-//   const saveResume = async () => {
-//     if (!user) return alert("Please log in first.");
-
-//     const email = user.primaryEmailAddress?.emailAddress;
-//     if (!email) return alert("User email not found.");
-
-//     const payload = {
-//       personalInfo,
-//       education,
-//       personalSummary,
-//       experience: experiences,
-//       projects,
-//       techSkills: skills,
-//       certifications,
-//       accomplishments,
-//       template: templateFromUrl,
-//     };
-
-//     try {
-//       await axios.post(`/api/resume/${email}`, payload);
-//       alert("✅ Resume saved successfully");
-//     } catch (err) {
-//       console.error("❌ Error saving resume:", err);
-//     }
-//   };
-
-//   /* ================= UI HELPERS ================= */
-//   const handleBack = () => router.push("/template-select");
-
-//   if (loading) {
-//     return (
-//       <div className="flex items-center justify-center h-screen">
-//         <p>Loading your resume...</p>
-//       </div>
-//     );
-//   }
-
-//   /* ================= RENDER ================= */
-//   return (
-//     <div className="h-screen flex flex-col bg-gray-50">
-//       {/* HEADER */}
-//       <header className="bg-white border-b px-6 py-4 flex justify-between items-center">
-//         <div className="flex items-center gap-4">
-//           <button onClick={handleBack} className="flex gap-2 items-center">
-//             <ArrowLeft size={18} />
-//             Back
-//           </button>
-//           <h1 className="text-xl font-semibold">Resume Builder</h1>
-//           <span className="text-sm bg-gray-100 px-3 py-1 rounded-full">
-//             Template: {templateName}
-//           </span>
-//         </div>
-
-//         <div className="flex items-center gap-3">
-//           <button
-//             onClick={saveResume}
-//             className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg"
-//           >
-//             <Save size={16} />
-//             Save
-//           </button>
-
-//           <DownloadResumeButton />
-//         </div>
-//       </header>
-
-//       {/* BODY */}
-//       <div className="flex flex-1 overflow-hidden">
-//         {/* LEFT — FORMS */}
-//         <div className="w-1/2 border-r overflow-auto p-6 bg-white">
-//           <div className="flex gap-2 mb-6 border-b overflow-x-auto">
-//             {[
-//               "profile",
-//               "summary",
-//               "education",
-//               "experience",
-//               "projects",
-//               "skills",
-//               "certifications",
-//             ].map((s) => (
-//               <button
-//                 key={s}
-//                 onClick={() => setActiveSection(s)}
-//                 className={`px-4 py-2 ${
-//                   activeSection === s
-//                     ? "border-b-2 border-blue-600 text-blue-600"
-//                     : "text-gray-600"
-//                 }`}
-//               >
-//                 {s[0].toUpperCase() + s.slice(1)}
-//               </button>
-//             ))}
-//           </div>
-
-//           {activeSection === "profile" && <ProfileForm />}
-//           {activeSection === "summary" && <PersonalSummaryForm />}
-//           {activeSection === "skills" && <TechnicalSkillForm />}
-//           {activeSection === "experience" && <ExperienceForm />}
-//           {activeSection === "projects" && <ProjectForm />}
-//           {activeSection === "education" && <EducationForm />}
-//           {activeSection === "certifications" && (
-//             <AccomplishmentCertificationForm />
-//           )}
-//         </div>
-
-//         {/* RIGHT — LIVE PREVIEW */}
-//         <div className="w-1/2 bg-gray-100 overflow-auto p-8" id="resume">
-//           <div className="flex justify-center">
-//             <div
-//               className="bg-white shadow-xl"
-//               style={{ width: "8.5in", minHeight: "11in" }}
-//             >
-//               <ActiveTemplate />
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// "use client";
-
-// import React, { useState, useEffect } from "react";
-// import { useSelector, useDispatch } from "react-redux";
-// import { useSearchParams, useRouter } from "next/navigation";
-// import { Save, ArrowLeft } from "lucide-react";
-// import { useUser } from "@clerk/nextjs";
-// import axios from "axios";
-
-// /* ================= FORMS ================= */
-// import ProfileForm from "../../components/PersonalInfoForm";
-// import EducationForm from "../../components/EducationForm";
-// import ExperienceForm from "../../components/ExperienceForm";
-// import ProjectForm from "../../components/ProjectForm";
-// import TechnicalSkillForm from "../../components/TechnicalSkillForm";
-// import AccomplishmentCertificationForm from "@/components/AcompCertForm";
-// import PersonalSummaryForm from "../../components/PersonalSummaryForm";
-
-// /* ================= TEMPLATES ================= */
-// import ModernTemplate from "../../my_templates/ModernTemplate";
-// import ClassicTemplate from "../../my_templates/classic";
-// import PikachuTemplate from "../../my_templates/Pickachu";
-// import GengarTemplate from "../../my_templates/GengarTemplate";
-// import DownloadResumeButton from "@/components/DownloadResumeButton";
-
-// /* ===================== utils & defaults ============================ */
-// import { defaultResumeData } from "../../data/defaultData";
-// import { hydrateResume } from "../../utils/hydrateResume";
-
-// export default function ResumePreviewPage() {
-//   const dispatch = useDispatch();
-//   const searchParams = useSearchParams();
-//   const router = useRouter();
-//   const { user, isLoaded } = useUser();
-
-//   const [loading, setLoading] = useState(true);
-//   const [activeSection, setActiveSection] = useState("profile");
-
-//   const templateFromUrl = searchParams.get("template") || "modern";
-//   const templateName = searchParams.get("name") || "Modern";
-
-//   /* ================= REDUX STATE ================= */
-//   const personalInfo = useSelector((s) => s.user.personalInfo);
-//   const education = useSelector((s) => s.education.education);
-//   const experiences = useSelector((s) => s.experience.experiences);
-//   const projects = useSelector((s) => s.project.projects);
-//   const skills = useSelector((s) => s.techskills);
-//   const personalSummary = useSelector((s) => s.personalSummary.summary);
-//   const certifications = useSelector(
-//     (s) => s.certifications.certifications || []
-//   );
-//   const accomplishments = useSelector(
-//     (s) => s.accomplishments.accomplishments || []
-//   );
-
-//   /* ================= TEMPLATE MAP ================= */
 //   const templates = {
 //     modern: ModernTemplate,
 //     classic: ClassicTemplate,
@@ -290,10 +63,9 @@
 
 //   const ActiveTemplate = templates[templateFromUrl] || templates.modern;
 
-//   /* ================= LOAD FROM DB ================= */
+//   /* ================= LOAD ================= */
 //   useEffect(() => {
-//     if (!isLoaded) return;
-//     if (!user) {
+//     if (!isLoaded || !user) {
 //       setLoading(false);
 //       return;
 //     }
@@ -312,28 +84,22 @@
 //       const res = await axios.get(`/api/resume/${email}`);
 //       const { hasResume, ...resumeData } = res.data;
 
-//       if (hasResume) {
-//         hydrateResume(dispatch, {
-//           ...defaultResumeData,
-//           ...resumeData,
-//         });
-//       } else {
-//         hydrateResume(dispatch, defaultResumeData);
-//       }
-//     } catch (err) {
-//       console.error("❌ Error loading resume:", err);
+//       hydrateResume(
+//         dispatch,
+//         hasResume ? { ...defaultResumeData, ...resumeData } : defaultResumeData
+//       );
+//     } catch {
 //       hydrateResume(dispatch, defaultResumeData);
 //     } finally {
 //       setLoading(false);
 //     }
 //   };
 
-//   /* ================= SAVE TO DB ================= */
+//   /* ================= SAVE ================= */
 //   const saveResume = async () => {
 //     if (!user) return alert("Please log in first.");
-
 //     const email = user.primaryEmailAddress?.emailAddress;
-//     if (!email) return alert("User email not found.");
+//     if (!email) return;
 
 //     const payload = {
 //       personalInfo,
@@ -347,100 +113,128 @@
 //       template: templateFromUrl,
 //     };
 
-//     try {
-//       await axios.post(`/api/resume/${email}`, payload);
-//       alert("✅ Resume saved successfully");
-//     } catch (err) {
-//       console.error("❌ Error saving resume:", err);
-//     }
+//     await axios.post(`/api/resume/${email}`, payload);
+//     alert("Resume saved");
 //   };
 
-//   const handleBack = () => router.push("/template-select");
+//   const sections = [
+//     { id: "profile", label: "Profile" },
+//     { id: "summary", label: "Summary" },
+//     { id: "skills", label: "Skills" },
+//     { id: "experience", label: "Experience" },
+//     { id: "projects", label: "Projects" },
+//     { id: "certifications", label: "Certifications" },
+//     { id: "education", label: "Education" },
+//   ];
 
 //   if (loading) {
 //     return (
-//       <div className="flex items-center justify-center h-screen">
-//         <p>Loading your resume...</p>
+//       <div className="flex items-center justify-center min-h-screen bg-white">
+//         <div className="text-center">
+//           <div className="w-16 h-16 border-4 border-gray-200 border-t-green-500 rounded-full animate-spin mx-auto mb-4"></div>
+//           <p className="text-gray-700 font-medium">Loading your resume...</p>
+//         </div>
 //       </div>
 //     );
 //   }
 
-//   /* ================= RENDER ================= */
 //   return (
-//     <div className="h-screen flex flex-col bg-gray-50">
+//     <div className="min-h-screen flex flex-col bg-white">
 //       {/* HEADER */}
-//       <header className="bg-white border-b px-6 py-4 flex justify-between items-center">
-//         <div className="flex items-center gap-4">
-//           <button onClick={handleBack} className="flex gap-2 items-center">
-//             <ArrowLeft size={18} />
-//             Back
-//           </button>
-//           <h1 className="text-xl font-semibold">Resume Builder</h1>
-//           <span className="text-sm bg-gray-100 px-3 py-1 rounded-full">
-//             Template: {templateName}
-//           </span>
-//         </div>
+//       <header className="bg-white border-b-2 border-black px-4 sm:px-6 lg:px-8 py-4 sticky top-0 z-50 shadow-sm">
+//         <div className="max-w-[1920px] mx-auto flex flex-wrap items-center justify-between gap-4">
+//           <div className="flex items-center gap-3 sm:gap-4">
+//             <button
+//               onClick={() => router.push("/template-select")}
+//               className="flex items-center gap-2 px-4 py-2 bg-white text-black border-2 border-black rounded-lg font-semibold transition-all hover:bg-gray-100 active:scale-95"
+//             >
+//               <ArrowLeft size={18} />
+//               <span className="hidden sm:inline">Back</span>
+//             </button>
 
-//         <div className="flex items-center gap-3">
-//           <button
-//             onClick={saveResume}
-//             className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg"
-//           >
-//             <Save size={16} />
-//             Save
-//           </button>
+//             <div className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-green-50 border-2 border-green-500 rounded-lg">
+//               <FileText size={16} className="text-green-600" />
+//               <span className="text-sm font-semibold text-black">
+//                 <span className="hidden sm:inline">Template: </span>
+//                 <span className="text-green-600">{templateName}</span>
+//               </span>
+//             </div>
+//           </div>
 
-//           <DownloadResumeButton />
+//           <div className="flex items-center gap-3">
+//             <button
+//               onClick={saveResume}
+//               className="flex items-center gap-2 px-4 sm:px-5 py-2 bg-green-500 text-white font-semibold border-2 border-green-600 rounded-lg shadow-md transition-all hover:bg-green-600 active:scale-95"
+//             >
+//               <Save size={16} />
+//               <span>Save</span>
+//             </button>
+
+//             <DownloadResumeButton />
+//           </div>
 //         </div>
 //       </header>
 
 //       {/* BODY */}
-//       <div className="flex flex-1 overflow-hidden">
+//       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
 //         {/* LEFT — FORMS */}
-//         <div className="w-1/2 border-r overflow-auto p-6 bg-white">
-//           <div className="flex gap-2 mb-6 border-b overflow-x-auto">
-//             {[
-//               "profile",
-//               "summary",
-//               "skills",
-//               "experience",
-//               "projects",
-//               "certifications",
-//               "education",
-//             ].map((s) => (
-//               <button
-//                 key={s}
-//                 onClick={() => setActiveSection(s)}
-//                 className={`px-4 py-2 ${
-//                   activeSection === s
-//                     ? "border-b-2 border-blue-600 text-blue-600"
-//                     : "text-gray-600"
-//                 }`}
-//               >
-//                 {s[0].toUpperCase() + s.slice(1)}
-//               </button>
-//             ))}
+//         <div className="w-full lg:w-1/2 flex flex-col border-b-2 lg:border-b-0 lg:border-r-2 border-black bg-white overflow-hidden">
+//           {/* Section Tabs */}
+//           <div className="border-b-2 border-black bg-white overflow-x-auto">
+//             <div className="flex justify-center min-w-max px-4 py-2">
+//               {sections.map((s) => (
+//                 <button
+//                   key={s.id}
+//                   onClick={() => setActiveSection(s.id)}
+//                   className={`px-3 sm:px-4 py-2 sm:py-3 font-semibold text-sm sm:text-base whitespace-nowrap transition-all ${
+//                     activeSection === s.id
+//                       ? "text-green-600 border-b-4 border-green-500"
+//                       : "text-gray-600 hover:text-black"
+//                   }`}
+//                 >
+//                   {s.label}
+//                 </button>
+//               ))}
+//             </div>
 //           </div>
 
-//           {activeSection === "profile" && <ProfileForm />}
-//           {activeSection === "summary" && <PersonalSummaryForm />}
-//           {activeSection === "skills" && <TechnicalSkillForm />}
-//           {activeSection === "experience" && <ExperienceForm />}
-//           {activeSection === "projects" && <ProjectForm />}
-//           {activeSection === "certifications" && (
-//             <AccomplishmentCertificationForm />
-//           )}
-//           {activeSection === "education" && <EducationForm />}
+//           {/* Form Content */}
+//           <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+//             <div className="max-w-3xl mx-auto">
+//               <div>
+//                 {activeSection === "profile" && <ProfileForm />}
+//                 {activeSection === "summary" && <PersonalSummaryForm />}
+//                 {activeSection === "skills" && <TechnicalSkillForm />}
+//                 {activeSection === "experience" && <ExperienceForm />}
+//                 {activeSection === "projects" && <ProjectForm />}
+//                 {activeSection === "certifications" && (
+//                   <AccomplishmentCertificationForm />
+//                 )}
+//                 {activeSection === "education" && <EducationForm />}
+//               </div>
+//             </div>
+//           </div>
 //         </div>
 
-//         {/* RIGHT — LIVE PREVIEW */}
-//         <div className="w-1/2 bg-gray-100 overflow-auto p-8" id="resume">
-//           <div className="flex justify-center">
-//             <div
-//               className="bg-white shadow-xl"
-//               style={{ width: "8.5in", minHeight: "11in" }}
-//             >
-//               <ActiveTemplate />
+//         {/* RIGHT — PREVIEW */}
+//         <div className="w-full lg:w-1/2 bg-gray-100 overflow-y-auto">
+//           <div className="p-4 sm:p-6 lg:p-8">
+//             <div className="mb-4">
+//               <h3 className="text-base sm:text-lg font-bold text-black mb-1">Live Preview</h3>
+//               <div className="h-1 w-16 bg-green-500 rounded"></div>
+//             </div>
+
+//             <div className="flex justify-center">
+//               <div
+//                 style={{ 
+//                   width: "100%",
+//                   maxWidth: "8.5in",
+//                   minHeight: "11in"
+//                 }}
+//                 id="resume"
+//               >
+//                 <ActiveTemplate />
+//               </div>
 //             </div>
 //           </div>
 //         </div>
@@ -448,12 +242,13 @@
 //     </div>
 //   );
 // }
+
 "use client";
 
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Save, ArrowLeft } from "lucide-react";
+import { Save, ArrowLeft, FileText, Download, Moon, Sun } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 
@@ -468,7 +263,7 @@ import PersonalSummaryForm from "../../components/PersonalSummaryForm";
 
 /* ================= TEMPLATES ================= */
 import ModernTemplate from "../../my_templates/ModernTemplate";
-import ClassicTemplate from "../../my_templates/classic";
+import ClassicTemplate from "../../my_templates/ClassicTemplate";
 import PikachuTemplate from "../../my_templates/Pickachu";
 import GengarTemplate from "../../my_templates/GengarTemplate";
 import DownloadResumeButton from "@/components/DownloadResumeButton";
@@ -485,6 +280,7 @@ export default function ResumePreviewPage() {
 
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState("profile");
+  const [theme, setTheme] = useState("light");
 
   const templateFromUrl = searchParams.get("template") || "modern";
   const templateName = searchParams.get("name") || "Modern";
@@ -512,7 +308,18 @@ export default function ResumePreviewPage() {
 
   const ActiveTemplate = templates[templateFromUrl] || templates.modern;
 
-  // const ActiveTemplate = templates.gengar;
+  /* ================= THEME ================= */
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("resume-theme") || "light";
+    setTheme(savedTheme);
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+    localStorage.setItem("resume-theme", newTheme);
+  };
+
   /* ================= LOAD ================= */
   useEffect(() => {
     if (!isLoaded || !user) {
@@ -564,103 +371,154 @@ export default function ResumePreviewPage() {
     };
 
     await axios.post(`/api/resume/${email}`, payload);
-    alert("Resume saved");
+    alert("Resume saved successfully! ✨");
   };
+
+  const sections = [
+    { id: "profile", label: "Profile", icon: "👤" },
+    { id: "summary", label: "Summary", icon: "📝" },
+    { id: "skills", label: "Skills", icon: "⚡" },
+    { id: "experience", label: "Experience", icon: "💼" },
+    { id: "projects", label: "Projects", icon: "🚀" },
+    { id: "certifications", label: "Certifications", icon: "🏆" },
+    { id: "education", label: "Education", icon: "🎓" },
+  ];
+
+  const isDark = theme === "dark";
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-white">
-        <p className="text-black">Loading your resume…</p>
+      <div className={`flex items-center justify-center min-h-screen ${isDark ? 'bg-black' : 'bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50'}`}>
+        <div className="text-center">
+          <div className={`relative w-20 h-20 mx-auto mb-6`}>
+            <div className={`absolute inset-0 border-4 ${isDark ? 'border-purple-500/30' : 'border-purple-300'} rounded-full`}></div>
+            <div className={`absolute inset-0 border-4 border-transparent ${isDark ? 'border-t-purple-500' : 'border-t-purple-600'} rounded-full animate-spin`}></div>
+          </div>
+          <p className={`${isDark ? 'text-gray-300' : 'text-gray-700'} font-semibold text-lg`}>Loading your resume...</p>
+          <p className={`${isDark ? 'text-gray-500' : 'text-gray-500'} text-sm mt-2`}>Preparing something amazing ✨</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="h-screen flex flex-col bg-white">
+    <div className={`min-h-screen flex flex-col transition-colors duration-300 ${isDark ? 'bg-black' : 'bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50'}`}>
       {/* HEADER */}
-      <header className="bg-white border-b-2 border-black px-6 py-4 flex justify-between items-center">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => router.push("/template-select")}
-            className="flex gap-2 items-center text-black font-semibold"
-          >
-            <ArrowLeft size={18} />
-            Back
-          </button>
+      <header className={`backdrop-blur-xl ${isDark ? 'bg-black/80 border-gray-800' : 'bg-white/80 border-gray-200'} border-b px-4 sm:px-6 lg:px-8 py-4 sticky top-0 z-50 shadow-lg transition-colors duration-300`}>
+        <div className="max-w-[1920px] mx-auto flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <button
+              onClick={() => router.push("/template-select")}
+              className={`flex items-center gap-2 px-4 py-2.5 ${isDark ? 'bg-gray-800 hover:bg-gray-700 text-white border-gray-700' : 'bg-white hover:bg-gray-50 text-gray-800 border-gray-300'} border-2 rounded-xl font-semibold transition-all hover:scale-105 active:scale-95 shadow-lg`}
+            >
+              <ArrowLeft size={18} />
+              <span className="hidden sm:inline">Back</span>
+            </button>
 
-          <h1 className="text-xl font-bold text-black">
-            Resume Builder
-          </h1>
+            <div className={`flex items-center gap-2 px-4 py-2.5 ${isDark ? 'bg-gradient-to-r from-purple-900/50 to-blue-900/50 border-purple-500' : 'bg-gradient-to-r from-purple-100 to-blue-100 border-purple-400'} border-2 rounded-xl shadow-lg`}>
+              <FileText size={16} className={isDark ? 'text-purple-400' : 'text-purple-600'} />
+              <span className={`text-sm font-semibold ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                <span className="hidden sm:inline">Template: </span>
+                <span className={isDark ? 'text-purple-400' : 'text-purple-600'}>{templateName}</span>
+              </span>
+            </div>
+          </div>
 
-          <span className="text-sm border-2 border-black px-3 py-1 rounded-full">
-            Template: {templateName}
-          </span>
-        </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={toggleTheme}
+              className={`p-2.5 ${isDark ? 'bg-gray-800 hover:bg-gray-700 text-yellow-400' : 'bg-white hover:bg-gray-50 text-gray-700'} border-2 ${isDark ? 'border-gray-700' : 'border-gray-300'} rounded-xl transition-all hover:scale-105 active:scale-95 shadow-lg`}
+              title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {isDark ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
 
-        <div className="flex items-center gap-3">
-          <button
-            onClick={saveResume}
-            className="flex items-center gap-2 px-5 py-2
-            !bg-[#00684A] text-black font-semibold
-            border-2 border-black rounded-xl
-            hover:!bg-[#005C42]"
-          >
-            <Save size={16} />
-            Save
-          </button>
+            <button
+              onClick={saveResume}
+              className={`flex items-center gap-2 px-5 py-2.5 ${isDark ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500' : 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600'} text-white font-semibold rounded-xl shadow-lg transition-all hover:scale-105 active:scale-95`}
+            >
+              <Save size={16} />
+              <span>Save</span>
+            </button>
 
-          <DownloadResumeButton />
+            <DownloadResumeButton />
+          </div>
         </div>
       </header>
 
       {/* BODY */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
         {/* LEFT — FORMS */}
-        <div className="w-1/2 border-r-2 border-black overflow-auto p-6 bg-white">
-          <div className="flex gap-2 mb-6 border-b-2 border-black overflow-x-auto">
-            {[
-              "profile",
-              "summary",
-              "skills",
-              "experience",
-              "projects",
-              "certifications",
-              "education",
-            ].map((s) => (
-              <button
-                key={s}
-                onClick={() => setActiveSection(s)}
-                className={`px-4 py-2 font-semibold ${
-                  activeSection === s
-                    ? "border-b-2 border-black text-black"
-                    : "text-gray-500"
-                }`}
-              >
-                {s[0].toUpperCase() + s.slice(1)}
-              </button>
-            ))}
+        <div className={`w-full lg:w-1/2 flex flex-col ${isDark ? 'border-gray-800 bg-black' : 'border-gray-200 bg-white/50'} border-b-2 lg:border-b-0 lg:border-r-2 backdrop-blur-sm overflow-hidden transition-colors duration-300`}>
+          {/* Section Tabs */}
+          <div className={`${isDark ? 'border-gray-800 bg-black' : 'border-gray-200 bg-white/80'} border-b-2 backdrop-blur-md overflow-x-auto transition-colors duration-300`}>
+            <div className="flex justify-start lg:justify-center min-w-max px-2 py-3 gap-1">
+              {sections.map((s) => (
+                <button
+                  key={s.id}
+                  onClick={() => setActiveSection(s.id)}
+                  className={`px-3 sm:px-4 py-2.5 sm:py-3 font-semibold text-sm sm:text-base whitespace-nowrap rounded-lg transition-all ${
+                    activeSection === s.id
+                      ? isDark 
+                        ? 'bg-zinc-800 text-white shadow-md border-b-2 border-purple-500'
+                        : 'bg-gray-100 text-gray-900 shadow-sm border-b-2 border-purple-500'
+                      : isDark
+                        ? 'text-gray-400 hover:text-white hover:bg-zinc-900'
+                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                  }`}
+                >
+                  <span className="mr-2">{s.icon}</span>
+                  {s.label}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {activeSection === "profile" && <ProfileForm />}
-          {activeSection === "summary" && <PersonalSummaryForm />}
-          {activeSection === "skills" && <TechnicalSkillForm />}
-          {activeSection === "experience" && <ExperienceForm />}
-          {activeSection === "projects" && <ProjectForm />}
-          {activeSection === "certifications" && (
-            <AccomplishmentCertificationForm />
-          )}
-          {activeSection === "education" && <EducationForm />}
+          {/* Form Content */}
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+            <div className="max-w-3xl mx-auto">
+              <div>
+                {activeSection === "profile" && <ProfileForm />}
+                {activeSection === "summary" && <PersonalSummaryForm />}
+                {activeSection === "skills" && <TechnicalSkillForm />}
+                {activeSection === "experience" && <ExperienceForm />}
+                {activeSection === "projects" && <ProjectForm />}
+                {activeSection === "certifications" && (
+                  <AccomplishmentCertificationForm />
+                )}
+                {activeSection === "education" && <EducationForm />}
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* RIGHT — PREVIEW */}
-        <div className="w-1/2 bg-gray-100 overflow-auto p-8">
-          <div className="flex justify-center">
-            <div
-              className="bg-white border-2 border-black shadow-xl"
-              style={{ width: "8.5in", minHeight: "11in" }}
-              id="resume"
-            >
-              <ActiveTemplate />
+        <div className={`w-full lg:w-1/2 ${isDark ? 'bg-zinc-900' : 'bg-gray-50'} overflow-y-auto transition-colors duration-300`}>
+          <div className="p-4 sm:p-6 lg:p-8">
+            <div className="mb-6">
+              <div className="flex items-center gap-3 mb-2">
+                <div className={`w-1 h-8 ${isDark ? 'bg-gradient-to-b from-purple-500 to-blue-500' : 'bg-gradient-to-b from-purple-600 to-blue-600'} rounded-full`}></div>
+                <h3 className={`text-xl sm:text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  Live Preview
+                </h3>
+              </div>
+              <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'} text-sm ml-5`}>
+                See your changes in real-time ✨
+              </p>
+            </div>
+
+            <div className="flex justify-center">
+              <div
+                style={{ 
+                  width: "100%",
+                  maxWidth: "8.5in",
+                  minHeight: "11in"
+                }}
+                className={`${isDark ? 'shadow-2xl shadow-purple-900/50' : 'shadow-2xl'} rounded-lg overflow-hidden`}
+                id="resume"
+              >
+                <ActiveTemplate />
+              </div>
             </div>
           </div>
         </div>

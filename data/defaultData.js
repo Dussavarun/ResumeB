@@ -231,32 +231,30 @@ export const defaultResumeData = {
     }
   ],
 
-  projects: [
-    {
-      title: "Personal Portfolio",
-      description:
-        "Designed and developed a responsive personal website using Next.js, TypeScript, and Tailwind CSS.",
-      impact:
-        "Improved page performance and increased visibility across professional platforms.",
-      link: "https://johndoe.com"
-    },
-    {
-      title: "E-Commerce Platform",
-      description:
-        "Developed a full-stack MERN-based e-commerce application with secure payments and admin controls.",
-      impact:
-        "Enhanced user engagement and reduced API response latency through backend optimizations.",
-      link: "https://github.com/johndoe/ecommerce"
-    },
-    {
-      title: "ChatSphere",
-      description:
-        "Created a real-time chat application using Next.js, Socket.IO, Zustand, and Redis.",
-      impact:
-        "Supported thousands of concurrent users with low-latency message delivery.",
-      link: "https://github.com/johndoe/chatsphere"
-    }
-  ],
+ projects: [
+  {
+    title: "Personal Portfolio",
+    description: [
+      "Designed and developed a responsive personal website using Next.js, TypeScript, and Tailwind CSS.",
+      "Implemented responsive layouts and reusable UI components.",
+      "Optimized performance and SEO for better visibility."
+    ],
+    impact:
+      "Improved page performance and increased visibility across professional platforms.",
+    link: "https://johndoe.com"
+  },
+  {
+    title: "E-Commerce Platform",
+    description: [
+      "Developed a full-stack MERN-based e-commerce application.",
+      "Integrated secure payment processing and admin controls.",
+      "Optimized backend APIs for reduced response latency."
+    ],
+    impact:
+      "Enhanced user engagement and reduced API response latency.",
+    link: "https://github.com/johndoe/ecommerce"
+  },
+],
 
   accomplishments: [
     {

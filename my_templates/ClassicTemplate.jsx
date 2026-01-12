@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
-export default function ModernTemplate() {
+const ModernTemplate = () => {
   const personalInfo = useSelector((s) => s.user?.personalInfo || {});
   const personalSummary = useSelector((s) => s.personalSummary?.summary || "");
 
@@ -36,10 +37,18 @@ export default function ModernTemplate() {
     developerTools.length ||
     cloudAndDevOps.length;
 
+
+  const personalS = useSelector((s) => s.personalSummary?.summary || "");
+
+useEffect(() => {
+  console.log("SUMMARY CHANGED:", personalS);
+}, [personalSummary]);
+
+
   return (
     <div className="bg-white px-8 py-6 text-[13px] text-gray-800 leading-snug">
       {/* ================= HEADER ================= */}
-      <div className="mb-4">
+      <div className="mb-4 text-center">
         <h1 className="text-[30px] font-bold leading-tight">
           {personalInfo.name || "Your Name"}
         </h1>
@@ -132,50 +141,53 @@ export default function ModernTemplate() {
       )}
 
       {/* ================= PROJECTS ================= */}
-{hasProjects && (
-  <Section title="Projects">
-    {projects.map((p, idx) => (
-      <div key={idx} className="mb-3">
-        {/* Title row (like experience) */}
-        <div className="flex justify-between items-start gap-2">
-          <div className="font-bold text-[14px] break-words">
-            {p.title}
-          </div>
+      {hasProjects && (
+        <Section title="Projects">
+          {projects.map((p, idx) => (
+            <div key={idx} className="mb-3">
+              <div className="font-bold text-[14px]">
+                {p.title}
+                {p.link && (
+                  <a href={p.link} className="text-blue-600 ml-1 text-[12px]">
+                    (Link)
+                  </a>
+                )}
+              </div>
 
-          {p.link && (
-            <a
-              href={p.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 text-[12px] shrink-0 break-all"
-            >
-              Link
-            </a>
-          )}
-        </div>
+              {/* Bullet points like Experience */}
+              {p.description && (
+                <ul className="list-disc list-inside mt-0.5 space-y-0 leading-tight">
+                  {(Array.isArray(p.description)
+                    ? p.description
+                    : p.description.split("\n")
+                  ).map((point, i) => (
+                    <li key={i}>{point}</li>
+                  ))}
+                </ul>
+              )}
 
-        {/* Description bullets */}
-        {Array.isArray(p.description) && p.description.length > 0 && (
-          <ul className="list-disc list-inside mt-0.5 space-y-0 leading-tight">
-            {p.description.map((d, i) => (
-              <li key={i} className="break-words">
-                {d}
-              </li>
-            ))}
-          </ul>
-        )}
+              {p.impact && (
+                <div className="italic text-gray-600 text-[12px]">
+                  {p.impact}
+                </div>
+              )}
+            </div>
+          ))}
+        </Section>
+      )}
 
-        {/* Impact (like experience location/meta) */}
-        {p.impact && (
-          <div className="italic text-gray-600 text-[12px] mt-0.5 break-words">
-            {p.impact}
-          </div>
-        )}
-      </div>
-    ))}
-  </Section>
-)}
-
+      {/* ================= CERTIFICATIONS ================= */}
+      {hasCertifications && (
+        <Section title="Certifications">
+          {certifications.map((c, idx) => (
+            <div key={idx}>
+              <span className="font-bold">{c.title}</span>
+              {c.provider && ` — ${c.provider}`}
+              {c.date && ` (${c.date})`}
+            </div>
+          ))}
+        </Section>
+      )}
 
       {/* ================= ACCOMPLISHMENTS ================= */}
       {hasAccomplishments && (
@@ -207,18 +219,18 @@ export default function ModernTemplate() {
       )}
     </div>
   );
-}
+};
 
-// export default ModernTemplate;
+export default ModernTemplate;
 
 /* ================= HELPERS ================= */
 
-const Divider = () => <div className="border-t-2 border-blue-600 my-3" />;
+const Divider = () => <div className="border-t-2 border-black my-3" />;
 
 const Section = ({ title, children }) => (
   <div className="mb-4">
     <h3 className="font-bold text-[16px] uppercase mb-1">{title}</h3>
-    <div className="border-b border-blue-600 mb-2" />
+    <div className="border-b border-black mb-2" />
     {children}
   </div>
 );
