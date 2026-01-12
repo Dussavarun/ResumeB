@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema(
     hasResume : {type : Boolean , default : false},
     
     personalSummary : {type : mongoose.Schema.Types.ObjectId , ref : "PersonalSummary"},
+    
     personalInfo: { type: mongoose.Schema.Types.ObjectId, ref: "PersonalInfo" },
     education: [{ type: mongoose.Schema.Types.ObjectId, ref: "Education" }],
     experience: [{ type: mongoose.Schema.Types.ObjectId, ref: "Experience" }],

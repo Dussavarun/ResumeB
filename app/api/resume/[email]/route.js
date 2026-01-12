@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "../../../../lib/mongodb";
 import User from "../../../../models/User";
+import PersonalSummary from "../../../../models/PersonalSummary";
 import PersonalInfo from "../../../../models/PersonalInfo";
 import Education from "../../../../models/Education";
 import Experience from "../../../../models/Experience";
@@ -39,31 +40,42 @@ export async function POST(req, context) {
       };
 
       if (user.personalInfo) {
-        await PersonalInfo.findByIdAndUpdate(user.personalInfo, personalInfoData, { new: true });
+        await PersonalInfo.findByIdAndUpdate(
+          user.personalInfo,
+          personalInfoData,
+          { new: true }
+        );
       } else {
         const personalInfoDoc = await PersonalInfo.create(personalInfoData);
         user.personalInfo = personalInfoDoc._id;
       }
     }
 
-    // 3️⃣ Save or update TechSkills
-    // if (data.skills) {
-    //   if (user.techSkills) {
-    //     await TechSkills.findByIdAndUpdate(user.techSkills, data.skills, { new: true });
-    //   } else {
-    //     const techSkillsDoc = await TechSkills.create(data.skills);
-    //     user.techSkills = techSkillsDoc._id;
-    //   }
-    // }
- if (data.techSkills) {
-    if (user.techSkills) {
-    await TechSkills.findByIdAndUpdate(user.techSkills, data.techSkills, { new: true });
-    } else {
-     const techSkillsDoc = await TechSkills.create(data.techSkills);
-      user.techSkills = techSkillsDoc._id;
+    if (data.personalSummary) {
+      if (user.personalSummary) {
+        await PersonalSummary.findByIdAndUpdate(
+          user.personalSummary,
+          { summary: data.personalSummary },
+          { new: true }
+        );
+      } else {
+        const summaryDoc = await PersonalSummary.create({
+          summary: data.personalSummary,
+        });
+        user.personalSummary = summaryDoc._id;
+      }
     }
-  }
 
+    if (data.techSkills) {
+      if (user.techSkills) {
+        await TechSkills.findByIdAndUpdate(user.techSkills, data.techSkills, {
+          new: true,
+        });
+      } else {
+        const techSkillsDoc = await TechSkills.create(data.techSkills);
+        user.techSkills = techSkillsDoc._id;
+      }
+    }
 
     // 4️⃣ Replace Education
     if (data.education?.length) {
@@ -90,7 +102,9 @@ export async function POST(req, context) {
     if (data.certifications) {
       if (data.certifications.length > 0) {
         await Certification.deleteMany({ _id: { $in: user.certifications } });
-        const certificationDocs = await Certification.insertMany(data.certifications);
+        const certificationDocs = await Certification.insertMany(
+          data.certifications
+        );
         user.certifications = certificationDocs.map((c) => c._id);
       } else {
         await Certification.deleteMany({ _id: { $in: user.certifications } });
@@ -102,7 +116,9 @@ export async function POST(req, context) {
     if (data.accomplishments) {
       if (data.accomplishments.length > 0) {
         await Accomplishment.deleteMany({ _id: { $in: user.accomplishments } });
-        const accomplishmentDocs = await Accomplishment.insertMany(data.accomplishments);
+        const accomplishmentDocs = await Accomplishment.insertMany(
+          data.accomplishments
+        );
         user.accomplishments = accomplishmentDocs.map((a) => a._id);
       } else {
         await Accomplishment.deleteMany({ _id: { $in: user.accomplishments } });
@@ -129,6 +145,7 @@ export async function GET(req, context) {
 
     const user = await User.findOne({ email })
       .populate("personalInfo")
+      .populate("personalSummary")
       .populate("education")
       .populate("experience")
       .populate("projects")
@@ -142,50 +159,58 @@ export async function GET(req, context) {
     }
 
     // Restructure personalInfo to match Redux structure
-    const personalInfo = user.personalInfo ? {
-      name: user.personalInfo.name || user.personalInfo.fullName || "",
-      email: user.personalInfo.email || "",
-      phone: user.personalInfo.phone || "",
-      location: user.personalInfo.location || user.personalInfo.address || "",
-      about: user.personalInfo.about || user.personalInfo.summary || "",
-      links: {
-        portfolio: user.personalInfo.portfolio || "",
-        github: user.personalInfo.github || "",
-        linkedin: user.personalInfo.linkedin || "",
-        leetcode: user.personalInfo.leetcode || "",
-        codeforces: user.personalInfo.codeforces || "",
-      }
-    } : null;
+    const personalInfo = user.personalInfo
+      ? {
+          name: user.personalInfo.name || user.personalInfo.fullName || "",
+          email: user.personalInfo.email || "",
+          phone: user.personalInfo.phone || "",
+          location:
+            user.personalInfo.location || user.personalInfo.address || "",
+          about: user.personalInfo.about || user.personalInfo.summary || "",
+          links: {
+            portfolio: user.personalInfo.portfolio || "",
+            github: user.personalInfo.github || "",
+            linkedin: user.personalInfo.linkedin || "",
+            leetcode: user.personalInfo.leetcode || "",
+            codeforces: user.personalInfo.codeforces || "",
+          },
+        }
+      : null;
 
     // Clean techSkills - remove MongoDB metadata
-    const techSkills = user.techSkills ? {
-      programmingLanguages: user.techSkills.programmingLanguages || [],
-      databases: user.techSkills.databases || [],
-      frameworks: user.techSkills.frameworks || [],
-      developerTools: user.techSkills.developerTools || [],
-      cloudAndDevOps: user.techSkills.cloudAndDevOps || [],
-    } : null;
+    const techSkills = user.techSkills
+      ? {
+          programmingLanguages: user.techSkills.programmingLanguages || [],
+          databases: user.techSkills.databases || [],
+          frameworks: user.techSkills.frameworks || [],
+          developerTools: user.techSkills.developerTools || [],
+          cloudAndDevOps: user.techSkills.cloudAndDevOps || [],
+        }
+      : null;
 
     const responseData = {
       personalInfo,
-      hasResume : user.hasResume,
-      education: (user.education || []).filter(e => e !== null),
-      experience: (user.experience || []).filter(e => e !== null),
-      projects: (user.projects || []).filter(p => p !== null),
+      personalSummary: user.personalSummary?.summary || "",
+      hasResume: user.hasResume,
+      education: (user.education || []).filter((e) => e !== null),
+      experience: (user.experience || []).filter((e) => e !== null),
+      projects: (user.projects || []).filter((p) => p !== null),
       techSkills, // Send cleaned techSkills
-      certifications: (user.certifications || []).filter(c => c !== null),
-      accomplishments: (user.accomplishments || []).filter(a => a !== null),
+      certifications: (user.certifications || []).filter((c) => c !== null),
+      accomplishments: (user.accomplishments || []).filter((a) => a !== null),
     };
 
     console.log("📤 Sending techSkills:", techSkills);
 
     return NextResponse.json(responseData, { status: 200 });
-
   } catch (error) {
     console.error("❌ Error fetching user data:", error);
-    return NextResponse.json({ 
-      message: "Error fetching user data", 
-      error: error.message 
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: "Error fetching user data",
+        error: error.message,
+      },
+      { status: 500 }
+    );
   }
 }
