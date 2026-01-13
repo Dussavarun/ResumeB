@@ -50,9 +50,9 @@
 // }
 import { getServerSession } from "next-auth";
 import { authOptions } from "../[...nextauth]/route";
-import { connectDB } from "@/lib/db";
-import User from "@/models/User";
-import PersonalInfo from "@/models/PersonalInfo";
+import { connectDB } from "../../../../lib/mongodb";
+import User from "../../../../models/User";
+import PersonalInfo from "../../../../models/PersonalInfo";
 
 export async function POST() {
   try {
