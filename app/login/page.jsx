@@ -20,7 +20,7 @@ export default function LoginPage() {
       redirect: false,
     });
 
-    if (res.error) {
+    if (!res?.ok) {
       setError("Invalid email or password");
       return;
     }
@@ -36,9 +36,7 @@ export default function LoginPage() {
       >
         <h1 className="text-2xl font-semibold mb-6">Sign In</h1>
 
-        {error && (
-          <p className="text-red-400 text-sm mb-4">{error}</p>
-        )}
+        {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
 
         <input
           type="email"
