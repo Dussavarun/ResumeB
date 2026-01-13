@@ -1,7 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { SignInButton, SignUpButton, useAuth, UserButton, useUser } from "@clerk/nextjs";
+// import { SignInButton, SignUpButton, useAuth, UserButton, useUser } from "@clerk/nextjs";
+import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -9,14 +11,17 @@ export default function Home() {
   const [isClient, setIsClient] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isSignedIn, isLoaded } = useAuth();
-  const { user } = useUser();
+ const { data: session, status } = useSession();
+const isSignedIn = status === "authenticated";
+const isLoaded = status !== "loading";
 
-  useEffect(() => {
-    if (isSignedIn && user) {
-      fetch("/api/auth/user", { method: "POST" });
-    }
-  }, [isSignedIn, user]);
+  const router = useRouter();
+
+  // useEffect(() => {
+  //   if (isSignedIn && user) {
+  //     fetch("/api/auth/user", { method: "POST" });
+  //   }
+  // }, [isSignedIn, user]);
 
   // Fixed particle positions to avoid hydration mismatch
   const particles = [
@@ -209,32 +214,48 @@ export default function Home() {
                         </Link>
                         <div className="relative">
                           <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-md opacity-50"></div>
-                          <UserButton 
+                          {/* <UserButton 
                             afterSignOutUrl="/"
                             appearance={{
                               elements: {
                                 avatarBox: "w-9 h-9 ring-2 ring-purple-500/50",
                               },
                             }}
-                          />
+                          /> */}
+                     <button
+  onClick={() => signOut({ callbackUrl: "/" })}
+  className="text-sm text-gray-300 hover:text-white"
+>
+  Sign Out
+</button>
+
+
                         </div>
                       </div>
                     ) : (
                       <div className="flex items-center space-x-3 ml-4">
-                        <SignInButton mode="modal">
+                        {/* <SignInButton mode="modal">
                           <button className="relative px-4 py-2 text-sm lg:text-base text-gray-300 hover:text-white transition-all duration-300 group">
                             <span className="relative z-10">Sign In</span>
                             <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                           </button>
-                        </SignInButton>
-                        <SignUpButton mode="modal">
+                        </SignInButton> */}
+                        <button onClick={() => router.push("/login")}>
+  Sign In
+</button>
+
+                        {/* <SignUpButton mode="modal">
                           <button className="relative px-5 py-2 text-sm lg:text-base font-medium overflow-hidden rounded-full group">
                             <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-100"></div>
                             <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                             <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 blur-lg opacity-50 group-hover:opacity-75 transition-opacity duration-300"></div>
                             <span className="relative z-10 text-white">Get Started</span>
                           </button>
-                        </SignUpButton>
+                        </SignUpButton> */}
+                        <button onClick={() => router.push("/signup")}>
+  Get Started
+</button>
+
                       </div>
                     )}
                   </>
@@ -293,28 +314,40 @@ export default function Home() {
                             </button>
                           </Link>
                           <div className="flex items-center px-4 py-2">
-                            <UserButton 
+                            {/* <UserButton 
                               afterSignOutUrl="/"
                               appearance={{
                                 elements: {
                                   avatarBox: "w-8 h-8 ring-2 ring-purple-500/50",
                                 },
                               }}
-                            />
+                            /> */}
+                         <button
+  onClick={() => {signOut({ callbackUrl: "/" }) , console.log("clicked sigout button")}}
+  className="text-sm text-gray-300 hover:text-white"
+>
+  Sign Out
+</button>
+
                             <span className="ml-3 text-sm text-gray-300">Account</span>
                           </div>
                         </div>
                       ) : (
                         <div className="flex flex-col space-y-3 pt-4 border-t border-white/10">
-                          <SignInButton mode="modal">
+                          {/* <SignInButton mode="modal">
                             <button 
                               className="w-full text-left text-sm text-gray-300 hover:text-white transition-all duration-300 py-2 px-4 rounded-lg hover:bg-white/5" 
                               onClick={() => setMobileMenuOpen(false)}
                             >
                               Sign In
                             </button>
-                          </SignInButton>
-                          <SignUpButton mode="modal">
+
+                          </SignInButton> */}
+                          <button onClick={() => router.push("/login")}>
+  Sign In
+</button>
+
+                          {/* <SignUpButton mode="modal">
                             <button 
                               className="w-full relative px-4 py-3 text-sm font-medium overflow-hidden rounded-xl group" 
                               onClick={() => setMobileMenuOpen(false)}
@@ -323,7 +356,11 @@ export default function Home() {
                               <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 blur-lg opacity-50"></div>
                               <span className="relative z-10 text-white">Get Started</span>
                             </button>
-                          </SignUpButton>
+                          </SignUpButton> */}
+                          <button onClick={() => router.push("/signup")}>
+  Get Started
+</button>
+
                         </div>
                       )}
                     </>
@@ -392,11 +429,15 @@ export default function Home() {
                       </button>
                     </Link>
                   ) : (
-                    <SignUpButton mode="modal">
-                      <button className="bg-white text-black px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-medium hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl">
-                        Create Resume Now
-                      </button>
-                    </SignUpButton>
+                    // <SignUpButton mode="modal">
+                    //   <button className="bg-white text-black px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-medium hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl">
+                    //     Create Resume Now
+                    //   </button>
+                    // </SignUpButton>
+                    <button onClick={() => router.push("/signup")}>
+  Get Started
+</button>
+
                   )}
                 </>
               )}
@@ -647,11 +688,15 @@ export default function Home() {
                     </button>
                   </Link>
                 ) : (
-                  <SignUpButton mode="modal">
-                    <button className="bg-white bg-opacity-10 text-white px-8 py-3 rounded-full text-base font-medium hover:bg-opacity-20 transition-all duration-300 transform hover:scale-105 border border-white border-opacity-20">
-                      View All Templates →
-                    </button>
-                  </SignUpButton>
+                  // <SignUpButton mode="modal">
+                  //   <button className="bg-white bg-opacity-10 text-white px-8 py-3 rounded-full text-base font-medium hover:bg-opacity-20 transition-all duration-300 transform hover:scale-105 border border-white border-opacity-20">
+                  //     View All Templates →
+                  //   </button>
+                  // </SignUpButton>
+                  <button onClick={() => router.push("/signup")}>
+  Get Started
+</button>
+
                 )}
               </>
             )}
@@ -708,11 +753,15 @@ export default function Home() {
                         </button>
                       </Link>
                     ) : (
-                      <SignUpButton mode="modal">
-                        <button className="w-full bg-white bg-opacity-5 text-white px-6 py-3 rounded-full font-medium hover:bg-opacity-10 transition-all duration-300 border border-white border-opacity-20 hover:border-opacity-40">
-                          Get Started
-                        </button>
-                      </SignUpButton>
+                      // <SignUpButton mode="modal">
+                      //   <button className="w-full bg-white bg-opacity-5 text-white px-6 py-3 rounded-full font-medium hover:bg-opacity-10 transition-all duration-300 border border-white border-opacity-20 hover:border-opacity-40">
+                      //     Get Started
+                      //   </button>
+                      // </SignUpButton>
+                      <button onClick={() => router.push("/signup")}>
+  Get Started
+</button>
+
                     )}
                   </>
                 )}
@@ -778,12 +827,16 @@ export default function Home() {
                         </button>
                       </Link>
                     ) : (
-                      <SignUpButton mode="modal">
-                        <button className="w-full relative overflow-hidden bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-full font-medium hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300 group">
-                          <span className="relative z-10">Upgrade Now</span>
-                          <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        </button>
-                      </SignUpButton>
+                      // <SignUpButton mode="modal">
+                      //   <button className="w-full relative overflow-hidden bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-full font-medium hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300 group">
+                      //     <span className="relative z-10">Upgrade Now</span>
+                      //     <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      //   </button>
+                      // </SignUpButton>
+                      <button onClick={() => router.push("/signup")}>
+  Get Started
+</button>
+
                     )}
                   </>
                 )}
@@ -942,12 +995,16 @@ export default function Home() {
                     </button>
                   </Link>
                 ) : (
-                  <SignUpButton mode="modal">
-                    <button className="group bg-white text-black px-8 sm:px-10 py-4 sm:py-5 rounded-full text-base sm:text-lg font-medium hover:bg-gray-100 transition-all duration-500 transform hover:scale-110 hover:shadow-2xl relative overflow-hidden">
-                      <span className="relative z-10">Start Your Journey</span>
-                      <div className="absolute inset-0 bg-gradient-to-r from-gray-100 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    </button>
-                  </SignUpButton>
+                  // <SignUpButton mode="modal">
+                  //   <button className="group bg-white text-black px-8 sm:px-10 py-4 sm:py-5 rounded-full text-base sm:text-lg font-medium hover:bg-gray-100 transition-all duration-500 transform hover:scale-110 hover:shadow-2xl relative overflow-hidden">
+                  //     <span className="relative z-10">Start Your Journey</span>
+                  //     <div className="absolute inset-0 bg-gradient-to-r from-gray-100 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  //   </button>
+                  // </SignUpButton>
+                  <button onClick={() => router.push("/signup")}>
+  Get Started
+</button>
+
                 )}
               </>
             )}

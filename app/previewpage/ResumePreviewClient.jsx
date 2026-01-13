@@ -4,7 +4,9 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Save, ArrowLeft, FileText, Download, Moon, Sun } from "lucide-react";
-import { useUser } from "@clerk/nextjs";
+// import { useUser } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
+
 import axios from "axios";
 
 /* ================= FORMS ================= */
@@ -30,7 +32,11 @@ export default function ResumePreviewPage() {
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { user, isLoaded } = useUser();
+  // const { user, isLoaded } = useUser();
+  const { data: session, status } = useSession();
+
+const isLoaded = status !== "loading";
+const userEmail = session?.user?.email;
 
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState("profile");
@@ -74,20 +80,32 @@ export default function ResumePreviewPage() {
   };
 
   /* ================= LOAD ================= */
+  // useEffect(() => {
+  //   if (!isLoaded || !user) {
+  //     setLoading(false);
+  //     return;
+  //   }
+
+  //   const email = user.primaryEmailAddress?.emailAddress;
+  //   if (!email) {
+  //     setLoading(false);
+  //     return;
+  //   }
+
+  //   loadResumeDataFromDB(email);
+  // }, [isLoaded, user]);
+
   useEffect(() => {
-    if (!isLoaded || !user) {
-      setLoading(false);
-      return;
-    }
+  if (!isLoaded) return;
 
-    const email = user.primaryEmailAddress?.emailAddress;
-    if (!email) {
-      setLoading(false);
-      return;
-    }
+  if (!userEmail) {
+    setLoading(false);
+    return;
+  }
 
-    loadResumeDataFromDB(email);
-  }, [isLoaded, user]);
+  loadResumeDataFromDB(userEmail);
+}, [isLoaded, userEmail]);
+
 
   const loadResumeDataFromDB = async (email) => {
     try {
@@ -106,10 +124,17 @@ export default function ResumePreviewPage() {
   };
 
   /* ================= SAVE ================= */
-  const saveResume = async () => {
-    if (!user) return alert("Please log in first.");
-    const email = user.primaryEmailAddress?.emailAddress;
-    if (!email) return;
+  // const saveResume = async () => {
+  //   if (!user) return alert("Please log in first.");
+  //   const email = user.primaryEmailAddress?.emailAddress;
+  //   if (!email) return;
+const saveResume = async () => {
+  if (!userEmail) {
+    alert("Please log in first.");
+    return;
+  }
+
+  const email = userEmail;
 
     const payload = {
       personalInfo,
@@ -126,6 +151,14 @@ export default function ResumePreviewPage() {
     await axios.post(`/api/resume/${email}`, payload);
     alert("Resume saved successfully! ✨");
   };
+
+
+  useEffect(() => {
+  if (status === "unauthenticated") {
+    router.push("/login");
+  }
+}, [status]);
+
 
   const sections = [
     { id: "profile", label: "Profile", icon: "👤" },

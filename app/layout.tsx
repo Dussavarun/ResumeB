@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
+// import { ClerkProvider } from "@clerk/nextjs";
 // import RouteChangeLoader from "./components/RouteChangeLoader";
 import { ReduxProvider } from "@/components/ReduxProviderWrapper";
 import RouteLoader from "@/components/GlobalLoader";
-
+import Providers from "@/components/AuthSessionProvider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -31,11 +31,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ClerkProvider>
           {/* <RouteChangeLoader/> */}
           <RouteLoader/>
+          <Providers>
           <ReduxProvider>{children}</ReduxProvider>
-        </ClerkProvider>
+          </Providers>
       </body>
     </html>
   );
