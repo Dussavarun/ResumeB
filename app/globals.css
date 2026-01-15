@@ -55,3 +55,21 @@ body {
   background-size: 200% 200%;
   animation: gradientMove 8s ease infinite;
 }
+
+@keyframes floatParticle {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-60px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.particle {
+  animation-name: floatParticle;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
