@@ -36,6 +36,9 @@ export default function ModernTemplate() {
     developerTools.length ||
     cloudAndDevOps.length;
 
+  // 🔥 bullet style copied from ClassicTemplate
+  const bulletClass = "list-disc list-outside ml-7 leading-tight space-y-0";
+
   return (
     <div className="bg-white px-8 py-6 text-[13px] text-gray-800 leading-snug">
       {/* ================= HEADER ================= */}
@@ -108,19 +111,19 @@ export default function ModernTemplate() {
                 <div className="font-bold text-[14px]">
                   {exp.role} — {exp.company}
                 </div>
-                <div className="text-gray-600 text-[12px] leading-tight">
+                <div className="text-gray-600 text-[12px]">
                   {exp.duration}
                 </div>
               </div>
 
               {exp.location && (
-                <div className="text-gray-600 text-[12px] leading-tight">
+                <div className="text-gray-600 text-[12px]">
                   {exp.location}
                 </div>
               )}
 
               {exp.responsibilities?.length > 0 && (
-                <ul className="list-disc list-inside mt-0.5 space-y-0 leading-tight">
+                <ul className={bulletClass}>
                   {exp.responsibilities.map((r, i) => (
                     <li key={i}>{r}</li>
                   ))}
@@ -132,55 +135,63 @@ export default function ModernTemplate() {
       )}
 
       {/* ================= PROJECTS ================= */}
-{hasProjects && (
-  <Section title="Projects">
-    {projects.map((p, idx) => (
-      <div key={idx} className="mb-3">
-        {/* Title row (like experience) */}
-        <div className="flex justify-between items-start gap-2">
-          <div className="font-bold text-[14px] break-words">
-            {p.title}
-          </div>
+      {hasProjects && (
+        <Section title="Projects">
+          {projects.map((p, idx) => (
+            <div key={idx} className="mb-3">
+              {/* title + link BESIDE title */}
+              <div className="font-bold text-[14px]">
+                {p.title}
+                {p.link && (
+                  <a
+                    href={p.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 ml-1 text-[12px]"
+                  >
+                    (Link)
+                  </a>
+                )}
+              </div>
 
-          {p.link && (
-            <a
-              href={p.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 text-[12px] shrink-0 break-all"
-            >
-              Link
-            </a>
-          )}
-        </div>
+              {Array.isArray(p.description) && p.description.length > 0 && (
+                <ul className={bulletClass}>
+                  {p.description.map((d, i) => (
+                    <li key={i}>{d}</li>
+                  ))}
+                </ul>
+              )}
 
-        {/* Description bullets */}
-        {Array.isArray(p.description) && p.description.length > 0 && (
-          <ul className="list-disc list-inside mt-0.5 space-y-0 leading-tight">
-            {p.description.map((d, i) => (
-              <li key={i} className="break-words">
-                {d}
+              {Array.isArray(p.technologies) && p.technologies.length > 0 && (
+                <div className="italic text-gray-600 text-[12px]">
+                  <span className="font-semibold">Tech:</span>{" "}
+                  {p.technologies.join(", ")}
+                </div>
+              )}
+            </div>
+          ))}
+        </Section>
+      )}
+
+      {/* ================= CERTIFICATIONS ================= */}
+      {hasCertifications && (
+        <Section title="Certifications">
+          <ul className={bulletClass}>
+            {certifications.map((c, idx) => (
+              <li key={idx}>
+                <span className="font-bold">{c.title}</span>
+                {c.provider && ` — ${c.provider}`}
+                {c.date && ` (${c.date})`}
               </li>
             ))}
           </ul>
-        )}
-
-        {/* Impact (like experience location/meta) */}
-        {p.impact && (
-          <div className="italic text-gray-600 text-[12px] mt-0.5 break-words">
-            {p.impact}
-          </div>
-        )}
-      </div>
-    ))}
-  </Section>
-)}
-
+        </Section>
+      )}
 
       {/* ================= ACCOMPLISHMENTS ================= */}
       {hasAccomplishments && (
         <Section title="Accomplishments">
-          <ul className="list-disc list-inside space-y-0.5">
+          <ul className={bulletClass}>
             {accomplishments.map((a, idx) => (
               <li key={idx}>{a.title || a}</li>
             ))}
@@ -194,12 +205,18 @@ export default function ModernTemplate() {
           {education.map((edu, idx) => (
             <div key={idx} className="mb-2">
               <div className="flex justify-between">
-                <div className="font-bold text-[14px]">{edu.institution}</div>
-                <div className="text-gray-600 text-[12px]">{edu.duration}</div>
+                <div className="font-bold text-[14px]">
+                  {edu.institution}
+                </div>
+                <div className="text-gray-600 text-[12px]">
+                  {edu.duration}
+                </div>
               </div>
               <div>{edu.degree}</div>
               {edu.gpa && (
-                <div className="text-gray-600 text-[12px]">GPA: {edu.gpa}</div>
+                <div className="text-gray-600 text-[12px]">
+                  GPA: {edu.gpa}
+                </div>
               )}
             </div>
           ))}
@@ -208,8 +225,6 @@ export default function ModernTemplate() {
     </div>
   );
 }
-
-// export default ModernTemplate;
 
 /* ================= HELPERS ================= */
 

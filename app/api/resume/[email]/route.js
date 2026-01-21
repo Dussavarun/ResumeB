@@ -50,8 +50,8 @@ export async function POST(req, context) {
         user.personalInfo = personalInfoDoc._id;
       }
     }
-
-    if (data.personalSummary) {
+ 
+    if (typeof  data.personalSummary === "string") {
       if (user.personalSummary) {
         await PersonalSummary.findByIdAndUpdate(
           user.personalSummary,

@@ -9,7 +9,7 @@ import {
 
 /* ================= THEME ================= */
 const COLORS = {
-  sidebar: "#1e3a8a", // blue-900
+  sidebar: "#1e3a8a",
   bg: "#ffffff",
   textDark: "#111827",
   textLight: "#ffffff",
@@ -28,23 +28,22 @@ const styles = StyleSheet.create({
   },
 
   /* LEFT SIDEBAR */
-
   sidebar: {
-    width: 170, // 🔥 fixed
+    width: 165,
     backgroundColor: COLORS.sidebar,
-    paddingTop: 12,
-    paddingRight: 6, // minimal
-    paddingBottom: 12,
-    paddingLeft: 12,
+    paddingTop: 10,
+    paddingRight: 6,
+    paddingBottom: 10,
+    paddingLeft: 10,
     color: COLORS.textLight,
   },
 
   avatar: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     backgroundColor: "#ffffff",
-    marginBottom: 10,
+    marginBottom: 6,
     alignSelf: "center",
   },
 
@@ -55,14 +54,14 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 9,
+    fontSize: 8.5,
     textAlign: "center",
     color: COLORS.mutedLight,
-    marginBottom: 12,
+    marginBottom: 8,
   },
 
   sidebarSection: {
-    marginBottom: 14,
+    marginBottom: 10,
   },
 
   sidebarTitle: {
@@ -70,14 +69,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     borderBottomWidth: 1,
     borderBottomColor: COLORS.borderLight,
-    paddingBottom: 2,
-    marginBottom: 6,
+    paddingBottom: 1,
+    marginBottom: 4,
   },
 
   sidebarText: {
     fontSize: 8.5,
     color: COLORS.mutedLight,
-    marginBottom: 3,
+    marginBottom: 2,
+    lineHeight: 1.25,
   },
 
   sidebarBold: {
@@ -86,43 +86,48 @@ const styles = StyleSheet.create({
   },
 
   link: {
+    fontSize: 8.5,
     color: COLORS.mutedLight,
     textDecoration: "underline",
+    marginBottom: 2,
   },
 
+  /* RIGHT CONTENT */
   content: {
-    flex: 1, // 🔥 take remaining space
-    paddingTop: 20,
-    paddingRight: 20,
-    paddingBottom: 20,
+    flex: 1,
+    paddingTop: 14,
+    paddingRight: 16,
+    paddingBottom: 14,
     paddingLeft: 8,
     backgroundColor: COLORS.bg,
     color: COLORS.textDark,
   },
 
   section: {
-    marginBottom: 14,
+    marginBottom: 10,
   },
 
   sectionTitle: {
-    fontSize: 10,
+    fontSize: 9.5,
     fontWeight: "bold",
     color: COLORS.accent,
     borderBottomWidth: 2,
     borderBottomColor: COLORS.accent,
-    paddingBottom: 2,
-    marginBottom: 6,
+    paddingBottom: 1,
+    marginBottom: 4,
   },
 
   text: {
     fontSize: 9,
-    marginBottom: 2,
+    marginBottom: 1.5,
+    lineHeight: 1.25,
   },
 
   muted: {
     color: COLORS.mutedDark,
     fontSize: 8.5,
-    marginBottom: 2,
+    marginBottom: 1,
+    lineHeight: 1.25,
   },
 
   bold: {
@@ -135,11 +140,11 @@ const styles = StyleSheet.create({
   },
 
   item: {
-    marginBottom: 8,
+    marginBottom: 6,
   },
 
   bullet: {
-    marginLeft: 10,
+    marginLeft: 12, // 👈 moved right
   },
 });
 
@@ -189,7 +194,9 @@ export default function SidebarBluePDF({
                 ([key, values]) =>
                   values?.length > 0 && (
                     <Text key={key} style={styles.sidebarText}>
-                      <Text style={styles.sidebarBold}>{formatKey(key)}:</Text>{" "}
+                      <Text style={styles.sidebarBold}>
+                        {formatKey(key)}:
+                      </Text>{" "}
                       {values.join(", ")}
                     </Text>
                   )
@@ -243,9 +250,11 @@ export default function SidebarBluePDF({
                     </Text>
                     <Text style={styles.muted}>{exp.duration}</Text>
                   </View>
-                  <Text style={styles.muted}>{exp.location}</Text>
+                  {exp.location && (
+                    <Text style={styles.muted}>{exp.location}</Text>
+                  )}
                   {(exp.responsibilities || []).map((r, j) => (
-                    <Text key={j} style={styles.text}>
+                    <Text key={j} style={[styles.text, styles.bullet]}>
                       • {r}
                     </Text>
                   ))}
@@ -259,7 +268,18 @@ export default function SidebarBluePDF({
               {projects.map((p, i) => (
                 <View key={i} style={styles.item}>
                   <Text style={styles.bold}>{p.title}</Text>
-                  <Text style={styles.text}>{p.description}</Text>
+                  {Array.isArray(p.description) &&
+                    p.description.map((d, j) => (
+                      <Text key={j} style={[styles.text, styles.bullet]}>
+                        • {d}
+                      </Text>
+                    ))}
+                  {Array.isArray(p.technologies) &&
+                    p.technologies.length > 0 && (
+                      <Text style={styles.muted}>
+                        Tech: {p.technologies.join(", ")}
+                      </Text>
+                    )}
                 </View>
               ))}
             </Section>
@@ -268,7 +288,7 @@ export default function SidebarBluePDF({
           {accomplishments?.length > 0 && (
             <Section title="ACCOMPLISHMENTS">
               {accomplishments.map((a, i) => (
-                <Text key={i} style={styles.text}>
+                <Text key={i} style={[styles.text, styles.bullet]}>
                   • {a.title || a}
                 </Text>
               ))}
@@ -281,7 +301,6 @@ export default function SidebarBluePDF({
 }
 
 /* ================= HELPERS ================= */
-
 const Section = ({ title, children }) => (
   <View style={styles.section}>
     <Text style={styles.sectionTitle}>{title}</Text>

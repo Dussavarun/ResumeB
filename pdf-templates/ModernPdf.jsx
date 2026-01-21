@@ -17,7 +17,9 @@ const COLORS = {
 /* ================= STYLES ================= */
 const styles = StyleSheet.create({
   page: {
-    padding: 36,
+    paddingHorizontal: 32,
+    paddingTop: 24,
+    paddingBottom: 28,
     fontFamily: "Times-Roman",
     color: COLORS.primary,
     fontSize: 11,
@@ -29,7 +31,7 @@ const styles = StyleSheet.create({
   },
 
   name: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 4,
   },
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
   contact: {
     fontSize: 10,
     color: COLORS.muted,
-    marginBottom: 3,
+    marginBottom: 1,
   },
 
   linksRow: {
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
 
   /* SECTION */
   section: {
-    marginBottom: 10,
+    marginBottom: 6,
   },
 
   sectionTitle: {
@@ -62,13 +64,13 @@ const styles = StyleSheet.create({
     fontWeight: "semibold", // 🔥 lighter
     textTransform: "uppercase",
     letterSpacing: 0.5, // cleaner, ATS-safe
-    marginBottom: 3,
+    marginBottom: 1,
   },
 
   divider: {
     height: 1,
     backgroundColor: COLORS.accent,
-    marginBottom: 6,
+    marginBottom: 3,
   },
 
   /* TEXT */
@@ -159,7 +161,7 @@ export default function ModernPDF({
           style={{
             height: 1,
             backgroundColor: COLORS.accent,
-            marginBottom: 10,
+            marginBottom: 6,
           }}
         />
 
@@ -180,7 +182,7 @@ export default function ModernPDF({
                     <Text style={styles.bold}>{formatKey(key)}:</Text>{" "}
                     {values.join(", ")}
                   </Text>
-                )
+                ),
             )}
           </Section>
         )}
@@ -215,8 +217,8 @@ export default function ModernPDF({
         {projects?.length > 0 && (
           <Section title="Projects">
             {projects.map((p, i) => (
-              <View key={i} style={{ marginBottom: 5 }}>
-                {/* Title */}
+              <View key={i} style={{ marginBottom: 6 }}>
+                {/* Title + Link */}
                 <Text
                   style={{
                     fontSize: 12,
@@ -235,22 +237,33 @@ export default function ModernPDF({
                   )}
                 </Text>
 
-                {/* Description */}
-                <Text style={{ fontSize: 11, lineHeight: 1.2 }}>
-                  {p.description}
-                </Text>
+                {/* Description bullets */}
+                {Array.isArray(p.description) &&
+                  p.description.map((d, j) => (
+                    <Text
+                      key={j}
+                      style={{
+                        fontSize: 11,
+                        lineHeight: 1.2,
+                        marginLeft: 8,
+                      }}
+                    >
+                      • {d}
+                    </Text>
+                  ))}
 
-                {/* Impact */}
-                {p.impact && (
+                {/* Technologies */}
+                {Array.isArray(p.technologies) && p.technologies.length > 0 && (
                   <Text
                     style={{
                       fontSize: 10,
-                      fontStyle: "italic",
                       color: COLORS.muted,
                       lineHeight: 1.15,
+                      marginTop: 2,
                     }}
                   >
-                    {p.impact}
+                    <Text style={{ fontWeight: "bold" }}>Tech:</Text>{" "}
+                    {p.technologies.join(", ")}
                   </Text>
                 )}
               </View>
@@ -263,7 +276,7 @@ export default function ModernPDF({
           <Section title="Certifications">
             {certifications.map((c, i) => (
               <Text key={i} style={styles.body}>
-                <Text style={styles.bold}>{c.title}</Text>
+                • <Text style={styles.bold}>{c.title}</Text>
                 {c.provider && ` — ${c.provider}`}
                 {c.date && ` (${c.date})`}
               </Text>

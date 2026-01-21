@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
-const ModernTemplate = () => {
+const ClassicTemplate = () => {
   const personalInfo = useSelector((s) => s.user?.personalInfo || {});
   const personalSummary = useSelector((s) => s.personalSummary?.summary || "");
 
@@ -9,10 +9,10 @@ const ModernTemplate = () => {
   const experiences = useSelector((s) => s.experience?.experiences || []);
   const projects = useSelector((s) => s.project?.projects || []);
   const certifications = useSelector(
-    (s) => s.certifications?.certifications || []
+    (s) => s.certifications?.certifications || [],
   );
   const accomplishments = useSelector(
-    (s) => s.accomplishments?.accomplishments || []
+    (s) => s.accomplishments?.accomplishments || [],
   );
 
   const rawSkills = useSelector((s) => s.techskills || {});
@@ -37,13 +37,13 @@ const ModernTemplate = () => {
     developerTools.length ||
     cloudAndDevOps.length;
 
-
   const personalS = useSelector((s) => s.personalSummary?.summary || "");
 
-useEffect(() => {
-  console.log("SUMMARY CHANGED:", personalS);
-}, [personalSummary]);
+  useEffect(() => {
+    console.log("SUMMARY CHANGED:", personalS);
+  }, [personalSummary]);
 
+  const bulletClass = "list-disc list-outside ml-7 leading-tight space-y-0";
 
   return (
     <div className="bg-white px-8 py-6 text-[13px] text-gray-800 leading-snug">
@@ -129,7 +129,7 @@ useEffect(() => {
               )}
 
               {exp.responsibilities?.length > 0 && (
-                <ul className="list-disc list-inside mt-0.5 space-y-0 leading-tight">
+                <ul className={bulletClass}>
                   {exp.responsibilities.map((r, i) => (
                     <li key={i}>{r}</li>
                   ))}
@@ -141,58 +141,66 @@ useEffect(() => {
       )}
 
       {/* ================= PROJECTS ================= */}
-      {hasProjects && (
-        <Section title="Projects">
-          {projects.map((p, idx) => (
-            <div key={idx} className="mb-3">
-              <div className="font-bold text-[14px]">
-                {p.title}
-                {p.link && (
-                  <a href={p.link} className="text-blue-600 ml-1 text-[12px]">
-                    (Link)
-                  </a>
-                )}
-              </div>
+     {hasProjects && (
+  <Section title="Projects">
+    {projects.map((p, idx) => (
+      <div key={idx} className="mb-3">
+        {/* Title + Link */}
+        <div className="font-bold text-[14px]">
+          {p.title}
+          {p.link && (
+            <a
+              href={p.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 ml-1 text-[12px]"
+            >
+              (Link)
+            </a>
+          )}
+        </div>
 
-              {/* Bullet points like Experience */}
-              {p.description && (
-                <ul className="list-disc list-inside mt-0.5 space-y-0 leading-tight">
-                  {(Array.isArray(p.description)
-                    ? p.description
-                    : p.description.split("\n")
-                  ).map((point, i) => (
-                    <li key={i}>{point}</li>
-                  ))}
-                </ul>
-              )}
+        {/* Bullet points like Experience */}
+        {Array.isArray(p.description) && p.description.length > 0 && (
+          <ul className={bulletClass}>
+            {p.description.map((point, i) => (
+              <li key={i}>{point}</li>
+            ))}
+          </ul>
+        )}
 
-              {p.impact && (
-                <div className="italic text-gray-600 text-[12px]">
-                  {p.impact}
-                </div>
-              )}
-            </div>
-          ))}
-        </Section>
-      )}
+        {/* Technologies (experience-style meta line) */}
+        {Array.isArray(p.technologies) && p.technologies.length > 0 && (
+          <div className="italic text-gray-600 text-[12px]">
+            <span className="font-semibold">Tech:</span>{" "}
+            {p.technologies.join(", ")}
+          </div>
+        )}
+      </div>
+    ))}
+  </Section>
+)}
 
       {/* ================= CERTIFICATIONS ================= */}
       {hasCertifications && (
         <Section title="Certifications">
-          {certifications.map((c, idx) => (
-            <div key={idx}>
-              <span className="font-bold">{c.title}</span>
-              {c.provider && ` — ${c.provider}`}
-              {c.date && ` (${c.date})`}
-            </div>
-          ))}
+          <ul className={bulletClass}>
+            {certifications.map((c, idx) => (
+              <li key={idx}>
+                <span className="font-bold">{c.title}</span>
+                {c.provider && ` — ${c.provider}`}
+                {c.date && ` (${c.date})`}
+              </li>
+            ))}
+          </ul>
         </Section>
       )}
 
       {/* ================= ACCOMPLISHMENTS ================= */}
       {hasAccomplishments && (
         <Section title="Accomplishments">
-          <ul className="list-disc list-inside space-y-0.5">
+          {/* <ul className="list-disc list-inside space-y-0.5"> */}
+          <ul className={bulletClass}>
             {accomplishments.map((a, idx) => (
               <li key={idx}>{a.title || a}</li>
             ))}
@@ -221,7 +229,7 @@ useEffect(() => {
   );
 };
 
-export default ModernTemplate;
+export default ClassicTemplate;
 
 /* ================= HELPERS ================= */
 

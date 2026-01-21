@@ -1,12 +1,16 @@
 "use client";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "next/navigation";
 import { Download } from "lucide-react";
 import ModernPDF from "../pdf-templates/ModernPdf";
 import GengarPdf from "../pdf-templates/GengarPdf";
 import ClassicPdf from "../pdf-templates/ClassicTemplatePdf";
-
+const PDFDownloadLink = dynamic(
+  () =>
+    import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
+  { ssr: false }
+);
 export default function DownloadResumeButton() {
   const searchparams = useSearchParams();
   const tempKey = searchparams.get("name");

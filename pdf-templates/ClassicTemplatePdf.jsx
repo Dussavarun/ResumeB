@@ -64,7 +64,8 @@ const styles = StyleSheet.create({
   divider: {
     height: 0.8,
     backgroundColor: "#000",
-    marginBottom: 6,
+    // marginBottom: 6,
+    marginBottom: 2,
   },
 
   /* TEXT */
@@ -203,44 +204,45 @@ export default function ModernPDF({
 
         {/* ================= PROJECTS ================= */}
         {projects?.length > 0 && (
-          <Section title="Projects">
-            {projects.map((p, i) => (
-              <View key={i} style={styles.item}>
-                <Text style={styles.bold}>
-                  {p.title}
-                  {p.link && (
-                    <Link src={p.link} style={styles.link}>
-                      {" "}
-                      (Link)
-                    </Link>
-                  )}
-                </Text>
+  <Section title="Projects">
+    {projects.map((p, i) => (
+      <View key={i} style={styles.item}>
+        {/* Title + Link */}
+        <Text style={styles.bold}>
+          {p.title}
+          {p.link && (
+            <Link src={p.link} style={styles.link}>
+              {" "} (Link)
+            </Link>
+          )}
+        </Text>
 
-                {(Array.isArray(p.description)
-                  ? p.description
-                  : p.description?.split("\n")
-                )?.map((d, j) => (
-                  <Text key={j} style={styles.bullet}>
-                    • {d}
-                  </Text>
-                ))}
+        {/* Description bullets */}
+        {Array.isArray(p.description) &&
+          p.description.map((d, j) => (
+            <Text key={j} style={styles.bullet}>
+              • {d}
+            </Text>
+          ))}
 
-                {p.impact && (
-                  <Text style={[styles.muted, { fontStyle: "italic" }]}>
-                    {p.impact}
-                  </Text>
-                )}
-              </View>
-            ))}
-          </Section>
+        {/* Technologies */}
+        {Array.isArray(p.technologies) && p.technologies.length > 0 && (
+          <Text style={[styles.muted, { marginTop: 2 }]}>
+            <Text style={styles.bold}>Tech:</Text>{" "}
+            {p.technologies.join(", ")}
+          </Text>
         )}
+      </View>
+    ))}
+  </Section>
+)}
 
         {/* ================= CERTIFICATIONS ================= */}
         {certifications?.length > 0 && (
           <Section title="Certifications">
             {certifications.map((c, i) => (
-              <Text key={i} style={styles.body}>
-                <Text style={styles.bold}>{c.title}</Text>
+              <Text key={i} style={[styles.bullet, { marginTop: -2 }]}>
+             • <Text style={styles.bold}>{c.title}</Text>
                 {c.provider && ` — ${c.provider}`}
                 {c.date && ` (${c.date})`}
               </Text>

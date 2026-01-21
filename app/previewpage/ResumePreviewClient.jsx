@@ -1,12 +1,176 @@
+// "use client";
+
+// import React, { useState, useEffect } from "react";
+// import { useSelector, useDispatch } from "react-redux";
+// import { useSearchParams, useRouter } from "next/navigation";
+// import { Save, ArrowLeft, FileText, Download, Moon, Sun } from "lucide-react";
+// import { useSession } from "next-auth/react";
+// import axios from "axios";
+// import RouteLoader from "../../components/GlobalLoader"
+
+// /* ================= FORMS ================= */
+// import ProfileForm from "../../components/PersonalInfoForm";
+// import EducationForm from "../../components/EducationForm";
+// import ExperienceForm from "../../components/ExperienceForm";
+// import ProjectForm from "../../components/ProjectForm";
+// import TechnicalSkillForm from "../../components/TechnicalSkillForm";
+// import AccomplishmentCertificationForm from "@/components/AcompCertForm";
+// import PersonalSummaryForm from "../../components/PersonalSummaryForm";
+
+// /* ================= TEMPLATES ================= */
+// import ModernTemplate from "../../my_templates/ModernTemplate";
+// import ClassicTemplate from "../../my_templates/ClassicTemplate";
+// import GengarTemplate from "../../my_templates/GengarTemplate";
+// import DownloadResumeButton from "@/components/DownloadResumeButton";
+
+// /* ===================== utils ============================ */
+// import { defaultResumeData } from "../../data/defaultData";
+// import { hydrateResume } from "../../utils/hydrateResume";
+
+// export default function ResumePreviewPage() {
+//   const dispatch = useDispatch();
+//   const searchParams = useSearchParams();
+//   const router = useRouter();
+//   const { data: session, status } = useSession();
+
+//   const isLoaded = status !== "loading";
+//   const userEmail = session?.user?.email;
+
+//   const [loading, setLoading] = useState(true);
+//   const [activeSection, setActiveSection] = useState("profile");
+//   const [theme, setTheme] = useState("light");
+
+//   const templateFromUrl = searchParams.get("template") || "modern";
+//   const templateName = searchParams.get("name") || "Modern";
+
+//   /* ================= REDUX ================= */
+//   const personalInfo = useSelector((s) => s.user.personalInfo);
+//   const education = useSelector((s) => s.education.education);
+//   const experiences = useSelector((s) => s.experience.experiences);
+//   const projects = useSelector((s) => s.project.projects);
+//   const skills = useSelector((s) => s.techskills);
+//   const personalSummary = useSelector((s) => s.personalSummary.summary);
+//   const certifications = useSelector(
+//     (s) => s.certifications.certifications || []
+//   );
+//   const accomplishments = useSelector(
+//     (s) => s.accomplishments.accomplishments || []
+//   );
+
+//   const templates = {
+//     modern: ModernTemplate,
+//     classic: ClassicTemplate,
+//     gengar: GengarTemplate,
+//   };
+
+//   const ActiveTemplate = templates[templateFromUrl] || templates.modern;
+
+//   /* ================= THEME ================= */
+//   useEffect(() => {
+//     const savedTheme = localStorage.getItem("resume-theme") || "light";
+//     setTheme(savedTheme);
+
+//     // Apply theme to document root
+//     if (savedTheme === "dark") {
+//       document.documentElement.classList.add("dark");
+//     } else {
+//       document.documentElement.classList.remove("dark");
+//     }
+//   }, []);
+
+//   const toggleTheme = () => {
+//     const newTheme = theme === "dark" ? "light" : "dark";
+//     setTheme(newTheme);
+//     localStorage.setItem("resume-theme", newTheme);
+
+//     // Toggle dark class on document root
+//     if (newTheme === "dark") {
+//       document.documentElement.classList.add("dark");
+//     } else {
+//       document.documentElement.classList.remove("dark");
+//     }
+//   };
+
+//   /* ================= LOAD ================= */
+//   useEffect(() => {
+//     if (!isLoaded) return;
+//     if (!userEmail) {
+//       setLoading(false);
+//       return;
+//     }
+//     loadResumeDataFromDB(userEmail);
+//   }, [isLoaded, userEmail]);
+
+//   const loadResumeDataFromDB = async (email) => {
+//     try {
+//       const res = await axios.get(`/api/resume/${email}`);
+//       const { hasResume, ...resumeData } = res.data;
+//       hydrateResume(
+//         dispatch,
+//         hasResume ? { ...defaultResumeData, ...resumeData } : defaultResumeData
+//       );
+//     } catch {
+//       hydrateResume(dispatch, defaultResumeData);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   /* ================= SAVE ================= */
+//   const saveResume = async () => {
+//     if (!userEmail) {
+//       alert("Please log in first.");
+//       return;
+//     }
+
+//     const payload = {
+//       personalInfo,
+//       education,
+//       personalSummary,
+//       experience: experiences,
+//       projects,
+//       techSkills: skills,
+//       certifications,
+//       accomplishments,
+//       template: templateFromUrl,
+//     };
+
+//     await axios.post(`/api/resume/${userEmail}`, payload);
+//     alert("Resume saved successfully! ✨");
+//   };
+
+//   useEffect(() => {
+//     if (status === "unauthenticated") {
+//       router.push("/login");
+//     }
+//   }, [status]);
+
+//   const sections = [
+//     { id: "profile", label: "Profile" },
+//     { id: "summary", label: "Summary" },
+//     { id: "skills", label: "Skills" },
+//     { id: "experience", label: "Experience" },
+//     { id: "projects", label: "Projects" },
+//     { id: "certifications", label: "Certifications" },
+//     { id: "education", label: "Education" },
+//   ];
+
+//   const isDark = theme === "dark";
+
+//   if (loading) {
+//    return(
+//      <RouteLoader/>
+//    )
+//   }
 "use client";
 
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Save, ArrowLeft, FileText, Download, Moon, Sun } from "lucide-react";
+import { Save, ArrowLeft, FileText, Moon, Sun } from "lucide-react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-import RouteLoader from "../../components/GlobalLoader"
+import RouteLoader from "../../components/GlobalLoader";
 
 /* ================= FORMS ================= */
 import ProfileForm from "../../components/PersonalInfoForm";
@@ -70,7 +234,6 @@ export default function ResumePreviewPage() {
     const savedTheme = localStorage.getItem("resume-theme") || "light";
     setTheme(savedTheme);
 
-    // Apply theme to document root
     if (savedTheme === "dark") {
       document.documentElement.classList.add("dark");
     } else {
@@ -83,7 +246,6 @@ export default function ResumePreviewPage() {
     setTheme(newTheme);
     localStorage.setItem("resume-theme", newTheme);
 
-    // Toggle dark class on document root
     if (newTheme === "dark") {
       document.documentElement.classList.add("dark");
     } else {
@@ -156,13 +318,6 @@ export default function ResumePreviewPage() {
   ];
 
   const isDark = theme === "dark";
-
-  if (loading) {
-   return(
-     <RouteLoader/>
-   )
-  }
-
   return (
     <div
       className={`min-h-screen transition-colors duration-500 ${
@@ -171,7 +326,8 @@ export default function ResumePreviewPage() {
           : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"
       }`}
     >
-      {/* HEADER - Glassmorphic Sticky */}
+      {loading && <RouteLoader />}
+
       <header
         className={`sticky top-0 z-50 transition-all duration-500 ${
           isDark
@@ -377,7 +533,7 @@ export default function ResumePreviewPage() {
                   isDark ? "text-gray-500" : "text-gray-600"
                 }`}
               >
-                See your changes in real-time ✨
+                See your changes in real-time ✨ (Save before Downloading)
               </p>
             </div>
 

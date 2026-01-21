@@ -21,6 +21,7 @@ export default function ResumeBTemplates() {
       src: "/images/classic.png",
       name: "Classic",
       description: "Timeless elegance",
+      popular : true
     },
     {
       id: "gengar",
@@ -125,6 +126,11 @@ function TemplateCard({ template, index, onClick }) {
       <div className="group rounded-2xl overflow-hidden border border-white/10 bg-zinc-950 transition hover:border-white/30 hover:-translate-y-1 shadow-[0_10px_30px_rgba(0,0,0,0.7)]">
         {/* IMAGE */}
         <div className="relative aspect-[3/4] w-full bg-black overflow-hidden">
+        {template.popular && (
+    <div className="absolute top-3 right-3 z-10 flex items-center gap-1 rounded-full bg-black px-3 py-1 text-xs font-semibold text-white shadow-lg">
+      ⭐ Popular
+    </div>
+  )}
           {!imgError ? (
             <Image
               src={template.src}
