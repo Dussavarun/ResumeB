@@ -283,7 +283,7 @@ export default function ModernPDF({
         )}
 
         {/* ================= EDUCATION ================= */}
-        {education?.length > 0 && (
+        {/* {education?.length > 0 && (
           <Section title="Education">
             {education.map((e, i) => (
               <View key={i} style={styles.item}>
@@ -296,7 +296,21 @@ export default function ModernPDF({
               </View>
             ))}
           </Section>
-        )}
+        )} */}
+        {/* ================= EDUCATION ================= */}
+{education?.length > 0 && (
+  <Section title="Education">
+    {education.map((e, i) => (
+      <Text key={i} style={styles.bullet}>
+        • <Text style={styles.bold}>{e.institution}</Text>
+        {e.degree && ` — ${e.degree}`}
+        {e.duration && ` (${e.duration})`}
+        {e.gpa && ` | GPA: ${e.gpa}`}
+      </Text>
+    ))}
+  </Section>
+)}
+
       </Page>
     </Document>
   );
