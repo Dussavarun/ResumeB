@@ -238,7 +238,7 @@ export default function ModernPDF({
 )}
 
         {/* ================= CERTIFICATIONS ================= */}
-        {certifications?.length > 0 && (
+        {/* {certifications?.length > 0 && (
           <Section title="Certifications">
             {certifications.map((c, i) => (
               <Text key={i} style={[styles.bullet, { marginTop: -2 }]}>
@@ -248,7 +248,28 @@ export default function ModernPDF({
               </Text>
             ))}
           </Section>
+        )} */}
+        {/* ================= CERTIFICATIONS ================= */}
+{certifications?.length > 0 && (
+  <Section title="Certifications">
+    {certifications.map((c, i) => (
+      <Text key={i} style={styles.bullet}>
+        • <Text style={styles.bold}>{c.title}</Text>
+        {c.provider && ` — ${c.provider}`}
+        {c.date && ` (${c.date})`}
+        {c.credentialUrl && (
+          <>
+            {" "}•{" "}
+            <Link src={c.credentialUrl} style={styles.link}>
+              View Credential
+            </Link>
+          </>
         )}
+      </Text>
+    ))}
+  </Section>
+)}
+
 
         {/* ================= ACCOMPLISHMENTS ================= */}
         {accomplishments?.length > 0 && (

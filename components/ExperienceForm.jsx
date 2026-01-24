@@ -20,26 +20,37 @@ export default function ExperienceForm() {
   });
 
   const [point, setPoint] = useState("");
+  const [expandedIndex, setExpandedIndex] = useState(null);
+  const [editingIndex, setEditingIndex] = useState(null);
 
+  /* ---------- responsibilities ---------- */
   const addPoint = () => {
     if (!point.trim()) return;
-    setForm({
-      ...form,
-      responsibilities: [...form.responsibilities, point.trim()],
-    });
+    setForm((prev) => ({
+      ...prev,
+      responsibilities: [...prev.responsibilities, point.trim()],
+    }));
     setPoint("");
   };
 
   const removePoint = (idx) => {
-    setForm({
-      ...form,
-      responsibilities: form.responsibilities.filter((_, i) => i !== idx),
-    });
+    setForm((prev) => ({
+      ...prev,
+      responsibilities: prev.responsibilities.filter((_, i) => i !== idx),
+    }));
   };
 
+  /* ---------- add / update ---------- */
   const handleAdd = () => {
     if (!form.company.trim() || !form.role.trim()) return;
+
+    if (editingIndex !== null) {
+      dispatch(removeExperience(editingIndex));
+      setEditingIndex(null);
+    }
+
     dispatch(addExperience(form));
+
     setForm({
       company: "",
       role: "",
@@ -50,95 +61,112 @@ export default function ExperienceForm() {
     });
   };
 
+  /* ---------- edit ---------- */
+  const handleEdit = (exp, index) => {
+    setForm({
+      company: exp.company || "",
+      role: exp.role || "",
+      startDate: exp.startDate || "",
+      endDate: exp.endDate || "",
+      location: exp.location || "",
+      responsibilities: exp.responsibilities || [],
+    });
+    setEditingIndex(index);
+  };
+
   return (
-    <div className="min-h-screen bg-white flex justify-center items-start p-8">
+    <div className="w-full px-2 sm:px-4">
       <div
-        className="w-full max-w-4xl bg-white p-10 rounded-3xl
-        border-[3px] border-black
-        shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]
-        space-y-8"
+        className="
+          w-full max-w-4xl mx-auto
+          bg-white
+          p-4 sm:p-8 lg:p-10
+          rounded-xl sm:rounded-3xl
+          border-2 sm:border-[3px] border-black
+          shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
+          sm:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]
+          space-y-4 sm:space-y-8
+        "
       >
-        <h2 className="text-4xl font-extrabold text-black text-center border-b-2 border-black pb-4">
+        {/* Title */}
+        <h2 className="text-lg sm:text-3xl font-extrabold text-black text-center border-b-2 border-black pb-2 sm:pb-4">
           Experience
         </h2>
 
         {/* Inputs */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5">
           <input
             placeholder="Company"
             value={form.company}
             onChange={(e) => setForm({ ...form, company: e.target.value })}
-            className="input"
+            className="input py-1.5 text-sm"
           />
 
           <input
             placeholder="Role / Position"
             value={form.role}
             onChange={(e) => setForm({ ...form, role: e.target.value })}
-            className="input"
+            className="input py-1.5 text-sm"
           />
 
           <input
             placeholder="Location"
             value={form.location}
             onChange={(e) => setForm({ ...form, location: e.target.value })}
-            className="input"
+            className="input py-1.5 text-sm"
           />
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-2">
             <input
               type="month"
-              value={form.startDate}
+              value={form.startDate || ""}
               onChange={(e) =>
                 setForm({ ...form, startDate: e.target.value })
               }
-              className="input"
+              className="input py-1.5 text-xs"
             />
 
             <input
               type="month"
-              value={form.endDate}
+              value={form.endDate || ""}
               onChange={(e) =>
                 setForm({ ...form, endDate: e.target.value })
               }
-              className="input"
+              className="input py-1.5 text-xs"
             />
           </div>
         </div>
 
-        {/* RESPONSIBILITIES AS POINTS */}
-        <div className="space-y-3">
-          <div className="flex gap-3">
+        {/* Responsibilities */}
+        <div className="space-y-2">
+          <div className="flex gap-2">
             <input
               placeholder="Add responsibility point"
               value={point}
               onChange={(e) => setPoint(e.target.value)}
-              className="input flex-1"
+              className="input py-1.5 text-sm flex-1"
             />
             <button
               onClick={addPoint}
-              className="px-4 py-2 bg-black text-white font-semibold
-              border-2 border-black rounded-xl
-              hover:bg-white hover:text-black transition-colors"
+              className="px-3 py-1.5 bg-black text-white text-sm font-semibold border-2 border-black rounded-lg hover:bg-white hover:text-black"
             >
               Add
             </button>
           </div>
 
           {form.responsibilities.length > 0 && (
-            <ul className="space-y-2">
+            <ul className="space-y-1.5">
               {form.responsibilities.map((r, i) => (
                 <li
                   key={i}
-                  className="flex justify-between items-start gap-4
-                  bg-white border-2 border-black rounded-xl p-3"
+                  className="flex justify-between items-start border border-black rounded-lg px-3 py-2 text-xs text-black"
                 >
-                  <span className="text-sm text-black">• {r}</span>
+                  <span>• {r}</span>
                   <button
                     onClick={() => removePoint(i)}
-                    className="font-bold text-black hover:text-red-600"
+                    className="font-bold text-red-600"
                   >
-                    ✕
+                    ×
                   </button>
                 </li>
               ))}
@@ -146,40 +174,84 @@ export default function ExperienceForm() {
           )}
         </div>
 
+        {/* Add / Update */}
         <button
           onClick={handleAdd}
-          className="w-full px-6 py-3 bg-black text-white font-semibold
-          border-2 border-black rounded-xl
-          hover:bg-white hover:text-black transition-colors"
+          className="w-full py-2 bg-black text-white text-sm font-semibold border-2 border-black rounded-lg hover:bg-white hover:text-black"
         >
-          Add Experience
+          {editingIndex !== null ? "Update Experience" : "Add Experience"}
         </button>
 
-        {/* EXPERIENCE LIST */}
+        {/* Experience List */}
         {experiences.length > 0 && (
-          <ul className="space-y-4">
-            {experiences.map((exp, i) => (
-              <li
-                key={i}
-                className="flex justify-between items-start gap-4
-                bg-white border-2 border-black rounded-xl p-4"
-              >
-                <div>
-                  <p className="font-bold text-black">{exp.company}</p>
-                  <p className="text-sm text-black">
-                    {exp.role} ({exp.startDate} – {exp.endDate})
-                  </p>
-                  <p className="text-sm text-gray-600">{exp.location}</p>
-                </div>
+          <ul className="space-y-3">
+            {experiences.map((exp, i) => {
+              const isExpanded = expandedIndex === i;
+              const count = exp.responsibilities?.length || 0;
 
-                <button
-                  onClick={() => dispatch(removeExperience(i))}
-                  className="text-black font-bold hover:text-red-600"
+              return (
+                <li
+                  key={i}
+                  className="border-2 border-black rounded-lg p-3 flex justify-between gap-3 bg-white"
                 >
-                  ✕
-                </button>
-              </li>
-            ))}
+                  <div className="flex-1 space-y-1 text-black">
+                    <p className="font-bold text-sm">{exp.company}</p>
+                    <p className="text-sm">
+                      {exp.role} ({exp.startDate || "—"} –{" "}
+                      {exp.endDate || "—"})
+                    </p>
+                    <p className="text-xs">{exp.location}</p>
+
+                    {/* mobile */}
+                    <div className="sm:hidden">
+                      {count > 0 && (
+                        <button
+                          onClick={() =>
+                            setExpandedIndex(isExpanded ? null : i)
+                          }
+                          className="text-xs font-medium mt-1"
+                        >
+                          ({count} responsibilities) ⬇️
+                        </button>
+                      )}
+
+                      {isExpanded && (
+                        <ul className="list-disc list-inside text-xs mt-1">
+                          {exp.responsibilities.map((r, j) => (
+                            <li key={j}>{r}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+
+                    {/* desktop */}
+                    <div className="hidden sm:block">
+                      <ul className="list-disc list-inside text-sm">
+                        {exp.responsibilities.map((r, j) => (
+                          <li key={j}>{r}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Edit + Delete */}
+                  <div className="flex flex-col items-center gap-1">
+                    <button
+                      onClick={() => handleEdit(exp, i)}
+                      className="text-xs font-semibold text-black hover:underline"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => dispatch(removeExperience(i))}
+                      className="font-bold text-red-600 text-lg leading-none"
+                    >
+                      ×
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>

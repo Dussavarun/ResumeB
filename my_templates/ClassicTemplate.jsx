@@ -183,18 +183,33 @@ const ClassicTemplate = () => {
 
       {/* ================= CERTIFICATIONS ================= */}
       {hasCertifications && (
-        <Section title="Certifications">
-          <ul className={bulletClass}>
-            {certifications.map((c, idx) => (
-              <li key={idx}>
-                <span className="font-bold">{c.title}</span>
-                {c.provider && ` — ${c.provider}`}
-                {c.date && ` (${c.date})`}
-              </li>
-            ))}
-          </ul>
-        </Section>
-      )}
+  <Section title="Certifications">
+    <ul className={bulletClass}>
+      {certifications.map((c, idx) => (
+        <li key={idx}>
+          <span className="font-bold">{c.title}</span>
+          {c.provider && ` — ${c.provider}`}
+          {c.date && ` (${c.date})`}
+          {c.credentialUrl && (
+            <>
+              {" "}
+              •{" "}
+              <a
+                href={c.credentialUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 underline"
+              >
+                Credential
+              </a>
+            </>
+          )}
+        </li>
+      ))}
+    </ul>
+  </Section>
+)}
+
 
       {/* ================= ACCOMPLISHMENTS ================= */}
       {hasAccomplishments && (

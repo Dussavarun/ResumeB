@@ -73,3 +73,12 @@ body {
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
 }
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}

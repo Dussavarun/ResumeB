@@ -3,22 +3,32 @@ import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "next/navigation";
 import { Download } from "lucide-react";
+import { useState, useEffect } from "react";
 import ModernPDF from "../pdf-templates/ModernPdf";
 import GengarPdf from "../pdf-templates/GengarPdf";
 import ClassicPdf from "../pdf-templates/ClassicTemplatePdf";
+
 const PDFDownloadLink = dynamic(
-  () =>
-    import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
+  () => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
   { ssr: false }
 );
+
 export default function DownloadResumeButton() {
   const searchparams = useSearchParams();
   const tempKey = searchparams.get("name");
+  const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("resume-theme") || "light";
+    setTheme(savedTheme);
+  }, []);
+
+  const isDark = theme === "dark";
 
   const pdftemps = {
     Modern: ModernPDF,
     Gengar: GengarPdf,
-    Classic : ClassicPdf
+    Classic: ClassicPdf,
   };
 
   const ActivePdftemp = pdftemps[tempKey];
@@ -52,10 +62,16 @@ export default function DownloadResumeButton() {
       {({ loading }) => (
         <button
           type="button"
-          className="flex items-center gap-2 px-4 sm:px-5 py-2 bg-white text-black font-semibold border-2 border-black rounded-lg shadow-md transition-all hover:bg-gray-100 cursor-pointer active:scale-95"
+          className={`flex items-center gap-1.5 px-3 sm:px-5 py-2 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 hover:scale-105 active:scale-95 text-xs sm:text-sm ${
+            isDark
+              ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-400 hover:to-purple-400 text-white shadow-lg shadow-blue-500/25"
+              : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-lg shadow-blue-500/30"
+          }`}
         >
-          <Download size={16} />
-          <span>{loading ? "Generating..." : "Download"}</span>
+          <Download size={14} />
+          <span className="hidden sm:inline">
+            {loading ? "Generating..." : "Download"}
+          </span>
         </button>
       )}
     </PDFDownloadLink>
