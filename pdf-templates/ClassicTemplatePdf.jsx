@@ -49,9 +49,8 @@ const styles = StyleSheet.create({
     textDecoration: "underline",
   },
 
-  /* SECTION */
   section: {
-    marginBottom: 10,
+    marginBottom: 5.5,
   },
 
   sectionTitle: {
@@ -62,13 +61,11 @@ const styles = StyleSheet.create({
   },
 
   divider: {
-    height: 0.8,
+    height: 0.6,
     backgroundColor: "#000",
-    // marginBottom: 6,
     marginBottom: 2,
   },
 
-  /* TEXT */
   body: {
     fontSize: 11,
     lineHeight: 1.2,
@@ -98,7 +95,6 @@ const styles = StyleSheet.create({
   },
 });
 
-/* ================= MAIN ================= */
 export default function ModernPDF({
   personalInfo,
   personalSummary,
@@ -237,18 +233,6 @@ export default function ModernPDF({
   </Section>
 )}
 
-        {/* ================= CERTIFICATIONS ================= */}
-        {/* {certifications?.length > 0 && (
-          <Section title="Certifications">
-            {certifications.map((c, i) => (
-              <Text key={i} style={[styles.bullet, { marginTop: -2 }]}>
-             • <Text style={styles.bold}>{c.title}</Text>
-                {c.provider && ` — ${c.provider}`}
-                {c.date && ` (${c.date})`}
-              </Text>
-            ))}
-          </Section>
-        )} */}
         {/* ================= CERTIFICATIONS ================= */}
 {certifications?.length > 0 && (
   <Section title="Certifications">

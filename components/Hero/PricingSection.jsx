@@ -9,13 +9,20 @@ export default function PricingSection({ isSignedIn, isLoaded }) {
     <section id="pricing" className="py-32 px-6 bg-black">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-5xl font-light mb-6">
-            Simple <span className="font-normal">Pricing</span>
-          </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
-            Start for free, upgrade when you need more power.
-          </p>
-        </div>
+  <span className="inline-block mb-4 bg-green-500/10 text-green-400 px-4 py-2 rounded-full text-sm font-medium border border-green-500/20">
+    🎉 Early Access — All Features Are Free
+  </span>
+
+  <h2 className="text-4xl font-light mb-6">
+    Transparent <span className="font-normal">Pricing</span>
+  </h2>
+
+  <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
+    You’re using ResumeB during early access.  
+    Pricing shown below is planned for future versions.
+  </p>
+</div>
+
 
         {/* Pricing Cards */}
         <div className="grid md:grid-cols-3 gap-8">

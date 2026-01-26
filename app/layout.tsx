@@ -1,8 +1,6 @@
 import { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-// import { ClerkProvider } from "@clerk/nextjs";
-// import RouteChangeLoader from "./components/RouteChangeLoader";
 import { ReduxProvider } from "@/components/ReduxProviderWrapper";
 import RouteLoader from "@/components/GlobalLoader";
 import Providers from "@/components/AuthSessionProvider";

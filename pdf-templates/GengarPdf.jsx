@@ -144,11 +144,10 @@ const styles = StyleSheet.create({
   },
 
   bullet: {
-    marginLeft: 12, // 👈 moved right
+    marginLeft: 12, 
   },
 });
 
-/* ================= MAIN ================= */
 export default function SidebarBluePDF({
   personalInfo,
   personalSummary,

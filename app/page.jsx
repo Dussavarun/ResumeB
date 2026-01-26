@@ -74,10 +74,10 @@ export default function Home() {
         isLoaded={isLoaded} 
       />
 
-      {/* <PricingSection 
+      <PricingSection 
         isSignedIn={isSignedIn} 
         isLoaded={isLoaded} 
-      /> */}
+      />
 
       <CTASection 
         isSignedIn={isSignedIn} 
