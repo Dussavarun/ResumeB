@@ -60,7 +60,7 @@ export default function ResumePreviewPage() {
   const templates = {
     modern: ModernTemplate,
     classic: ClassicTemplate,
-    gengar: GengarTemplate,
+    twinline : GengarTemplate,
   };
 
   const ActiveTemplate = templates[templateFromUrl] || templates.modern;

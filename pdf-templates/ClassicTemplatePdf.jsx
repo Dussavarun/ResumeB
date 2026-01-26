@@ -281,22 +281,7 @@ export default function ModernPDF({
             ))}
           </Section>
         )}
-
-        {/* ================= EDUCATION ================= */}
-        {/* {education?.length > 0 && (
-          <Section title="Education">
-            {education.map((e, i) => (
-              <View key={i} style={styles.item}>
-                <View style={styles.row}>
-                  <Text style={styles.bold}>{e.institution}</Text>
-                  <Text style={styles.muted}>{e.duration}</Text>
-                </View>
-                <Text style={styles.body}>{e.degree}</Text>
-                {e.gpa && <Text style={styles.muted}>GPA: {e.gpa}</Text>}
-              </View>
-            ))}
-          </Section>
-        )} */}
+     
         {/* ================= EDUCATION ================= */}
 {education?.length > 0 && (
   <Section title="Education">

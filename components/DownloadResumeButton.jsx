@@ -27,7 +27,7 @@ export default function DownloadResumeButton() {
 
   const pdftemps = {
     Modern: ModernPDF,
-    Gengar: GengarPdf,
+    twinline : GengarPdf,
     Classic: ClassicPdf,
   };
 

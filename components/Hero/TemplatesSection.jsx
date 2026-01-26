@@ -16,7 +16,7 @@ export default function TemplatesSection({ isSignedIn, isLoaded }) {
     image: "/images/classic.png",
   },
   {
-    name: "Gengar",
+    name: "TwinLine",
     description: "Bold and modern layout",
     image: "/images/gengar.png",
   },

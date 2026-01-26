@@ -24,9 +24,9 @@ export default function ResumeBTemplates() {
       popular : true
     },
     {
-      id: "gengar",
+      id: "twinline",
       src: "/images/gengar.png",
-      name: "Gengar",
+      name: "twinline",
       description: "Bold and creative",
     },
   ];
