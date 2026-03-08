@@ -67,24 +67,28 @@ Vercel
 
 
 ⚙️ Installation
-Clone the repository : git clone https://github.com/Dussavarun/ResumeB.git
-Move into the project : cd ResumeB
-Install dependencies : npm install
-Run the development server : npm run dev
-Open in browser : http://localhost:3000
+**Clone the repository**: git clone https://github.com/Dussavarun/ResumeB.git
+
+**Move into the project**: cd ResumeB
+
+**Install dependencies** : npm install
+
+**Run the development server** : npm run dev
+
+**Open in browser** : http://localhost:3000
 
 
-🧠 How It Works
+**🧠 How It Works**
 
-User fills resume sections in the editor
+1.User fills resume sections in the editor
 
-Data is stored in Redux state
+2.Data is stored in Redux state
 
-Resume preview updates instantly
+3.Resume preview updates instantly
 
-Data is saved to MongoDB
+4.Data is saved to MongoDB
 
-Resume can be exported as a PDF
+5.Resume can be exported as a PDF
 
 
 🔮 Future Improvements
@@ -119,7 +123,7 @@ If you like this project, consider giving it a star ⭐ on GitHub.
 
 👨‍💻 Author
 
-Varun Dussa
+**Varun Dussa**
 
-GitHub
+**GitHub**
 https://github.com/Dussavarun
