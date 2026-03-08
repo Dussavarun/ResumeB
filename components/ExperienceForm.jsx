@@ -23,7 +23,6 @@ export default function ExperienceForm() {
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [editingIndex, setEditingIndex] = useState(null);
 
-  /* ---------- responsibilities ---------- */
   const addPoint = () => {
     if (!point.trim()) return;
     setForm((prev) => ({
@@ -40,10 +39,7 @@ export default function ExperienceForm() {
     }));
   };
 
-  /* ---------- add / update ---------- */
   const handleAdd = () => {
-    if (!form.company.trim() || !form.role.trim()) return;
-
     if (editingIndex !== null) {
       dispatch(removeExperience(editingIndex));
       setEditingIndex(null);
@@ -61,7 +57,6 @@ export default function ExperienceForm() {
     });
   };
 
-  /* ---------- edit ---------- */
   const handleEdit = (exp, index) => {
     setForm({
       company: exp.company || "",
@@ -76,113 +71,123 @@ export default function ExperienceForm() {
 
   return (
     <div className="w-full px-2 sm:px-4">
-      <div
-        className="
-          w-full max-w-4xl mx-auto
-          bg-white
-          p-4 sm:p-8 lg:p-10
-          rounded-xl sm:rounded-3xl
-          border-2 sm:border-[3px] border-black
-          shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
-          sm:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]
-          space-y-4 sm:space-y-8
-        "
-      >
-        {/* Title */}
+      <div className="w-full max-w-4xl mx-auto bg-white p-4 sm:p-8 lg:p-10 rounded-xl sm:rounded-3xl border-2 sm:border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] space-y-4 sm:space-y-8">
+
         <h2 className="text-lg sm:text-3xl font-extrabold text-black text-center border-b-2 border-black pb-2 sm:pb-4">
           Experience
         </h2>
 
-        {/* Inputs */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5">
-          <input
-            placeholder="Company"
-            value={form.company}
-            onChange={(e) => setForm({ ...form, company: e.target.value })}
-            className="input py-1.5 text-sm"
-          />
-
-          <input
-            placeholder="Role / Position"
-            value={form.role}
-            onChange={(e) => setForm({ ...form, role: e.target.value })}
-            className="input py-1.5 text-sm"
-          />
-
-          <input
-            placeholder="Location"
-            value={form.location}
-            onChange={(e) => setForm({ ...form, location: e.target.value })}
-            className="input py-1.5 text-sm"
-          />
-
-          <div className="grid grid-cols-2 gap-2">
-            <input
-              type="month"
-              value={form.startDate || ""}
-              onChange={(e) =>
-                setForm({ ...form, startDate: e.target.value })
-              }
-              className="input py-1.5 text-xs"
-            />
-
-            <input
-              type="month"
-              value={form.endDate || ""}
-              onChange={(e) =>
-                setForm({ ...form, endDate: e.target.value })
-              }
-              className="input py-1.5 text-xs"
-            />
-          </div>
-        </div>
-
-        {/* Responsibilities */}
-        <div className="space-y-2">
-          <div className="flex gap-2">
-            <input
-              placeholder="Add responsibility point"
-              value={point}
-              onChange={(e) => setPoint(e.target.value)}
-              className="input py-1.5 text-sm flex-1"
-            />
-            <button
-              onClick={addPoint}
-              className="px-3 py-1.5 bg-black text-white text-sm font-semibold border-2 border-black rounded-lg hover:bg-white hover:text-black"
-            >
-              Add
-            </button>
-          </div>
-
-          {form.responsibilities.length > 0 && (
-            <ul className="space-y-1.5">
-              {form.responsibilities.map((r, i) => (
-                <li
-                  key={i}
-                  className="flex justify-between items-start border border-black rounded-lg px-3 py-2 text-xs text-black"
-                >
-                  <span>• {r}</span>
-                  <button
-                    onClick={() => removePoint(i)}
-                    className="font-bold text-red-600"
-                  >
-                    ×
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        {/* Add / Update */}
-        <button
-          onClick={handleAdd}
-          className="w-full py-2 bg-black text-white text-sm font-semibold border-2 border-black rounded-lg hover:bg-white hover:text-black"
+        {/* FORM */}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleAdd();
+          }}
+          className="space-y-4"
         >
-          {editingIndex !== null ? "Update Experience" : "Add Experience"}
-        </button>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5">
 
-        {/* Experience List */}
+            <input
+              placeholder="Company"
+              value={form.company}
+              onChange={(e) =>
+                setForm({ ...form, company: e.target.value })
+              }
+              className="input py-1.5 text-sm"
+              required
+            />
+
+            <input
+              placeholder="Role / Position"
+              value={form.role}
+              onChange={(e) =>
+                setForm({ ...form, role: e.target.value })
+              }
+              className="input py-1.5 text-sm"
+              required
+            />
+
+            <input
+              placeholder="Location"
+              value={form.location}
+              onChange={(e) =>
+                setForm({ ...form, location: e.target.value })
+              }
+              className="input py-1.5 text-sm"
+              required
+            />
+
+            <div className="grid grid-cols-2 gap-2">
+              <input
+                type="month"
+                value={form.startDate}
+                onChange={(e) =>
+                  setForm({ ...form, startDate: e.target.value })
+                }
+                className="input py-1.5 text-xs"
+                required
+              />
+
+              <input
+                type="month"
+                value={form.endDate}
+                onChange={(e) =>
+                  setForm({ ...form, endDate: e.target.value })
+                }
+                className="input py-1.5 text-xs"
+                required
+              />
+            </div>
+          </div>
+
+          {/* RESPONSIBILITIES */}
+          <div className="space-y-2">
+            <div className="flex gap-2">
+              <input
+                placeholder="Add responsibility point"
+                value={point}
+                onChange={(e) => setPoint(e.target.value)}
+                className="input py-1.5 text-sm flex-1"
+              />
+              <button
+                type="button"
+                onClick={addPoint}
+                className="px-3 py-1.5 bg-black text-white text-sm font-semibold border-2 border-black rounded-lg hover:bg-white hover:text-black"
+              >
+                Add
+              </button>
+            </div>
+
+            {form.responsibilities.length > 0 && (
+              <ul className="space-y-1.5">
+                {form.responsibilities.map((r, i) => (
+                  <li
+                    key={i}
+                    className="flex justify-between items-start border border-black rounded-lg px-3 py-2 text-xs text-black"
+                  >
+                    <span>• {r}</span>
+                    <button
+                      type="button"
+                      onClick={() => removePoint(i)}
+                      className="font-bold text-red-600"
+                    >
+                      ×
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-2 bg-black text-white text-sm font-semibold border-2 border-black rounded-lg hover:bg-white hover:text-black"
+          >
+            {editingIndex !== null ? "Update Experience" : "Add Experience"}
+          </button>
+        </form>
+
+        {/* EXPERIENCE LIST */}
         {experiences.length > 0 && (
           <ul className="space-y-3">
             {experiences.map((exp, i) => {
@@ -196,13 +201,13 @@ export default function ExperienceForm() {
                 >
                   <div className="flex-1 space-y-1 text-black">
                     <p className="font-bold text-sm">{exp.company}</p>
+
                     <p className="text-sm">
-                      {exp.role} ({exp.startDate || "—"} –{" "}
-                      {exp.endDate || "—"})
+                      {exp.role} {exp.startDate} – {exp.endDate}
                     </p>
+
                     <p className="text-xs">{exp.location}</p>
 
-                    {/* mobile */}
                     <div className="sm:hidden">
                       {count > 0 && (
                         <button
@@ -224,7 +229,6 @@ export default function ExperienceForm() {
                       )}
                     </div>
 
-                    {/* desktop */}
                     <div className="hidden sm:block">
                       <ul className="list-disc list-inside text-sm">
                         {exp.responsibilities.map((r, j) => (
@@ -234,14 +238,14 @@ export default function ExperienceForm() {
                     </div>
                   </div>
 
-                  {/* Edit + Delete */}
                   <div className="flex flex-col items-center gap-1">
                     <button
-                      onClick={() => handleEdit(exp, i)}
-                      className="text-xs font-semibold text-black hover:underline"
-                    >
-                      Edit
-                    </button>
+                  onClick={() => handleEdit(exp, i)}
+                  className="text-black font-semibold hover:text-blue-600"
+                >
+                  ✏️
+                </button>
+
                     <button
                       onClick={() => dispatch(removeExperience(i))}
                       className="font-bold text-red-600 text-lg leading-none"

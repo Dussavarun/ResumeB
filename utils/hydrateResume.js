@@ -3,7 +3,7 @@ import { setSummary } from "../store/slices/personalSummarySlice";
 import { setEducation } from "../store/slices/educationSlice";
 import { setExperiences } from "../store/slices/experienceSlice";
 import { setProjects } from "../store/slices/projectSlice";
-import { setSkills } from "../store/slices/techSkillsSlice";
+import { setTechSkills } from "../store/slices/techSkillsSlice";
 import { setCertifications } from "../store/slices/certificationSlice";
 import { setAccomplishments } from "../store/slices/acomplishmentSlice";
 
@@ -14,19 +14,27 @@ export const hydrateResume = (dispatch, data) => {
   dispatch(setExperiences(data.experience));
   dispatch(setProjects(data.projects));
 
+  // dispatch(
+  //   setSkills({
+  //     programmingLanguages:
+  //       data.techSkills?.programmingLanguages || [],
+  //     databases:
+  //       data.techSkills?.databases || [],
+  //     frameworks:
+  //       data.techSkills?.frameworks || [],
+  //     developerTools:
+  //       data.techSkills?.developerTools || [],
+  //     cloudAndDevOps:
+  //       data.techSkills?.cloudAndDevOps || [],
+  //   })
+  // );
+  
   dispatch(
-    setSkills({
-      programmingLanguages:
-        data.techSkills?.programmingLanguages || [],
-      databases:
-        data.techSkills?.databases || [],
-      frameworks:
-        data.techSkills?.frameworks || [],
-      developerTools:
-        data.techSkills?.developerTools || [],
-      cloudAndDevOps:
-        data.techSkills?.cloudAndDevOps || [],
-    })
+    setTechSkills(
+      data.techSkills || {
+        categories: {},
+      }
+    )
   );
 
   dispatch(setCertifications(data.certifications));

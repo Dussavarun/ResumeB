@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Pencil } from "lucide-react";
+
 import {
   addAccomplishment,
   removeAccomplishment,
@@ -20,12 +22,15 @@ const AccomplishmentCertificationForm = () => {
   );
 
   const [accomplishmentInput, setAccomplishmentInput] = useState("");
+
   const [certInput, setCertInput] = useState({
     title: "",
     provider: "",
     date: "",
     credentialUrl: "",
   });
+
+  const [editingCertIndex, setEditingCertIndex] = useState(null);
 
   const handleAddAccomplishment = () => {
     if (!accomplishmentInput.trim()) return;
@@ -35,7 +40,14 @@ const AccomplishmentCertificationForm = () => {
 
   const handleAddCertification = () => {
     if (!certInput.title.trim()) return;
+
+    if (editingCertIndex !== null) {
+      dispatch(removeCertification(editingCertIndex));
+      setEditingCertIndex(null);
+    }
+
     dispatch(addCertification(certInput));
+
     setCertInput({
       title: "",
       provider: "",
@@ -44,18 +56,31 @@ const AccomplishmentCertificationForm = () => {
     });
   };
 
+  const handleEditCertification = (cert, index) => {
+    setCertInput({
+      title: cert.title || "",
+      provider: cert.provider || "",
+      date: cert.date || "",
+      credentialUrl: cert.credentialUrl || "",
+    });
+
+    setEditingCertIndex(index);
+  };
+
   return (
     <div className="w-full max-w-4xl bg-white p-4 sm:p-8 rounded-2xl border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] space-y-8">
+
       {/* ACCOMPLISHMENTS */}
       <section className="space-y-4">
-         <h2 className="hidden sm:block text-4xl font-extrabold text-black text-center border-b-2 border-black pb-4">
-         Accomplishments
-      </h2>
-      <h2 className="block sm:hidden text-lg font-bold text-black text-center">
-  Accomplishments
-  <span className="block w-full h-[2px] bg-black mt-2" />
-</h2>
 
+        <h2 className="hidden sm:block text-4xl font-extrabold text-black text-center border-b-2 border-black pb-4">
+          Accomplishments
+        </h2>
+
+        <h2 className="block sm:hidden text-lg font-bold text-black text-center">
+          Accomplishments
+          <span className="block w-full h-[2px] bg-black mt-2" />
+        </h2>
 
         <div className="flex gap-2">
           <input
@@ -80,9 +105,10 @@ const AccomplishmentCertificationForm = () => {
                 className="flex justify-between items-center border-2 border-black rounded-lg px-3 py-2"
               >
                 <span className="text-sm text-black">{acc.title}</span>
+
                 <button
                   onClick={() => dispatch(removeAccomplishment(idx))}
-                   className="font-bold text-red-600 hover:text-red-800 text-lg leading-none"
+                  className="font-bold text-red-600 hover:text-red-800 text-lg leading-none"
                 >
                   ✕
                 </button>
@@ -94,16 +120,18 @@ const AccomplishmentCertificationForm = () => {
 
       {/* CERTIFICATIONS */}
       <section className="space-y-4">
-        <h2 className="hidden sm:block text-4xl font-extrabold text-black text-center border-b-2 border-black pb-4">
-        Certifications
-      </h2>
-      <h2 className="block sm:hidden text-lg font-bold text-black text-center">
-  Certifications
-  <span className="block w-full h-[2px] bg-black mt-2" />
-</h2>
 
+        <h2 className="hidden sm:block text-4xl font-extrabold text-black text-center border-b-2 border-black pb-4">
+          Certifications
+        </h2>
+
+        <h2 className="block sm:hidden text-lg font-bold text-black text-center">
+          Certifications
+          <span className="block w-full h-[2px] bg-black mt-2" />
+        </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
           <input
             placeholder="Title"
             value={certInput.title}
@@ -142,13 +170,14 @@ const AccomplishmentCertificationForm = () => {
             }
             className="input py-1.5 text-sm"
           />
+
         </div>
 
         <button
           onClick={handleAddCertification}
           className="w-full py-2 bg-black text-white text-sm font-semibold border-2 border-black rounded-lg hover:bg-white hover:text-black"
         >
-          Add Certification
+          {editingCertIndex !== null ? "Update Certification" : "Add Certification"}
         </button>
 
         {certifications.length > 0 && (
@@ -162,10 +191,12 @@ const AccomplishmentCertificationForm = () => {
                   <p className="font-bold text-sm text-black">
                     {cert.title}
                   </p>
+
                   <p className="text-xs text-gray-600">
                     {cert.provider}
                     {cert.date ? ` — ${cert.date}` : ""}
                   </p>
+
                   {cert.credentialUrl && (
                     <a
                       href={cert.credentialUrl}
@@ -178,12 +209,23 @@ const AccomplishmentCertificationForm = () => {
                   )}
                 </div>
 
+                <div className="flex flex-col items-center gap-1">
+
                 <button
-                  onClick={() => dispatch(removeCertification(idx))}
-                 className="font-bold text-red-600 hover:text-red-800 text-lg leading-none"
+                  onClick={() => handleEdit(cert, idx)}
+                  className="text-black font-semibold hover:text-blue-600"
                 >
-                  ✕
+                  ✏️
                 </button>
+
+                  <button
+                    onClick={() => dispatch(removeCertification(idx))}
+                    className="font-bold text-red-600 hover:text-red-800 text-lg leading-none"
+                  >
+                    ✕
+                  </button>
+
+                </div>
               </li>
             ))}
           </ul>

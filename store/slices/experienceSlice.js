@@ -5,7 +5,9 @@ const initialState = { experiences: [
       "company": "SCALE AI (Outlier)",
       "role": "C++ AI Trainer (Freelance)",
       "location": "Remote",
-      "duration": "Oct 2024 – Present",
+      // "duration": "Oct 2024 – Present",
+      startDate: "2024-10",
+  endDate: "Present",
       "responsibilities": [
         "Conducted AI judging on 30+ AI model responses, optimizing performance using C++.",
         "Created 10+ complex prompts to improve model training and achieve better accuracy.",
@@ -17,7 +19,9 @@ const initialState = { experiences: [
       "company": "Pycel",
       "role": "AI Engineer Intern",
       "location": "Remote",
-      "duration": "Jan 2024 – Jun 2024",
+      // "duration": "Jan 2024 – Jun 2024",
+      startDate: "2024-10",
+  endDate: "Present",
       "responsibilities": [
         "Adapted models for numeric and NLP analysis using C.",
         "Developed and integrated AST classes with Constast (Python 3.8+).",
@@ -28,7 +32,9 @@ const initialState = { experiences: [
       "company": "TechCorp",
       "role": "Software Engineer Intern",
       "location": "Bangalore, India",
-      "duration": "May 2023 – Aug 2023",
+      // "duration": "May 2023 – Aug 2023",
+      startDate: "2024-10",
+  endDate: "Present",
       "responsibilities": [
         "Developed RESTful APIs with Node.js and Express, reducing server response time by 80%.",
         "Collaborated with team of 6 to implement CI/CD pipelines using Jenkins and Docker.",

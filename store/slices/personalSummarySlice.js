@@ -11,7 +11,7 @@ const personalSummarySlice = createSlice({
   reducers: {
     setSummary: (state, action) => {
       const value = action.payload;
-      if (typeof value === "string" && value.trim().length > 0) {
+      if (typeof value === "string" && value.trim().length >= 0) {
         state.summary = value;
       }
     },

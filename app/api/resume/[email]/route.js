@@ -66,16 +66,36 @@ export async function POST(req, context) {
       }
     }
 
+    // if (data.techSkills) {
+    //   if (user.techSkills) {
+    //     await TechSkills.findByIdAndUpdate(user.techSkills, data.techSkills, {
+    //       new: true,
+    //     });
+    //   } else {
+    //     const techSkillsDoc = await TechSkills.create(data.techSkills);
+    //     user.techSkills = techSkillsDoc._id;
+    //   }
+    // }
+
     if (data.techSkills) {
-      if (user.techSkills) {
-        await TechSkills.findByIdAndUpdate(user.techSkills, data.techSkills, {
-          new: true,
-        });
-      } else {
-        const techSkillsDoc = await TechSkills.create(data.techSkills);
-        user.techSkills = techSkillsDoc._id;
-      }
-    }
+  if (user.techSkills) {
+    await TechSkills.findByIdAndUpdate(
+      user.techSkills,
+      {
+        $set: {
+          categories: data.techSkills.categories,
+        },
+      },
+      { new: true }
+    );
+  } else {
+    const techSkillsDoc = await TechSkills.create({
+      categories: data.techSkills.categories,
+    });
+
+    user.techSkills = techSkillsDoc._id;
+  }
+}
 
     // 4️⃣ Replace Education
     if (data.education?.length) {
@@ -177,20 +197,16 @@ export async function GET(req, context) {
         }
       : null;
 
-    // Clean techSkills - remove MongoDB metadata
-    const techSkills = user.techSkills
-      ? {
-          programmingLanguages: user.techSkills.programmingLanguages || [],
-          databases: user.techSkills.databases || [],
-          frameworks: user.techSkills.frameworks || [],
-          developerTools: user.techSkills.developerTools || [],
-          cloudAndDevOps: user.techSkills.cloudAndDevOps || [],
-        }
-      : null;
+const techSkills = user.techSkills
+  ? {
+      categories: user.techSkills.categories || {},
+    }
+  : null;
 
     const responseData = {
       personalInfo,
-      personalSummary: user.personalSummary?.summary || "",
+      // personalSummary: user.personalSummary?.summary || "",
+      personalSummary: user.personalSummary || { summary: "" },
       hasResume: user.hasResume,
       education: (user.education || []).filter((e) => e !== null),
       experience: (user.experience || []).filter((e) => e !== null),

@@ -19,8 +19,9 @@ import mongoose from "mongoose";
 const experienceSchema = new mongoose.Schema({
   company: String,
   role: String,
-  location: String,
-  duration: String,  // Changed from startDate/endDate
+  location: String, 
+  startDate: String,
+  endDate: String,
   responsibilities: [String],
 });
 

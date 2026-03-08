@@ -15,14 +15,15 @@ const ClassicTemplate = () => {
     (s) => s.accomplishments?.accomplishments || [],
   );
 
-  const rawSkills = useSelector((s) => s.techskills || {});
-  const {
-    programmingLanguages = [],
-    frameworks = [],
-    databases = [],
-    developerTools = [],
-    cloudAndDevOps = [],
-  } = rawSkills;
+  const categories = useSelector(
+  (s) => s.techskills?.categories || {}
+);
+
+const skillSections = Object.values(categories).filter(
+  (cat) => cat.skills && cat.skills.length > 0
+);
+
+const hasSkills = skillSections.length > 0;
 
   const hasSummary = personalSummary.trim().length > 0;
   const hasEducation = education.length > 0;
@@ -30,18 +31,24 @@ const ClassicTemplate = () => {
   const hasProjects = projects.length > 0;
   const hasCertifications = certifications.length > 0;
   const hasAccomplishments = accomplishments.length > 0;
-  const hasSkills =
-    programmingLanguages.length ||
-    frameworks.length ||
-    databases.length ||
-    developerTools.length ||
-    cloudAndDevOps.length;
 
   const personalS = useSelector((s) => s.personalSummary?.summary || "");
 
   useEffect(() => {
     console.log("SUMMARY CHANGED:", personalS);
   }, [personalSummary]);
+
+  const formatDate = (dateStr) => {
+  if (!dateStr || dateStr === "Present") return dateStr;
+
+  const [year, month] = dateStr.split("-");
+  const months = [
+    "Jan","Feb","Mar","Apr","May","Jun",
+    "Jul","Aug","Sep","Oct","Nov","Dec"
+  ];
+
+  return `${months[Number(month) - 1]} ${year}`;
+};
 
   const bulletClass = "list-disc list-outside ml-7 leading-tight space-y-0";
 
@@ -90,7 +97,7 @@ const ClassicTemplate = () => {
       )}
 
       {/* ================= TECHNICAL SKILLS ================= */}
-      {hasSkills && (
+      {/* {hasSkills && (
         <Section title="Technical Skills">
           {programmingLanguages.length > 0 && (
             <Line label="Programming Languages" value={programmingLanguages} />
@@ -106,7 +113,19 @@ const ClassicTemplate = () => {
             <Line label="Cloud And Dev Ops" value={cloudAndDevOps} />
           )}
         </Section>
-      )}
+      )} */}
+
+      {hasSkills && (
+  <Section title="Technical Skills">
+    {skillSections.map((section, idx) => (
+      <Line
+        key={idx}
+        label={section.title}
+        value={section.skills}
+      />
+    ))}
+  </Section>
+)}
 
       {/* ================= EXPERIENCE ================= */}
       {hasExperience && (
@@ -117,9 +136,10 @@ const ClassicTemplate = () => {
                 <div className="font-bold text-[14px]">
                   {exp.role} — {exp.company}
                 </div>
-                <div className="text-gray-600 text-[12px] leading-tight">
-                  {exp.duration}
-                </div>
+                 <div className="text-gray-600 text-[12px] leading-tight">
+            {/* {exp.startDate} – {exp.endDate} */}
+            {formatDate(exp.startDate)} – {formatDate(exp.endDate)}
+          </div>
               </div>
 
               {exp.location && (

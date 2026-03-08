@@ -70,7 +70,8 @@ export const defaultResumeData = {
       company: "SCALE AI (Outlier)",
       role: "C++ AI Trainer (Freelance)",
       location: "Remote",
-      duration: "Oct 2024 – Present",
+     startDate: "2024-10",
+   endDate: "Present",
       responsibilities: [
         "Reviewed and evaluated AI model outputs to improve accuracy, relevance, and consistency.",
         "Designed and refined complex prompts to enhance model reasoning and response quality.",
@@ -82,7 +83,8 @@ export const defaultResumeData = {
       company: "Pycel",
       role: "AI Engineer Intern",
       location: "Remote",
-      duration: "Jan 2024 – Jun 2024",
+       startDate: "2024-10",
+   endDate: "Present",
       responsibilities: [
         "Enhanced numerical and NLP pipelines by adapting models written in C.",
         "Implemented abstract syntax tree (AST) components for improved parsing accuracy.",
@@ -93,7 +95,8 @@ export const defaultResumeData = {
       company: "TechCorp",
       role: "Software Engineer Intern",
       location: "Bangalore, India",
-      duration: "May 2023 – Aug 2023",
+      startDate: "2024-10",
+   endDate: "Present",
       responsibilities: [
         "Built and maintained RESTful APIs using Node.js and Express for high-traffic services.",
         "Worked with cross-functional teams to implement CI/CD workflows using Jenkins and Docker.",

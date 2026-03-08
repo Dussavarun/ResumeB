@@ -38,7 +38,8 @@ export default function DownloadResumeButton() {
   const education = useSelector((s) => s.education.education);
   const experience = useSelector((s) => s.experience.experiences);
   const projects = useSelector((s) => s.project.projects);
-  const techSkills = useSelector((s) => s.techskills);
+  // const techSkills = useSelector((s) => s.techskills);
+  const techSkills = useSelector((s) => s.techskills.categories);
   const accomplishments = useSelector((s) => s.accomplishments.accomplishments);
   const certifications = useSelector((s) => s.certifications.certifications);
 

@@ -48,7 +48,8 @@ export default function ResumePreviewPage() {
   const education = useSelector((s) => s.education.education);
   const experiences = useSelector((s) => s.experience.experiences);
   const projects = useSelector((s) => s.project.projects);
-  const skills = useSelector((s) => s.techskills);
+  // const skills = useSelector((s) => s.techskills);
+  const skills = useSelector((s) => s.techskills.categories);
   const personalSummary = useSelector((s) => s.personalSummary.summary);
   const certifications = useSelector(
     (s) => s.certifications.certifications || []
@@ -102,11 +103,12 @@ export default function ResumePreviewPage() {
   const loadResumeDataFromDB = async (email) => {
     try {
       const res = await axios.get(`/api/resume/${email}`);
+      console.log("RES DATA:", res.data);
       const { hasResume, ...resumeData } = res.data;
-      hydrateResume(
-        dispatch,
-        hasResume ? { ...defaultResumeData, ...resumeData } : defaultResumeData
-      );
+       hydrateResume(
+          dispatch,
+          hasResume ? resumeData : defaultResumeData
+       );
     } catch {
       hydrateResume(dispatch, defaultResumeData);
     } finally {
@@ -127,7 +129,10 @@ export default function ResumePreviewPage() {
       personalSummary,
       experience: experiences,
       projects,
-      techSkills: skills,
+      // techSkills: skills,
+      techSkills: {
+    categories: skills,
+  },
       certifications,
       accomplishments,
       template: templateFromUrl,
@@ -392,7 +397,7 @@ export default function ResumePreviewPage() {
               </p>
             </div>
 
-            {/* Resume Preview - Floating Card */}
+            {/* Resume Preview */}
             <div className="flex justify-center">
               <div
                 id="resume"

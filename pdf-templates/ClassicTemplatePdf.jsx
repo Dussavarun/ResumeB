@@ -158,7 +158,7 @@ export default function ModernPDF({
         )}
 
         {/* ================= TECHNICAL SKILLS ================= */}
-        {techSkills && (
+        {/* {techSkills && (
           <Section title="Technical Skills">
             {Object.entries(techSkills).map(
               ([key, values]) =>
@@ -170,34 +170,53 @@ export default function ModernPDF({
                 )
             )}
           </Section>
-        )}
+        )} */}
+
+       {techSkills &&
+  Object.values(techSkills).some(
+    (cat) => cat.skills?.length > 0
+  ) && (
+    <Section title="Technical Skills">
+      {Object.values(techSkills).map(
+        (section, i) =>
+          section.skills?.length > 0 && (
+            <Text key={i} style={styles.body}>
+              <Text style={styles.bold}>{section.title}:</Text>{" "}
+              {section.skills.join(", ")}
+            </Text>
+          )
+      )}
+    </Section>
+  )}
 
         {/* ================= EXPERIENCE ================= */}
-        {experience?.length > 0 && (
-          <Section title="Experience">
-            {experience.map((exp, i) => (
-              <View key={i} style={styles.item}>
-                <View style={styles.row}>
-                  <Text style={styles.bold}>
-                    {exp.role} — {exp.company}
-                  </Text>
-                  <Text style={styles.muted}>{exp.duration}</Text>
-                </View>
+       {experience?.length > 0 && (
+  <Section title="Experience">
+    {experience.map((exp, i) => (
+      <View key={i} style={styles.item}>
+        <View style={styles.row}>
+          <Text style={styles.bold}>
+            {exp.role} — {exp.company}
+          </Text>
 
-                {exp.location && (
-                  <Text style={styles.muted}>{exp.location}</Text>
-                )}
+          <Text style={styles.muted}>
+            {formatDate(exp.startDate)} – {formatDate(exp.endDate)}
+          </Text>
+        </View>
 
-                {(exp.responsibilities || []).map((r, j) => (
-                  <Text key={j} style={styles.bullet}>
-                    • {r}
-                  </Text>
-                ))}
-              </View>
-            ))}
-          </Section>
+        {exp.location && (
+          <Text style={styles.muted}>{exp.location}</Text>
         )}
 
+        {(exp.responsibilities || []).map((r, j) => (
+          <Text key={j} style={styles.bullet}>
+            • {r}
+          </Text>
+        ))}
+      </View>
+    ))}
+  </Section>
+)}
         {/* ================= PROJECTS ================= */}
         {projects?.length > 0 && (
   <Section title="Projects">
@@ -297,3 +316,15 @@ const Section = ({ title, children }) => (
 
 const formatKey = (key) =>
   key.replace(/([A-Z])/g, " $1").replace(/^./, (c) => c.toUpperCase());
+
+const formatDate = (dateStr) => {
+  if (!dateStr || dateStr === "Present") return dateStr;
+
+  const [year, month] = dateStr.split("-");
+  const months = [
+    "Jan","Feb","Mar","Apr","May","Jun",
+    "Jul","Aug","Sep","Oct","Nov","Dec"
+  ];
+
+  return `${months[Number(month) - 1]} ${year}`;
+};
