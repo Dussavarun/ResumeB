@@ -3,7 +3,7 @@
 A full-stack resume builder that lets users create professional resumes with real-time preview, customizable sections, and downloadable templates.
 Built using Next.js, Redux Toolkit, MongoDB, and Tailwind CSS.
 
-Live Demo : https://your-vercel-link.vercel.app
+Live Demo : https://resume-b-ohkj.vercel.app/
 
 ✨ Features
 📄 Create professional resumes quickly
