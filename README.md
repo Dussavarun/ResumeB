@@ -6,6 +6,7 @@ Built using Next.js, Redux Toolkit, MongoDB, and Tailwind CSS.
 Live Demo : https://resume-b-ohkj.vercel.app/
 
 ✨ Features
+
 📄 Create professional resumes quickly
 
 ⚡ Real-time resume preview
