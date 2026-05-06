@@ -157,20 +157,6 @@ export default function ModernPDF({
           </Section>
         )}
 
-        {/* ================= TECHNICAL SKILLS ================= */}
-        {/* {techSkills && (
-          <Section title="Technical Skills">
-            {Object.entries(techSkills).map(
-              ([key, values]) =>
-                values?.length > 0 && (
-                  <Text key={key} style={styles.body}>
-                    <Text style={styles.bold}>{formatKey(key)}:</Text>{" "}
-                    {values.join(", ")}
-                  </Text>
-                )
-            )}
-          </Section>
-        )} */}
 
        {techSkills &&
   Object.values(techSkills).some(
